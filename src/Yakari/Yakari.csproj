@@ -45,7 +45,7 @@
     <Compile Include="ICacheObserver.cs" />
     <Compile Include="ICacheProvider.cs" />
     <Compile Include="ICacheProviderOptions.cs" />
-    <Compile Include="ITransporter.cs" />
+    <Compile Include="ITransportBinder.cs" />
     <Compile Include="InMemoryCacheItem.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="NullCacheObserver.cs" />
