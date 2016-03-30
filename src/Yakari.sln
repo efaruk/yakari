@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yakari", "Yakari\Yakari.csproj", "{6386195C-8B63-4DDF-8537-A620857D2312}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yakari.Tests", "Yakari.Tests\Yakari.Tests.csproj", "{5FF580DF-2AB8-450B-ABEA-5BC1E5B646CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yakari.RedisClient", "Yakari.RedisClient\Yakari.RedisClient.csproj", "{A40565DA-4323-4B7A-97FA-21C4CD243CE3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{6386195C-8B63-4DDF-8537-A620857D2312}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6386195C-8B63-4DDF-8537-A620857D2312}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6386195C-8B63-4DDF-8537-A620857D2312}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FF580DF-2AB8-450B-ABEA-5BC1E5B646CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FF580DF-2AB8-450B-ABEA-5BC1E5B646CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FF580DF-2AB8-450B-ABEA-5BC1E5B646CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FF580DF-2AB8-450B-ABEA-5BC1E5B646CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A40565DA-4323-4B7A-97FA-21C4CD243CE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A40565DA-4323-4B7A-97FA-21C4CD243CE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A40565DA-4323-4B7A-97FA-21C4CD243CE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A40565DA-4323-4B7A-97FA-21C4CD243CE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
