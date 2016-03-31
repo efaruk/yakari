@@ -54,8 +54,6 @@
     <Compile Include="ILogger.cs" />
     <Compile Include="IMessagePublisher.cs" />
     <Compile Include="ISerializer.cs" />
-    <Compile Include="NullCacheManager.cs" />
-    <Compile Include="NullLogger.cs" />
     <Compile Include="LittleThunder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ThreadHelper.cs" />
