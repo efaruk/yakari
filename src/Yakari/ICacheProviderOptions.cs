@@ -6,7 +6,7 @@ namespace Yakari
     {
         ILogger Logger { get; set; }
 
-        ICacheObserver Observer { get; set; }
+        ICacheManager Manager { get; set; }
 
         int MaxRetryForLocalOperations { get; set; }
 
@@ -27,15 +27,15 @@ namespace Yakari
         const int MinimumInitialCapacity = 10;
         const int DefaultInitialCapacity = 100;
 
-        public CacheProviderOptions(ILogger logger, ICacheObserver observer, int maxRetryForLocalOperations = DefaultMaxRetryForLocalOperations, int concurrencyLevel = DefaultConcurrencyLevel, int initialCapacity = DefaultInitialCapacity, bool dontWaitForTribe = false)
+        public CacheProviderOptions(ILogger logger, ICacheManager manager, int maxRetryForLocalOperations = DefaultMaxRetryForLocalOperations, int concurrencyLevel = DefaultConcurrencyLevel, int initialCapacity = DefaultInitialCapacity, bool dontWaitForTribe = false)
         {
             // Check
             if (logger == null) throw new ArgumentNullException("logger");
-            if (observer == null) throw new ArgumentNullException("observer");
+            if (manager == null) throw new ArgumentNullException("manager");
             if (maxRetryForLocalOperations < MinimumMaxRetryForLocalOperations) throw new ArgumentOutOfRangeException("maxRetryForLocalOperations");
             // Set
             Logger = logger;
-            Observer = observer;
+            Manager = manager;
             MaxRetryForLocalOperations = maxRetryForLocalOperations;
             ConcurrencyLevel = concurrencyLevel;
             InitialCapacity = initialCapacity;
@@ -48,7 +48,7 @@ namespace Yakari
         }
 
         public ILogger Logger { get; set; }
-        public ICacheObserver Observer { get; set; }
+        public ICacheManager Manager { get; set; }
         public int MaxRetryForLocalOperations { get; set; }
         public int ConcurrencyLevel { get; set; }
         public int InitialCapacity { get; set; }

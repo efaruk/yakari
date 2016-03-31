@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Yakari.RedisClient")]
-[assembly: AssemblyDescription("Yakari Redis Cache and Messaging Provider")]
+[assembly: AssemblyTitle("Yakari.Serializers.Newtonsoft")]
+[assembly: AssemblyDescription("Yakari Serialization for Newtonsoft.Json")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Titanium Soft")]
-[assembly: AssemblyProduct("Yakari.RedisClient")]
+[assembly: AssemblyProduct("Yakari.Serializers.Newtonsoft")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("efaruk")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("a40565da-4323-4b7a-97fa-21c4cd243ce3")]
+[assembly: Guid("fbd4c0b6-adaa-46e7-bea1-9de7853fdad2")]
 
 // Version information for an assembly consists of the following four values:
 //

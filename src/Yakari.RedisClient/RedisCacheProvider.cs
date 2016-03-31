@@ -1,0 +1,89 @@
+﻿using System;
+using StackExchange.Redis;
+
+namespace Yakari.RedisClient
+{
+    public class RedisCacheProvider: BaseCacheProvider
+    {
+        private readonly ISerializer<string> _serializer;
+        private ConnectionMultiplexer _redisConnectionMultiplexer;
+        private IDatabase _database;
+
+        public RedisCacheProvider(string connectionString, ISerializer<string> serializer)
+        {
+            _serializer = serializer;
+            SetupConfiguration(connectionString);
+        }
+
+        public RedisCacheProvider(ConfigurationOptions redisConfigurationOptions, ISerializer<string> serializer)
+        {
+            _serializer = serializer;
+            SetupConfiguration(redisConfigurationOptions);
+        }
+
+        public void ReConnect(string connectionString, bool waitForDisconnect = true)
+        {
+            if (_redisConnectionMultiplexer != null)
+            {
+                _redisConnectionMultiplexer.Close(waitForDisconnect);
+            }
+            SetupConfiguration(connectionString);
+        }
+
+        public void ReConnect(ConfigurationOptions redisConfigurationOptions, bool waitForDisconnect = true)
+        {
+            if (_redisConnectionMultiplexer != null)
+            {
+                _redisConnectionMultiplexer.Close(waitForDisconnect);
+            }
+            SetupConfiguration(redisConfigurationOptions);
+        }
+
+        private void SetupConfiguration(string connectionString)
+        {
+            _redisConnectionMultiplexer = ConnectionMultiplexer.Connect(connectionString);
+            _database = _redisConnectionMultiplexer.GetDatabase();
+        }
+
+        private void SetupConfiguration(ConfigurationOptions redisConfigurationOptions)
+        {
+            _redisConnectionMultiplexer = ConnectionMultiplexer.Connect(redisConfigurationOptions);
+            _database = _redisConnectionMultiplexer.GetDatabase();
+        }
+
+        public override void Dispose()
+        {
+            _redisConnectionMultiplexer.Dispose();
+        }
+
+        public override bool HasSlidingSupport
+        {
+            get { return true; }
+        }
+
+        public override T Get<T>(string key, TimeSpan timeOut)
+        {
+            var data = (string)_database.StringGet(key, CommandFlags.PreferSlave);
+            // Make get with sliding
+            var item = _serializer.Deserialize<T>(data);
+            return item;
+        }
+
+        public override void Set(string key, object value, TimeSpan expiresIn)
+        {
+            var data = _serializer.Serialize(value);
+            _database.StringSet(key, data, expiresIn, When.Always, CommandFlags.DemandMaster);
+        }
+
+        public override void Delete(string key)
+        {
+            _database.KeyDelete(key, CommandFlags.DemandMaster);
+        }
+
+        public override bool Exists(string key)
+        {
+            var exists = _database.KeyExists(key);
+            return exists;
+        }
+    }
+}

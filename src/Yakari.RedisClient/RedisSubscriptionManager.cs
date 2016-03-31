@@ -3,7 +3,7 @@ using StackExchange.Redis;
 
 namespace Yakari.RedisClient
 {
-    public class RedisSubscriptionManager
+    public class RedisSubscriptionManager : IMessagePublisher, IMessageSubscriber
     {
         private string _channelName;
         private static ConnectionMultiplexer _redisConnectionMultiplexer;
@@ -54,7 +54,8 @@ namespace Yakari.RedisClient
 
         private void OnReceived(RedisChannel redisChannel, RedisValue redisValue)
         {
-
+            if (_channelName != redisChannel) return;
+            MessageReceived(redisValue);
         }
 
         public void StartSubscription()
@@ -68,6 +69,16 @@ namespace Yakari.RedisClient
             if (Subscriber == null) throw InitalizationException();
             Subscriber.Unsubscribe(_channelName, OnReceived);
         }
+
+        public void MessageReceived(string message)
+        {
+            if (OnMessageReceived != null)
+            {
+                OnMessageReceived(message);
+            }
+        }
+
+        public event MessageReceived OnMessageReceived;
 
         private InvalidOperationException InitalizationException() { return new InvalidOperationException("Subscriber can't be null, manager not initialized properly..."); }
     }

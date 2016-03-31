@@ -28,7 +28,7 @@ namespace Yakari
         /// <summary>
         ///     It has to be serializable with chosen serialization method.
         /// </summary>
-        public object ValueObject { get; private set; }
+        public object ValueObject { get; }
 
         public DateTime ExpireDateUtc { get; private set; }
 
@@ -52,7 +52,7 @@ namespace Yakari
 
         public override int GetHashCode()
         {
-            // ReSharper disable once NonReadonlyMemberInGetHashCode : it has private setter
+            // ReSharper disable once NonReadonlyMemberInGetHashCode : it is immutable
             return ValueObject.GetHashCode();
         }
 
@@ -79,6 +79,12 @@ namespace Yakari
         public bool WillBeExpired(DateTime at)
         {
             return at >= ExpireDateUtc;
+        }
+
+        public TimeSpan GetExpireTimeSpan()
+        {
+            var current = ExpireDateUtc.Subtract(DateTime.UtcNow);
+            return current;
         }
 
     }

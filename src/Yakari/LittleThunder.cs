@@ -6,40 +6,41 @@ using System.Timers;
 namespace Yakari
 {
     /// <summary>
-    ///     In memory cache provider
+    ///     ObservableInMemoryCacheProvider
     /// </summary>
-    public class ObservableInMemoryCacheProvider : BaseCacheProvider
+    public class LittleThunder : BaseCacheProvider
     {
         private const int Thousand = 1000;
         private ICacheProviderOptions _options;
         private ConcurrentDictionary<string, InMemoryCacheItem> _concurrentStore;
-        private Timer timer = new Timer(Thousand);
+        private readonly Timer _timer = new Timer(Thousand);
 
         /// <summary>
-        ///     Constructor with Concurrency Level and Initial Capacity
+        ///     Constructor with options as <see cref="ICacheProviderOptions">ICacheProviderOptions</see>
         /// </summary>
         /// <param name="options"></param>
-        public ObservableInMemoryCacheProvider(ICacheProviderOptions options)
+        public LittleThunder(ICacheProviderOptions options)
         {
             _options.Logger.Log(LogLevel.Trace, "ObservableInMemoryCacheProvider Constructor Begin");
             _options = options;
+            _options.Manager.SetupMember(this);
             _concurrentStore = new ConcurrentDictionary<string, InMemoryCacheItem>(_options.ConcurrencyLevel, _options.InitialCapacity);
-            timer.Elapsed += timer_Elapsed;
-            timer.Start();
+            _timer.Elapsed += timer_Elapsed;
+            _timer.Start();
             _options.Logger.Log(LogLevel.Trace, "ObservableInMemoryCacheProvider Constructor End");
         }
 
         /// <summary>
-        ///     Reset (Reset whole provider) for this provider with Concurrency Level and Initial Capacity parameters
+        ///     Reset (Reset whole provider) provider with Concurrency Level and Initial Capacity parameters.
         /// </summary>
         public void Reset(ICacheProviderOptions options)
         {
             _options.Logger.Log(LogLevel.Trace, "ObservableInMemoryCacheProvider Reset Begin");
-            timer.Stop();
+            _timer.Stop();
             // Set options
             _options = options;
             _concurrentStore = new ConcurrentDictionary<string, InMemoryCacheItem>(_options.ConcurrencyLevel, _options.InitialCapacity);
-            timer.Start();
+            _timer.Start();
             _options.Logger.Log(LogLevel.Trace, "ObservableInMemoryCacheProvider Reset End");
         }
 
@@ -89,10 +90,10 @@ namespace Yakari
             _options.Logger.Log(LogLevel.Trace, "ObservableInMemoryCacheProvider RemoveExpiredItems End");
         }
 
-        public override T Get<T>(string key)
+        public override T Get<T>(string key, TimeSpan timeOut)
         {
             _options.Logger.Log(LogLevel.Trace, "ObservableInMemoryCacheProvider Get");
-            _options.Observer.BeforeGet(key);
+            _options.Manager.OnBeforeGet(key, timeOut);
             if (!_concurrentStore.ContainsKey(key))
             {
                 InMemoryCacheItem outItem;
@@ -103,29 +104,30 @@ namespace Yakari
                     if (!_concurrentStore.ContainsKey(key)) break;
                     if (c >= _options.MaxRetryForLocalOperations) break;
                 }
-                _options.Observer.AfterGet(key);
+                _options.Manager.OnAfterGet(key);
                 if (outItem == null) return default(T);
                 outItem.Hit();
                 return (T)outItem.ValueObject;
             }
-            _options.Observer.AfterGet(key);
+            ThreadHelper.RunOnDifferentThread(() => _options.Manager.OnAfterGet(key), true);
             return default(T);
         }
 
-        public override void Set<T>(string key, T value, TimeSpan expiresIn)
+        public override void Set(string key, object value, TimeSpan expiresIn)
         {
             _options.Logger.Log(LogLevel.Trace, "ObservableInMemoryCacheProvider Set");
             var item = new InMemoryCacheItem(value, expiresIn);
-            _options.Observer.BeforeSet(key, item);
+            _options.Manager.OnBeforeSet(key, item);
             var func = new Func<string, InMemoryCacheItem, InMemoryCacheItem>((s, cacheItem) => item);
             _concurrentStore.AddOrUpdate(key, item, func);
-            _options.Observer.AfterSet(key, item);
+            ThreadHelper.RunOnDifferentThread(() => _options.Manager.OnAfterSet(key, item), true);
         }
 
         public override void Delete(string key)
         {
             _options.Logger.Log(LogLevel.Trace, "ObservableInMemoryCacheProvider Delete");
-            _options.Observer.BeforeDelete(key);
+            _options.Manager.OnBeforeDelete(key);
+            ThreadHelper.RunOnDifferentThread(() => _options.Manager.OnBeforeDelete(key), true);
             if (!_concurrentStore.ContainsKey(key)) return;
             InMemoryCacheItem outItem;
             var c = 0;
@@ -135,7 +137,13 @@ namespace Yakari
                 if (!_concurrentStore.ContainsKey(key)) break;
                 if (c >= _options.MaxRetryForLocalOperations) break;
             }
-            _options.Observer.AfterDelete(key);
+            ThreadHelper.RunOnDifferentThread(() => _options.Manager.OnAfterDelete(key), true);
+        }
+
+        public override bool Exists(string key)
+        {
+            if (_concurrentStore.ContainsKey(key)) return true;
+            return false;
         }
 
         private bool _disposing;
@@ -144,8 +152,8 @@ namespace Yakari
         {
             if (_disposing) return;
             _disposing = true;
-            timer.Stop();
-            timer.Dispose();
+            _timer.Stop();
+            _timer.Dispose();
             _concurrentStore = null;
         }
 
