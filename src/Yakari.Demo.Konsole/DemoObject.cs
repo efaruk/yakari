@@ -12,7 +12,7 @@ namespace Yakari.Demo.Konsole
 
         public bool Dead { get; set; }
 
-        public long Count { get; set; }
+        public int Count { get; set; }
 
     }
 }

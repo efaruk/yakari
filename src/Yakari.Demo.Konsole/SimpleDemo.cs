@@ -15,6 +15,7 @@ namespace Yakari.Demo.Konsole
         {
             _dependencyContainer = dependencyContainer;
             _demoHelper = _dependencyContainer.Resolve<IDemoHelper>();
+            _logger = _dependencyContainer.Resolve<ILogger>();
             _localCache = _dependencyContainer.Resolve<ICacheProvider>(DependencyContainer.LocalCacheProviderName);
             _timer.Elapsed += Cycle;
         }
@@ -22,6 +23,7 @@ namespace Yakari.Demo.Konsole
         Random rnd = new Random(1);
         private ICacheProvider _localCache;
         private IDemoHelper _demoHelper;
+        private ILogger _logger;
         const int Max = 1000000;
 
         private bool Decide()
@@ -33,18 +35,26 @@ namespace Yakari.Demo.Konsole
         {
             if (Decide())
             {
-                DoSomethingExpensive();
+                try
+                {
+                    DoSomethingExpensive();
+                }
+                catch (Exception ex)
+                {
+                    _logger.Log("SimpleDemo", ex);
+                }
             }
         }
 
         private void DoSomethingExpensive()
         {
-            var list = _localCache.Get<List<Person>>("personlist", TimeSpan.FromSeconds(3), () =>
+            var list = _localCache.Get("personlist", TimeSpan.FromSeconds(3), () =>
             {
-                var result = new List<Person>(_demoHelper.GeneratePersons(1000));
+                var result = new List<DemoObject>(_demoHelper.GenerateDemoObjects(1000));
                 return result;
             }, TimeSpan.FromMinutes(15));
-            list.OrderBy(person => person.FirstName);
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed : Sake of Demo
+            list.OrderBy(o => o.CreatedAt);
         }
 
         public void Dispose()

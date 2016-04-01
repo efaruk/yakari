@@ -6,18 +6,21 @@ namespace Yakari.RedisClient
     public class RedisCacheProvider: BaseCacheProvider
     {
         private readonly ISerializer<string> _serializer;
+        private readonly ILogger _logger;
         private ConnectionMultiplexer _redisConnectionMultiplexer;
         private IDatabase _database;
 
-        public RedisCacheProvider(string connectionString, ISerializer<string> serializer)
+        public RedisCacheProvider(string connectionString, ISerializer<string> serializer, ILogger logger)
         {
             _serializer = serializer;
+            _logger = logger;
             SetupConfiguration(connectionString);
         }
 
-        public RedisCacheProvider(ConfigurationOptions redisConfigurationOptions, ISerializer<string> serializer)
+        public RedisCacheProvider(ConfigurationOptions redisConfigurationOptions, ISerializer<string> serializer, ILogger logger)
         {
             _serializer = serializer;
+            _logger = logger;
             SetupConfiguration(redisConfigurationOptions);
         }
 
@@ -53,6 +56,7 @@ namespace Yakari.RedisClient
 
         public override void Dispose()
         {
+            _logger.Log(LogLevel.Trace, "RedisCacheProvider Disposing");
             _redisConnectionMultiplexer.Dispose();
         }
 
@@ -63,6 +67,7 @@ namespace Yakari.RedisClient
 
         public override T Get<T>(string key, TimeSpan timeOut)
         {
+            _logger.Log(LogLevel.Trace, string.Format("RedisCacheProvider Get {0}", key));
             var data = (string)_database.StringGet(key, CommandFlags.PreferSlave);
             // Make get with sliding
             var item = _serializer.Deserialize<T>(data);
@@ -71,17 +76,20 @@ namespace Yakari.RedisClient
 
         public override void Set(string key, object value, TimeSpan expiresIn)
         {
+            _logger.Log(LogLevel.Debug, string.Format("RedisCacheProvider Set {0}", key));
             var data = _serializer.Serialize(value);
             _database.StringSet(key, data, expiresIn, When.Always, CommandFlags.DemandMaster);
         }
 
         public override void Delete(string key)
         {
+            _logger.Log(LogLevel.Trace, string.Format("RedisCacheProvider Delete {0}", key));
             _database.KeyDelete(key, CommandFlags.DemandMaster);
         }
 
         public override bool Exists(string key)
         {
+            _logger.Log(LogLevel.Trace, string.Format("RedisCacheProvider Exists {0}", key));
             var exists = _database.KeyExists(key);
             return exists;
         }

@@ -35,10 +35,10 @@ namespace Yakari
         /// </summary>
         public void Reset(ILocalCacheProviderOptions options)
         {
-            _options.Logger.Log(LogLevel.Trace, "LittleThunder Reset Begin");
-            _timer.Stop();
             // Set options
             _options = options;
+            _options.Logger.Log(LogLevel.Trace, "LittleThunder Reset Begin");
+            _timer.Stop();
             _concurrentStore = new ConcurrentDictionary<string, InMemoryCacheItem>(_options.ConcurrencyLevel, _options.InitialCapacity);
             _timer.Start();
             _options.Logger.Log(LogLevel.Trace, "LittleThunder Reset End");
@@ -116,7 +116,7 @@ namespace Yakari
 
         public override void Set(string key, object value, TimeSpan expiresIn)
         {
-            _options.Logger.Log(LogLevel.Trace, "LittleThunder Set");
+            _options.Logger.Log(LogLevel.Debug, "LittleThunder Set");
             var item = new InMemoryCacheItem(value, expiresIn);
             _options.Manager.OnBeforeSet(key, item);
             var func = new Func<string, InMemoryCacheItem, InMemoryCacheItem>((s, cacheItem) => item);
@@ -143,6 +143,7 @@ namespace Yakari
 
         public override bool Exists(string key)
         {
+            _options.Logger.Log(LogLevel.Trace, "LittleThunder Exists");
             if (_concurrentStore.ContainsKey(key)) return true;
             return false;
         }
@@ -152,6 +153,7 @@ namespace Yakari
         public override void Dispose()
         {
             if (_disposing) return;
+            _options.Logger.Log(LogLevel.Trace, "LittleThunder Disposing");
             _disposing = true;
             _timer.Stop();
             _timer.Dispose();

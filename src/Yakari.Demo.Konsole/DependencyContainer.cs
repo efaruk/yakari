@@ -24,12 +24,12 @@ namespace Yakari.Demo.Konsole
         private void Setup(ServiceContainer container)
         {
             container.SetDefaultLifetime<PerContainerLifetime>();
-            container.Register<ILogger, ConsoleLogger>();
+            container.Register<ILogger>(factory => new ConsoleLogger(LogLevel.Debug));
             _logger = container.GetInstance<ILogger>();
             _logger.Log("Registering Dependencies...");
             container.Register<IDemoHelper, DemoHelper>();
             container.Register<ISerializer<string>, JsonSerializer>();
-            container.Register<ICacheProvider>((factory) => new RedisCacheProvider("192.168.99.100:6379,abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,syncTimeout=10000", factory.GetInstance<ISerializer<string>>()), RemoteCacheProviderName);
+            container.Register<ICacheProvider>((factory) => new RedisCacheProvider("192.168.99.100:6379,abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,syncTimeout=10000", factory.GetInstance<ISerializer<string>>(), factory.GetInstance<ILogger>()), RemoteCacheProviderName);
             var redisCacheProvider = container.GetInstance<ICacheProvider>(RemoteCacheProviderName);
             container.Register<ISubscriptionManager>(factory 
                 => new RedisSubscriptionManager("192.168.99.100:6379,abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,syncTimeout=10000", ChannelName));
@@ -37,7 +37,7 @@ namespace Yakari.Demo.Konsole
             container.Register<IMessageSubscriber>(factory => factory.GetInstance<ISubscriptionManager>());
             container.Register<ICacheManager>(factory 
                 => new GreatEagle(Guid.NewGuid().ToString(), factory.GetInstance<IMessagePublisher>(), factory.GetInstance<IMessageSubscriber>(),
-                    factory.GetInstance<ISerializer<string>>(), factory.GetInstance<ICacheProvider>(RemoteCacheProviderName))
+                    factory.GetInstance<ISerializer<string>>(), factory.GetInstance<ICacheProvider>(RemoteCacheProviderName), factory.GetInstance<ILogger>())
             , CacheManagerName);
             var manager = container.GetInstance<ICacheManager>(CacheManagerName);
             container.Register<ILocalCacheProviderOptions>(factory => new LocalCacheProviderOptions(factory.GetInstance<ILogger>(), factory.GetInstance<ICacheManager>()));

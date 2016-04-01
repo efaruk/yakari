@@ -34,7 +34,12 @@ namespace Yakari.Demo.Konsole
         public List<DemoObject> GenerateDemoObjects(int count)
         {
             SetupDemoFaker();
-            var list = new List<DemoObject>(_demoFaker.Generate(count));
+            var list = new List<DemoObject>(count);
+            for (int i = 0; i < count; i++)
+            {
+                var dob = _demoFaker.Generate();
+                list.Add(dob);
+            }
             return list;
         }
 
@@ -52,12 +57,13 @@ namespace Yakari.Demo.Konsole
         private void SetupDemoFaker()
         {
             if (_demoFaker != null) return;
+            var bl = new[] {true, false};
             _demoFaker = new Faker<DemoObject>()
-                .RuleFor(f => f.Id, () => Guid.NewGuid())
+                .RuleFor(f => f.Id, f => Guid.NewGuid())
                 .RuleFor(f => f.Name, f => f.Name.FindName())
-                .RuleFor(f => f.Dead, f => f.PickRandom<bool>())
+                .RuleFor(f => f.Dead, f => f.PickRandom(bl))
                 .RuleFor(f => f.CreatedAt, f=> f.Date.Past(50))
-                .RuleFor(f => f.Count, f => f.PickRandom<long>());
+                .RuleFor(f => f.Count, f => f.Random.Number(int.MinValue, int.MaxValue));
         }
     }
 }
