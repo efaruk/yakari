@@ -1,7 +1,6 @@
 ﻿using System;
-using LightInject;
 
-namespace Yakari.Demo.Konsole
+namespace Yakari.Demo
 {
     public interface IDependencyContainer<TContainer>: IDisposable
     {

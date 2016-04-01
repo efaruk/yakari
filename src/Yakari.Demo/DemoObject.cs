@@ -1,6 +1,6 @@
 using System;
 
-namespace Yakari.Demo.Konsole
+namespace Yakari.Demo
 {
     public class DemoObject
     {

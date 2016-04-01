@@ -59,11 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DemoHelper.cs" />
-    <Compile Include="DemoObject.cs" />
     <Compile Include="DependencyContainer.cs" />
-    <Compile Include="IDemoHelper.cs" />
-    <Compile Include="IDependencyContainer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleDemo.cs" />
@@ -73,6 +69,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Yakari.Demo\Yakari.Demo.csproj">
+      <Project>{F18FB7E7-9501-4159-876A-A759D0461CE8}</Project>
+      <Name>Yakari.Demo</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Yakari.RedisClient\Yakari.RedisClient.csproj">
       <Project>{a40565da-4323-4b7a-97fa-21c4cd243ce3}</Project>
       <Name>Yakari.RedisClient</Name>

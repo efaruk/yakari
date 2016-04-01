@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Bogus;
 
-namespace Yakari.Demo.Konsole
+namespace Yakari.Demo
 {
     public interface IDemoHelper
     {

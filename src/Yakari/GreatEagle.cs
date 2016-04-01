@@ -59,13 +59,13 @@ namespace Yakari
         public void OnBeforeSet(string key, InMemoryCacheItem item)
         {
             _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnBeforeSet {0}", key));
+            _remoteCacheProvider.Set(key, item, item.GetExpireTimeSpan());
             //TODO: Create temp remote cache item to make wait tribe for you
         }
 
         public void OnAfterSet(string key, InMemoryCacheItem item)
         {
             _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnAfterSet {0}", key));
-            _remoteCacheProvider.Set(key, item, item.GetExpireTimeSpan());
             var data = new CacheEventMessage(key, _memberName, item, CacheEventType.Set);
             var message = _serializer.Serialize(data);
             _messagePublisher.Publish(message);

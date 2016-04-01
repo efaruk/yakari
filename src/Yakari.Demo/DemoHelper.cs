@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Bogus;
-using StackExchange.Redis;
 
-namespace Yakari.Demo.Konsole
+namespace Yakari.Demo
 {
     public class DemoHelper : IDemoHelper
     {

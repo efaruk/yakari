@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yakari.Serializers.Newtonso
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yakari.Demo.Konsole", "Yakari.Demo.Konsole\Yakari.Demo.Konsole.csproj", "{547ADF34-8A19-4C67-82B1-F154EA1144DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yakari.Demo", "Yakari.Demo\Yakari.Demo.csproj", "{F18FB7E7-9501-4159-876A-A759D0461CE8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{547ADF34-8A19-4C67-82B1-F154EA1144DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{547ADF34-8A19-4C67-82B1-F154EA1144DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{547ADF34-8A19-4C67-82B1-F154EA1144DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F18FB7E7-9501-4159-876A-A759D0461CE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F18FB7E7-9501-4159-876A-A759D0461CE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F18FB7E7-9501-4159-876A-A759D0461CE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F18FB7E7-9501-4159-876A-A759D0461CE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
