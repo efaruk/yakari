@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yakari.RedisClient", "Yakar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yakari.Serializers.Newtonsoft", "Yakari.Serializers.Newtonsoft\Yakari.Serializers.Newtonsoft.csproj", "{FBD4C0B6-ADAA-46E7-BEA1-9DE7853FDAD2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yakari.Demo.Konsole", "Yakari.Demo.Konsole\Yakari.Demo.Konsole.csproj", "{547ADF34-8A19-4C67-82B1-F154EA1144DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{FBD4C0B6-ADAA-46E7-BEA1-9DE7853FDAD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBD4C0B6-ADAA-46E7-BEA1-9DE7853FDAD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBD4C0B6-ADAA-46E7-BEA1-9DE7853FDAD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{547ADF34-8A19-4C67-82B1-F154EA1144DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{547ADF34-8A19-4C67-82B1-F154EA1144DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{547ADF34-8A19-4C67-82B1-F154EA1144DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{547ADF34-8A19-4C67-82B1-F154EA1144DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

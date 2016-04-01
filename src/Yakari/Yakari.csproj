@@ -43,18 +43,22 @@
     <Compile Include="BaseCacheProvider.cs" />
     <Compile Include="CacheEventMessage.cs" />
     <Compile Include="CacheEventType.cs" />
+    <Compile Include="LocalCacheProviderOptions.cs" />
     <Compile Include="CacheTime.cs" />
+    <Compile Include="ConsoleLogger.cs" />
     <Compile Include="GreatEagle.cs" />
     <Compile Include="ICacheEventMessage.cs" />
     <Compile Include="ICacheManager.cs" />
     <Compile Include="ICacheProvider.cs" />
-    <Compile Include="ICacheProviderOptions.cs" />
+    <Compile Include="ILocalCacheProviderOptions.cs" />
     <Compile Include="IMessageSubscriber.cs" />
     <Compile Include="InMemoryCacheItem.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="IMessagePublisher.cs" />
     <Compile Include="ISerializer.cs" />
+    <Compile Include="ISubscriptionManager.cs" />
     <Compile Include="LittleThunder.cs" />
+    <Compile Include="NullLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ThreadHelper.cs" />
   </ItemGroup>

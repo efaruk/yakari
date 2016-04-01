@@ -6,52 +6,52 @@ using System.Timers;
 namespace Yakari
 {
     /// <summary>
-    ///     ObservableInMemoryCacheProvider
+    ///     LittleThunder
     /// </summary>
     public class LittleThunder : BaseCacheProvider
     {
         private const int Thousand = 1000;
-        private ICacheProviderOptions _options;
+        private ILocalCacheProviderOptions _options;
         private ConcurrentDictionary<string, InMemoryCacheItem> _concurrentStore;
         private readonly Timer _timer = new Timer(Thousand);
 
         /// <summary>
-        ///     Constructor with options as <see cref="ICacheProviderOptions">ICacheProviderOptions</see>
+        ///     Constructor with options as <see cref="ILocalCacheProviderOptions">ICacheProviderOptions</see>
         /// </summary>
         /// <param name="options"></param>
-        public LittleThunder(ICacheProviderOptions options)
+        public LittleThunder(ILocalCacheProviderOptions options)
         {
-            _options.Logger.Log(LogLevel.Trace, "ObservableInMemoryCacheProvider Constructor Begin");
             _options = options;
+            _options.Logger.Log(LogLevel.Trace, "LittleThunder Constructor Begin");
             _options.Manager.SetupMember(this);
             _concurrentStore = new ConcurrentDictionary<string, InMemoryCacheItem>(_options.ConcurrencyLevel, _options.InitialCapacity);
             _timer.Elapsed += timer_Elapsed;
             _timer.Start();
-            _options.Logger.Log(LogLevel.Trace, "ObservableInMemoryCacheProvider Constructor End");
+            _options.Logger.Log(LogLevel.Trace, "LittleThunder Constructor End");
         }
 
         /// <summary>
         ///     Reset (Reset whole provider) provider with Concurrency Level and Initial Capacity parameters.
         /// </summary>
-        public void Reset(ICacheProviderOptions options)
+        public void Reset(ILocalCacheProviderOptions options)
         {
-            _options.Logger.Log(LogLevel.Trace, "ObservableInMemoryCacheProvider Reset Begin");
+            _options.Logger.Log(LogLevel.Trace, "LittleThunder Reset Begin");
             _timer.Stop();
             // Set options
             _options = options;
             _concurrentStore = new ConcurrentDictionary<string, InMemoryCacheItem>(_options.ConcurrencyLevel, _options.InitialCapacity);
             _timer.Start();
-            _options.Logger.Log(LogLevel.Trace, "ObservableInMemoryCacheProvider Reset End");
+            _options.Logger.Log(LogLevel.Trace, "LittleThunder Reset End");
         }
 
         private bool _inPeriod;
 
         private void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            _options.Logger.Log(LogLevel.Trace, "ObservableInMemoryCacheProvider Timer Elapsed");
+            _options.Logger.Log(LogLevel.Trace, "LittleThunder Timer Elapsed");
             if (_disposing) return;
             if (_inPeriod) return;
-            _options.Logger.Log(LogLevel.Trace, "ObservableInMemoryCacheProvider In Period Begin");
+            _options.Logger.Log(LogLevel.Trace, "LittleThunder In Period Begin");
             try
             {
                 _inPeriod = true;
@@ -60,13 +60,13 @@ namespace Yakari
             // ReSharper disable once EmptyGeneralCatchClause
             catch(Exception ex)
             {
-                _options.Logger.Log("ObservableInMemoryCacheProvider In Period Exception", ex);
+                _options.Logger.Log("LittleThunder In Period Exception", ex);
             }
             finally
             {
                 _inPeriod = false;
             }
-            _options.Logger.Log(LogLevel.Trace, "ObservableInMemoryCacheProvider In Period End");
+            _options.Logger.Log(LogLevel.Trace, "LittleThunder In Period End");
         }
 
         /// <summary>
@@ -74,8 +74,9 @@ namespace Yakari
         /// </summary>
         private void RemoveExpiredItems()
         {
-            _options.Logger.Log(LogLevel.Trace, "ObservableInMemoryCacheProvider RemoveExpiredItems Begin");
+            _options.Logger.Log(LogLevel.Trace, "LittleThunder RemoveExpiredItems Begin");
             var expiredItems = _concurrentStore.Where(o => o.Value.IsExpired());
+            _options.Logger.Log(LogLevel.Trace, string.Format("LittleThunder Removing {0} Item(s)", expiredItems.Count()));
             foreach (var pair in expiredItems)
             {
                 var c = 0;
@@ -87,12 +88,12 @@ namespace Yakari
                     if (c >= _options.MaxRetryForLocalOperations) break;
                 }
             }
-            _options.Logger.Log(LogLevel.Trace, "ObservableInMemoryCacheProvider RemoveExpiredItems End");
+            _options.Logger.Log(LogLevel.Trace, "LittleThunder RemoveExpiredItems End");
         }
 
         public override T Get<T>(string key, TimeSpan timeOut)
         {
-            _options.Logger.Log(LogLevel.Trace, "ObservableInMemoryCacheProvider Get");
+            _options.Logger.Log(LogLevel.Trace, "LittleThunder Get");
             _options.Manager.OnBeforeGet(key, timeOut);
             if (!_concurrentStore.ContainsKey(key))
             {
@@ -115,7 +116,7 @@ namespace Yakari
 
         public override void Set(string key, object value, TimeSpan expiresIn)
         {
-            _options.Logger.Log(LogLevel.Trace, "ObservableInMemoryCacheProvider Set");
+            _options.Logger.Log(LogLevel.Trace, "LittleThunder Set");
             var item = new InMemoryCacheItem(value, expiresIn);
             _options.Manager.OnBeforeSet(key, item);
             var func = new Func<string, InMemoryCacheItem, InMemoryCacheItem>((s, cacheItem) => item);
@@ -125,7 +126,7 @@ namespace Yakari
 
         public override void Delete(string key)
         {
-            _options.Logger.Log(LogLevel.Trace, "ObservableInMemoryCacheProvider Delete");
+            _options.Logger.Log(LogLevel.Trace, "LittleThunder Delete");
             _options.Manager.OnBeforeDelete(key);
             ThreadHelper.RunOnDifferentThread(() => _options.Manager.OnBeforeDelete(key), true);
             if (!_concurrentStore.ContainsKey(key)) return;

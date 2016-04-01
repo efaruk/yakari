@@ -4,6 +4,11 @@ namespace Yakari.Serializers.Newtonsoft
 {
     public class JsonSerializer: ISerializer<string>
     {
+        public JsonSerializer()
+        {
+            
+        }
+
         public string Serialize<TInput>(TInput instance)
         {
             var serialized = JsonConvert.SerializeObject(instance);

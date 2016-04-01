@@ -3,7 +3,7 @@ using StackExchange.Redis;
 
 namespace Yakari.RedisClient
 {
-    public class RedisSubscriptionManager : IMessagePublisher, IMessageSubscriber
+    public class RedisSubscriptionManager : ISubscriptionManager
     {
         private string _channelName;
         private static ConnectionMultiplexer _redisConnectionMultiplexer;

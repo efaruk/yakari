@@ -2,23 +2,7 @@
 
 namespace Yakari
 {
-    public interface ICacheProviderOptions
-    {
-        ILogger Logger { get; set; }
-
-        ICacheManager Manager { get; set; }
-
-        int MaxRetryForLocalOperations { get; set; }
-
-        int ConcurrencyLevel { get; set; }
-
-        int InitialCapacity { get; set; }
-
-        bool DontWaitForTribe { get; set; }
-
-    }
-
-    public class CacheProviderOptions : ICacheProviderOptions
+    public class LocalCacheProviderOptions : ILocalCacheProviderOptions
     {
         const int MinimumMaxRetryForLocalOperations = 1;
         const int DefaultMaxRetryForLocalOperations = 1000;
@@ -27,7 +11,7 @@ namespace Yakari
         const int MinimumInitialCapacity = 10;
         const int DefaultInitialCapacity = 100;
 
-        public CacheProviderOptions(ILogger logger, ICacheManager manager, int maxRetryForLocalOperations = DefaultMaxRetryForLocalOperations, int concurrencyLevel = DefaultConcurrencyLevel, int initialCapacity = DefaultInitialCapacity, bool dontWaitForTribe = false)
+        public LocalCacheProviderOptions(ILogger logger, ICacheManager manager, int maxRetryForLocalOperations = DefaultMaxRetryForLocalOperations, int concurrencyLevel = DefaultConcurrencyLevel, int initialCapacity = DefaultInitialCapacity, bool dontWaitForTribe = false)
         {
             // Check
             if (logger == null) throw new ArgumentNullException("logger");
