@@ -29,7 +29,7 @@ namespace Yakari
         private void MessageSubscriberMessageReceived(string message)
         {
             _logger.Log(LogLevel.Trace, string.Format("GreatEagle Message Received: {0}", message));
-            var cacheEvent = _serializer.Deserialize<CacheEventMessage>(message);
+            var cacheEvent = Deserialize(message);
             ThreadHelper.RunOnDifferentThread(() => Redirect(cacheEvent), true);
         }
 
@@ -67,7 +67,7 @@ namespace Yakari
         {
             _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnAfterSet {0}", key));
             var data = new CacheEventMessage(key, _memberName, item, CacheEventType.Set);
-            var message = _serializer.Serialize(data);
+            var message = Serialize(data);
             _messagePublisher.Publish(message);
         }
 
@@ -82,7 +82,7 @@ namespace Yakari
             _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnAfterDelete {0}", key));
             _remoteCacheProvider.Delete(key);
             var data = new CacheEventMessage(key, _memberName, null, CacheEventType.Delete);
-            var message = _serializer.Serialize(data);
+            var message = Serialize(data);
             _messagePublisher.Publish(message);
         }
 
@@ -119,7 +119,7 @@ namespace Yakari
             });
             task.Start();
             task.Wait(timeOut);
-            if (task.IsCompleted) return;
+            if (!task.IsCompleted) return;
             var item = task.Result;
             if (item == null) return;
             _localCacheProvider.Set(key, item.ValueObject, item.GetExpireTimeSpan());
@@ -129,7 +129,7 @@ namespace Yakari
         {
             _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnAfterGet {0}", key));
             var data = new CacheEventMessage(key, _memberName, null, CacheEventType.Get);
-            var message = _serializer.Serialize(data);
+            var message = Serialize(data);
             _messagePublisher.Publish(message);
         }
 
@@ -156,6 +156,16 @@ namespace Yakari
             _logger.Log(LogLevel.Trace, "GreatEagle Disposing");
             _messageSubscriber.StopSubscription();
             _messageSubscriber.OnMessageReceived -= MessageSubscriberMessageReceived;
+        }
+
+        private string Serialize(CacheEventMessage cacheEvent)
+        {
+            return _serializer.Serialize(cacheEvent);
+        }
+
+        private CacheEventMessage Deserialize(string message)
+        {
+            return _serializer.Deserialize<CacheEventMessage>(message);
         }
     }
 }

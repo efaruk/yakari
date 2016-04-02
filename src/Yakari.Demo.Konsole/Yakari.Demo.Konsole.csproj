@@ -59,10 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DependencyContainer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimpleDemo.cs" />
+    <Compile Include="DemoSelfDecider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

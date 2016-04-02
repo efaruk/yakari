@@ -3,14 +3,16 @@ using LightInject;
 using Yakari.RedisClient;
 using Yakari.Serializers.Newtonsoft;
 
-namespace Yakari.Demo.Konsole
+namespace Yakari.Demo
 {
     public class DependencyContainer : IDependencyContainer<ServiceContainer>
     {
         public const string LocalCacheProviderName = "LocalCacheProvider";
         public const string RemoteCacheProviderName = "RemoteCacheProvider";
         public const string ChannelName = "YakariDemo";
+
         private const string CacheManagerName = "CacheManager";
+        private const string ConnectionString = "192.168.99.100:6379,abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,syncTimeout=10000";
 
         private ServiceContainer _container;
         private ILogger _logger;
@@ -28,11 +30,11 @@ namespace Yakari.Demo.Konsole
             _logger = container.GetInstance<ILogger>();
             _logger.Log("Registering Dependencies...");
             container.Register<IDemoHelper, DemoHelper>();
-            container.Register<ISerializer<string>, JsonSerializer>();
-            container.Register<ICacheProvider>((factory) => new RedisCacheProvider("192.168.99.100:6379,abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,syncTimeout=10000", factory.GetInstance<ISerializer<string>>(), factory.GetInstance<ILogger>()), RemoteCacheProviderName);
-            var redisCacheProvider = container.GetInstance<ICacheProvider>(RemoteCacheProviderName);
+            container.Register<ISerializer<string>, JsonNetSerializer>();
+            container.Register<ICacheProvider>((factory) => new RedisCacheProvider(ConnectionString, factory.GetInstance<ISerializer<string>>(), factory.GetInstance<ILogger>()), RemoteCacheProviderName);
+            container.GetInstance<ICacheProvider>(RemoteCacheProviderName);
             container.Register<ISubscriptionManager>(factory 
-                => new RedisSubscriptionManager("192.168.99.100:6379,abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,syncTimeout=10000", ChannelName));
+                => new RedisSubscriptionManager(ConnectionString, ChannelName, factory.GetInstance<ILogger>()));
             container.Register<IMessagePublisher>(factory => factory.GetInstance<ISubscriptionManager>());
             container.Register<IMessageSubscriber>(factory => factory.GetInstance<ISubscriptionManager>());
             container.Register<ICacheManager>(factory 

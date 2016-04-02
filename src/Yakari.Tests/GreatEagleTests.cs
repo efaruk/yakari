@@ -11,17 +11,13 @@ namespace Yakari.Tests
     [TestFixture]
     public class GreatEagleTests
     {
-        public const string LocalCacheProviderName = "LocalCacheProvider";
-        public const string RemoteCacheProviderName = "RemoteCacheProvider";
-        public const string ChannelName = "YakariDemo";
-        private const string CacheManagerName = "CacheManager";
-
         private ILogger _logger;
         private ServiceContainer _container;
+        private ICacheManager _manager;
 
 
         [OneTimeSetUp]
-        public void Setup()
+        public void FixtureSetup()
         {
             _container = new ServiceContainer();
             _container.SetDefaultLifetime<PerContainerLifetime>();
@@ -29,7 +25,7 @@ namespace Yakari.Tests
             _logger = _container.GetInstance<ILogger>();
             _logger.Log("Registering Dependencies...");
             _container.Register<IDemoHelper, DemoHelper>();
-            _container.Register<ISerializer<string>, JsonSerializer>();
+            _container.Register<ISerializer<string>, JsonNetSerializer>();
             //container.Register<ICacheProvider>((factory) => new RedisCacheProvider("192.168.99.100:6379,abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,syncTimeout=10000", factory.GetInstance<ISerializer<string>>(), factory.GetInstance<ILogger>()), RemoteCacheProviderName);
             var redisCacheProvider = Substitute.For<ICacheProvider>();
             //container.Register<ISubscriptionManager>(factory => new RedisSubscriptionManager("192.168.99.100:6379,abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,syncTimeout=10000", ChannelName));
@@ -39,30 +35,29 @@ namespace Yakari.Tests
             _container.Register<ICacheManager>(factory
                 => new GreatEagle(Guid.NewGuid().ToString(), factory.GetInstance<IMessagePublisher>(), factory.GetInstance<IMessageSubscriber>(),
                     factory.GetInstance<ISerializer<string>>(), redisCacheProvider, factory.GetInstance<ILogger>())
-                    , CacheManagerName);
-            var manager = _container.GetInstance<ICacheManager>(CacheManagerName);
+                    , TestConstants.CacheManagerName);
+            _manager = _container.GetInstance<ICacheManager>(TestConstants.CacheManagerName);
             //container.Register<ILocalCacheProviderOptions>(factory => new LocalCacheProviderOptions(factory.GetInstance<ILogger>(), factory.GetInstance<ICacheManager>()));
             //container.Register<ICacheProvider, LittleThunder>(LocalCacheProviderName);
             var localProvider = Substitute.For<ICacheProvider>();
-            manager.SetupMember(localProvider);
+            _manager.SetupMember(localProvider);
         }
 
         [Test]
         public void SetupTest()
         {
-            var manager = _container.GetInstance<ICacheManager>();
             var helper = _container.GetInstance<IDemoHelper>();
             var list = helper.GenerateDemoObjects(1000);
             var key = Guid.NewGuid().ToString();
             var item = new InMemoryCacheItem(list, TimeSpan.FromMinutes(15));
-            manager.OnBeforeGet(key, TimeSpan.FromSeconds(3));
-            manager.OnAfterGet(key);
-            manager.OnAfterDelete(key);
-            manager.OnBeforeSet(key, item);
-            manager.OnAfterSet(key, item);
-            manager.OnBeforeDelete(key);
-            manager.OnRemoteSet(key, CacheManagerName);
-            manager.OnRemoteDelete(key, CacheManagerName);
+            _manager.OnBeforeGet(key, TimeSpan.FromSeconds(3));
+            _manager.OnAfterGet(key);
+            _manager.OnAfterDelete(key);
+            _manager.OnBeforeSet(key, item);
+            _manager.OnAfterSet(key, item);
+            _manager.OnBeforeDelete(key);
+            _manager.OnRemoteSet(key, TestConstants.CacheManagerName);
+            _manager.OnRemoteDelete(key, TestConstants.CacheManagerName);
         }
     }
 }

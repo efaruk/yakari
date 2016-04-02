@@ -66,7 +66,10 @@
   <ItemGroup>
     <Compile Include="CacheProviderOptionsTests.cs" />
     <Compile Include="GreatEagleTests.cs" />
+    <Compile Include="HappyPathTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RedisSubscriptionManagerTests.cs" />
+    <Compile Include="TestConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

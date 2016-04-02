@@ -6,12 +6,12 @@ using Bogus;
 
 namespace Yakari.Demo.Konsole
 {
-    public class SimpleDemo : IDisposable
+    public class DemoSelfDecider : IDisposable
     {
         private readonly DependencyContainer _dependencyContainer;
         private Timer _timer = new Timer(100);
 
-        public SimpleDemo(DependencyContainer dependencyContainer)
+        public DemoSelfDecider(DependencyContainer dependencyContainer)
         {
             _dependencyContainer = dependencyContainer;
             _demoHelper = _dependencyContainer.Resolve<IDemoHelper>();

@@ -10,7 +10,7 @@ namespace Yakari.Demo.Konsole
     {
         static void Main(string[] args)
         {
-            var simpleDemo0 = new SimpleDemo(new DependencyContainer(null));
+            var simpleDemo0 = new DemoSelfDecider(new DependencyContainer(null));
             //var simpleDemo1 = new SimpleDemo(new DependencyContainer(null));
             //var simpleDemo2 = new SimpleDemo(new DependencyContainer(null));
             //var simpleDemo3 = new SimpleDemo(new DependencyContainer(null));

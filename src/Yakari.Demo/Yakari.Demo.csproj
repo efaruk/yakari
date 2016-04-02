@@ -34,8 +34,16 @@
       <HintPath>..\packages\Bogus.6.1.1\lib\net40\Bogus.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="LightInject, Version=4.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LightInject.4.0.8\lib\net45\LightInject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StackExchange.Redis, Version=1.0.316.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StackExchange.Redis.1.0.488\lib\net45\StackExchange.Redis.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -50,11 +58,20 @@
   <ItemGroup>
     <Compile Include="DemoHelper.cs" />
     <Compile Include="DemoObject.cs" />
+    <Compile Include="DependencyContainer.cs" />
     <Compile Include="IDemoHelper.cs" />
     <Compile Include="IDependencyContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Yakari.RedisClient\Yakari.RedisClient.csproj">
+      <Project>{a40565da-4323-4b7a-97fa-21c4cd243ce3}</Project>
+      <Name>Yakari.RedisClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yakari.Serializers.Newtonsoft\Yakari.Serializers.Newtonsoft.csproj">
+      <Project>{fbd4c0b6-adaa-46e7-bea1-9de7853fdad2}</Project>
+      <Name>Yakari.Serializers.Newtonsoft</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Yakari\Yakari.csproj">
       <Project>{6386195c-8b63-4ddf-8537-a620857d2312}</Project>
       <Name>Yakari</Name>
