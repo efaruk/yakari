@@ -11,11 +11,11 @@ namespace Yakari
 
         public abstract bool HasSlidingSupport { get; }
 
-        public abstract T Get<T>(string key, TimeSpan timeOut) where T : class;
+        public abstract T Get<T>(string key, TimeSpan getTimeout) where T : class;
 
-        public T Get<T>(string key, TimeSpan getTimeOut, Func<T> acquireFunction, TimeSpan expiresIn) where T : class
+        public T Get<T>(string key, TimeSpan getTimeout, Func<T> acquireFunction, TimeSpan expiresIn) where T : class
         {
-            var data = Get<T>(key, getTimeOut);
+            var data = Get<T>(key, getTimeout);
             if (data == null)
             {
                 data = acquireFunction();

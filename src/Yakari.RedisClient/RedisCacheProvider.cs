@@ -65,7 +65,7 @@ namespace Yakari.RedisClient
             get { return true; }
         }
 
-        public override T Get<T>(string key, TimeSpan timeOut)
+        public override T Get<T>(string key, TimeSpan getTimeout)
         {
             _logger.Log(LogLevel.Trace, string.Format("RedisCacheProvider Get {0}", key));
             var data = (string)_database.StringGet(key, CommandFlags.PreferSlave);

@@ -1,10 +1,7 @@
-﻿using System;
-using LightInject;
+﻿using LightInject;
 using NSubstitute;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 using StackExchange.Redis;
-using Yakari.Demo;
 using Yakari.RedisClient;
 using Yakari.Serializers.Newtonsoft;
 

@@ -91,11 +91,17 @@ namespace Yakari
             _options.Logger.Log(LogLevel.Trace, "LittleThunder RemoveExpiredItems End");
         }
 
-        public override T Get<T>(string key, TimeSpan timeOut)
+        public override T Get<T>(string key, TimeSpan getTimeout)
         {
+            return GetInternal<T>(key, getTimeout);
+        }
+
+        private T GetInternal<T>(string key, TimeSpan getTimeout, bool secondCall = false)
+        {
+            T t = default(T);
             _options.Logger.Log(LogLevel.Trace, "LittleThunder Get");
-            _options.Manager.OnBeforeGet(key, timeOut);
-            if (!_concurrentStore.ContainsKey(key))
+            _options.Manager.OnBeforeGet(key, getTimeout);
+            if (_concurrentStore.ContainsKey(key))
             {
                 InMemoryCacheItem outItem;
                 var c = 0;
@@ -108,10 +114,17 @@ namespace Yakari
                 _options.Manager.OnAfterGet(key);
                 if (outItem == null) return default(T);
                 outItem.Hit();
-                return (T)outItem.ValueObject;
+                t = (T)outItem.ValueObject;
+            }
+            else
+            {
+                if (!secondCall)
+                {
+                    t = ThreadHelper.WaitForResult(() => GetInternal<T>(key, getTimeout, true), getTimeout);
+                }
             }
             ThreadHelper.RunOnDifferentThread(() => _options.Manager.OnAfterGet(key), true);
-            return default(T);
+            return t;
         }
 
         public override void Set(string key, object value, TimeSpan expiresIn)

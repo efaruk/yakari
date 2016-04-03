@@ -10,21 +10,21 @@ namespace Yakari
         ///     Get cache item from cache store
         /// </summary>
         /// <param name="key"></param>
-        /// <param name="timeOut"></param>
+        /// <param name="getTimeout"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        T Get<T>(string key, TimeSpan timeOut) where T : class;
+        T Get<T>(string key, TimeSpan getTimeout) where T : class;
 
         /// <summary>
         ///     Get cache item from cache store
         /// </summary>
         /// <param name="key"></param>
-        /// <param name="getTimeOut"></param>
+        /// <param name="getTimeout"></param>
         /// <param name="acquireFunction">Action to get data from store</param>
         /// <param name="expiresIn"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        T Get<T>(string key, TimeSpan getTimeOut, Func<T> acquireFunction, TimeSpan expiresIn) where T : class;
+        T Get<T>(string key, TimeSpan getTimeout, Func<T> acquireFunction, TimeSpan expiresIn) where T : class;
 
         /// <summary>
         ///     Set generic cache item with expiration

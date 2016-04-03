@@ -13,34 +13,38 @@ namespace Yakari
 
         public void Log(string message)
         {
-            if (_minimumLogLevel > LogLevel.Info) return;
-            var line = string.Format("{0} : {1}", DateTime.UtcNow, message);
-            Console.WriteLine(line);
+            LogInternal(LogLevel.Info, message);
         }
 
         public void Log(LogLevel level, string message)
         {
-            if (_minimumLogLevel > level) return;
-            var line = string.Format("{0} : {1}", DateTime.UtcNow, message);
-            Console.WriteLine(line);
+            LogInternal(LogLevel.Error, message);
         }
 
         public void Log(string message, Exception exception)
         {
-            if (_minimumLogLevel > LogLevel.Error) return;
-            if (exception == null) exception = new ArgumentNullException("exception");
-            var line = string.Format("{0} happend: {1} \r\n\t\t Stack Trace: {2}, \r\n ---------------------------------------------------------------------"
-                , message, exception.Message, exception.StackTrace);
-            Console.WriteLine(line);
+            LogInternal(LogLevel.Error, message, exception);
         }
 
         public void Log(LogLevel level, string message, Exception exception)
         {
-            if (_minimumLogLevel > level) return;
-            if (exception == null) exception = new ArgumentNullException("exception");
-            var line = string.Format("{0} happend with Exception:\r\n\t {1} \r\n\t\t Stack Trace: {2}, \r\n ---------------------------------------------------------------------",
-                message, exception.Message, exception.StackTrace);
-            Console.WriteLine(line);
+            LogInternal(level, message, exception);
+        }
+
+        private void LogInternal(LogLevel level, string message, Exception exception = null)
+        {
+            ThreadHelper.RunOnDifferentThread(() =>
+            {
+                if (_minimumLogLevel > level)
+                    return;
+                string line;
+                if (exception != null)
+                    line = string.Format("{0} happend with Exception:\r\n\t {1} \r\n\t\t Stack Trace: {2}, \r\n ---------------------------------------------------------------------",
+                        message, exception.Message, exception.StackTrace);
+                else
+                    line = string.Format("{0} : {1}", DateTime.UtcNow, message);
+                Console.WriteLine(line);
+            }, true);
         }
     }
 }
