@@ -3,7 +3,7 @@ using StackExchange.Redis;
 
 namespace Yakari.RedisClient
 {
-    public class RedisCacheProvider: BaseCacheProvider
+    public class RedisCacheProvider: BaseCacheProvider, IRemoteCacheProvider
     {
         private readonly ISerializer<string> _serializer;
         private readonly ILogger _logger;

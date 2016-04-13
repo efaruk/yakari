@@ -7,7 +7,6 @@ namespace Yakari.Demo
 {
     public class DependencyContainer : IDependencyContainer<ServiceContainer>
     {
-        public const string LocalCacheProviderName = "LocalCacheProvider";
         public const string RemoteCacheProviderName = "RemoteCacheProvider";
         public const string ChannelName = "YakariDemo";
 
@@ -31,21 +30,19 @@ namespace Yakari.Demo
             _logger.Log("Registering Dependencies...");
             container.Register<IDemoHelper, DemoHelper>();
             container.Register<ISerializer<string>, JsonNetSerializer>();
-            container.Register<ICacheProvider>((factory) => new RedisCacheProvider(ConnectionString, factory.GetInstance<ISerializer<string>>(), factory.GetInstance<ILogger>()), RemoteCacheProviderName);
-            container.GetInstance<ICacheProvider>(RemoteCacheProviderName);
+            container.Register<IRemoteCacheProvider>(factory => new RedisCacheProvider(ConnectionString, factory.GetInstance<ISerializer<string>>(), factory.GetInstance<ILogger>()), RemoteCacheProviderName);
+            container.GetInstance<IRemoteCacheProvider>(RemoteCacheProviderName);
             container.Register<ISubscriptionManager>(factory 
                 => new RedisSubscriptionManager(ConnectionString, ChannelName, factory.GetInstance<ILogger>()));
             container.Register<IMessagePublisher>(factory => factory.GetInstance<ISubscriptionManager>());
             container.Register<IMessageSubscriber>(factory => factory.GetInstance<ISubscriptionManager>());
+            container.Register<ILocalCacheProviderOptions>(factory => new LocalCacheProviderOptions(factory.GetInstance<ILogger>()));
+            container.Register<ILocalCacheProvider, LittleThunder>();
             container.Register<ICacheManager>(factory 
                 => new GreatEagle(Guid.NewGuid().ToString(), factory.GetInstance<IMessagePublisher>(), factory.GetInstance<IMessageSubscriber>(),
-                    factory.GetInstance<ISerializer<string>>(), factory.GetInstance<ICacheProvider>(RemoteCacheProviderName), factory.GetInstance<ILogger>())
+                    factory.GetInstance<ISerializer<string>>(), factory.GetInstance<ILocalCacheProvider>(), factory.GetInstance<IRemoteCacheProvider>(RemoteCacheProviderName), factory.GetInstance<ILogger>())
             , CacheManagerName);
-            var manager = container.GetInstance<ICacheManager>(CacheManagerName);
-            container.Register<ILocalCacheProviderOptions>(factory => new LocalCacheProviderOptions(factory.GetInstance<ILogger>(), factory.GetInstance<ICacheManager>()));
-            container.Register<ICacheProvider, LittleThunder>(LocalCacheProviderName);
-            var localProvider = container.GetInstance<ICacheProvider>(LocalCacheProviderName);
-            manager.SetupMember(localProvider);
+            
         }
 
         public void Reset(ServiceContainer container)

@@ -8,7 +8,7 @@ namespace Yakari
     /// <summary>
     ///     LittleThunder
     /// </summary>
-    public class LittleThunder : BaseCacheProvider
+    public class LittleThunder : BaseCacheProvider, ILocalCacheProvider
     {
         private const int Thousand = 1000;
         private ILocalCacheProviderOptions _options;
@@ -23,7 +23,7 @@ namespace Yakari
         {
             _options = options;
             _options.Logger.Log(LogLevel.Trace, "LittleThunder Constructor Begin");
-            _options.Manager.SetupMember(this);
+            //_options.Manager.SetupMember(this);
             _concurrentStore = new ConcurrentDictionary<string, InMemoryCacheItem>(_options.ConcurrencyLevel, _options.InitialCapacity);
             _timer.Elapsed += timer_Elapsed;
             _timer.Start();
@@ -75,8 +75,8 @@ namespace Yakari
         private void RemoveExpiredItems()
         {
             _options.Logger.Log(LogLevel.Trace, "LittleThunder RemoveExpiredItems Begin");
-            var expiredItems = _concurrentStore.Where(o => o.Value.IsExpired());
-            _options.Logger.Log(LogLevel.Trace, string.Format("LittleThunder Removing {0} Item(s)", expiredItems.Count()));
+            var expiredItems = _concurrentStore.Where(o => o.Value.IsExpired()).ToArray();
+            _options.Logger.Log(LogLevel.Trace, string.Format("LittleThunder Removing {0} Item(s)", expiredItems.Length));
             foreach (var pair in expiredItems)
             {
                 var c = 0;
@@ -100,7 +100,7 @@ namespace Yakari
         {
             T t = default(T);
             _options.Logger.Log(LogLevel.Trace, "LittleThunder Get");
-            _options.Manager.OnBeforeGet(key, getTimeout);
+            OnBeforeGetWrapper(key, getTimeout);
             if (_concurrentStore.ContainsKey(key))
             {
                 InMemoryCacheItem outItem;
@@ -111,7 +111,7 @@ namespace Yakari
                     if (!_concurrentStore.ContainsKey(key)) break;
                     if (c >= _options.MaxRetryForLocalOperations) break;
                 }
-                _options.Manager.OnAfterGet(key);
+                OnAfterGetWrapper(key);
                 if (outItem == null) return default(T);
                 outItem.Hit();
                 t = (T)outItem.ValueObject;
@@ -123,25 +123,44 @@ namespace Yakari
                     t = ThreadHelper.WaitForResult(() => GetInternal<T>(key, getTimeout, true), getTimeout);
                 }
             }
-            ThreadHelper.RunOnDifferentThread(() => _options.Manager.OnAfterGet(key), true);
+            ThreadHelper.RunOnDifferentThread(() => OnAfterGetWrapper(key), true);
             return t;
+        }
+
+        private void OnAfterGetWrapper(string key)
+        {
+            if (OnAfterGet != null) OnAfterGet(key);
+        }
+
+        private void OnBeforeGetWrapper(string key, TimeSpan getTimeout)
+        {
+            if (OnBeforeGet != null) OnBeforeGet(key, getTimeout);
         }
 
         public override void Set(string key, object value, TimeSpan expiresIn)
         {
             _options.Logger.Log(LogLevel.Debug, "LittleThunder Set");
             var item = new InMemoryCacheItem(value, expiresIn);
-            _options.Manager.OnBeforeSet(key, item);
+            OnBeforeSetWrapper(key, item);
             var func = new Func<string, InMemoryCacheItem, InMemoryCacheItem>((s, cacheItem) => item);
             _concurrentStore.AddOrUpdate(key, item, func);
-            ThreadHelper.RunOnDifferentThread(() => _options.Manager.OnAfterSet(key, item), true);
+            OnAfterSetWrapper(key, item);
+        }
+
+        private void OnAfterSetWrapper(string key, InMemoryCacheItem item)
+        {
+            ThreadHelper.RunOnDifferentThread(() => { if (OnAfterSet != null) OnAfterSet(key, item); }, true);
+        }
+
+        private void OnBeforeSetWrapper(string key, InMemoryCacheItem item)
+        {
+            ThreadHelper.RunOnDifferentThread(() => { if (OnBeforeSet != null) OnBeforeSet(key, item); }, true);
         }
 
         public override void Delete(string key)
         {
             _options.Logger.Log(LogLevel.Trace, "LittleThunder Delete");
-            _options.Manager.OnBeforeDelete(key);
-            ThreadHelper.RunOnDifferentThread(() => _options.Manager.OnBeforeDelete(key), true);
+            OnBeforeDeleteWrapper(key);
             if (!_concurrentStore.ContainsKey(key)) return;
             InMemoryCacheItem outItem;
             var c = 0;
@@ -151,7 +170,18 @@ namespace Yakari
                 if (!_concurrentStore.ContainsKey(key)) break;
                 if (c >= _options.MaxRetryForLocalOperations) break;
             }
-            ThreadHelper.RunOnDifferentThread(() => _options.Manager.OnAfterDelete(key), true);
+            OnAfterDeleteWrapper(key);
+        }
+
+        private void OnAfterDeleteWrapper(string key)
+        {
+            ThreadHelper.RunOnDifferentThread(() => { if (OnAfterDelete != null) OnAfterDelete(key); }, true);
+        }
+
+        private void OnBeforeDeleteWrapper(string key)
+        {
+            ThreadHelper.RunOnDifferentThread(() => { if (OnBeforeDelete != null) OnBeforeDelete(key); }, true);
+            
         }
 
         public override bool Exists(string key)
@@ -160,6 +190,13 @@ namespace Yakari
             if (_concurrentStore.ContainsKey(key)) return true;
             return false;
         }
+
+        public event BeforeGet OnBeforeGet;
+        public event AfterGet OnAfterGet;
+        public event BeforeSet OnBeforeSet;
+        public event AfterSet OnAfterSet;
+        public event BeforeDelete OnBeforeDelete;
+        public event AfterDelete OnAfterDelete;
 
         private bool _disposing;
 

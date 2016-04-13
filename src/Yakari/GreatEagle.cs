@@ -12,18 +12,61 @@ namespace Yakari
         private readonly IMessagePublisher _messagePublisher;
         private readonly IMessageSubscriber _messageSubscriber;
         private readonly ISerializer<string> _serializer;
-        private ICacheProvider _localCacheProvider;
-        private readonly ICacheProvider _remoteCacheProvider;
+        private readonly ILocalCacheProvider _localCacheProvider;
+        private readonly IRemoteCacheProvider _remoteCacheProvider;
 
-        public GreatEagle(string memberName, IMessagePublisher messagePublisher, IMessageSubscriber messageSubscriber, ISerializer<string> serializer, ICacheProvider remoteCacheProvider, ILogger logger)
+        public GreatEagle(string memberName, IMessagePublisher messagePublisher, IMessageSubscriber messageSubscriber, ISerializer<string> serializer, ILocalCacheProvider localCacheProvider, IRemoteCacheProvider remoteCacheProvider, ILogger logger)
         {
             _memberName = memberName;
             _logger = logger;
             _messagePublisher = messagePublisher;
             _messageSubscriber = messageSubscriber;
             _serializer = serializer;
+            _localCacheProvider = localCacheProvider;
+            StartObserving();
             _remoteCacheProvider = remoteCacheProvider;
             _messageSubscriber.OnMessageReceived += MessageSubscriberMessageReceived;
+            _messageSubscriber.StartSubscription();
+        }
+
+        private void StartObserving()
+        {
+            _localCacheProvider.OnBeforeGet += _localCacheProvider_OnBeforeGet;
+            _localCacheProvider.OnAfterGet += _localCacheProvider_OnAfterGet;
+            _localCacheProvider.OnBeforeSet += _localCacheProvider_OnBeforeSet;
+            _localCacheProvider.OnAfterSet += _localCacheProvider_OnAfterSet;
+            _localCacheProvider.OnBeforeDelete += _localCacheProvider_OnBeforeDelete;
+            _localCacheProvider.OnAfterDelete += _localCacheProvider_OnAfterDelete;
+        }
+
+        private void _localCacheProvider_OnAfterDelete(string key)
+        {
+            OnAfterDelete(key);
+        }
+
+        private void _localCacheProvider_OnBeforeDelete(string key)
+        {
+            OnBeforeDelete(key);
+        }
+
+        private void _localCacheProvider_OnAfterSet(string key, InMemoryCacheItem item)
+        {
+            OnAfterSet(key, item);
+        }
+
+        private void _localCacheProvider_OnBeforeSet(string key, InMemoryCacheItem item)
+        {
+            OnBeforeSet(key, item);
+        }
+
+        private void _localCacheProvider_OnAfterGet(string key)
+        {
+            OnAfterGet(key);
+        }
+
+        private void _localCacheProvider_OnBeforeGet(string key, TimeSpan timeOut)
+        {
+            OnBeforeGet(key, timeOut);
         }
 
         private void MessageSubscriberMessageReceived(string message)
@@ -49,18 +92,12 @@ namespace Yakari
             }
         }
 
-        public void SetupMember(ICacheProvider localCacheProvider)
-        {
-            _messageSubscriber.StartSubscription();
-            _localCacheProvider = localCacheProvider;
-        }
-
         // TODO: It should be triggered by develper(user) indirectly...
         public void OnBeforeSet(string key, InMemoryCacheItem item)
         {
             _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnBeforeSet {0}", key));
             _remoteCacheProvider.Set(key, item, item.GetExpireTimeSpan());
-            //TODO: Create temp remote cache item to make wait tribe for you
+            //TODO: Create temp remote cache item to make wait tribe for current member
         }
 
         public void OnAfterSet(string key, InMemoryCacheItem item)

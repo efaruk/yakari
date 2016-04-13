@@ -43,6 +43,8 @@
     <Compile Include="BaseCacheProvider.cs" />
     <Compile Include="CacheEventMessage.cs" />
     <Compile Include="CacheEventType.cs" />
+    <Compile Include="IRemoteCacheProvider.cs" />
+    <Compile Include="ILocalCacheProvider.cs" />
     <Compile Include="LocalCacheProviderOptions.cs" />
     <Compile Include="CacheTime.cs" />
     <Compile Include="ConsoleLogger.cs" />

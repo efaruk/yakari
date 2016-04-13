@@ -4,8 +4,6 @@ namespace Yakari
 {
     public interface ICacheManager: IDisposable
     {
-        void SetupMember(ICacheProvider localCacheProvider);
-
         void OnBeforeSet(string key, InMemoryCacheItem item);
 
         void OnAfterSet(string key, InMemoryCacheItem item);

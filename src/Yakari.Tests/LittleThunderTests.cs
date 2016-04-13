@@ -5,10 +5,7 @@ using System.Threading.Tasks;
 using LightInject;
 using NSubstitute;
 using NUnit.Framework;
-using StackExchange.Redis;
 using Yakari.Demo;
-using Yakari.RedisClient;
-using Yakari.Serializers.Newtonsoft;
 
 namespace Yakari.Tests
 {
@@ -17,7 +14,7 @@ namespace Yakari.Tests
     {
         private ServiceContainer _container;
         private ILogger _logger;
-        private ICacheProvider _cache;
+        private ILocalCacheProvider _cache;
         private IDemoHelper _demoHelper;
         private ICacheManager _mockCacheManager;
 
@@ -34,20 +31,21 @@ namespace Yakari.Tests
             _container.Register<IDemoHelper, DemoHelper>();
             _mockCacheManager = Substitute.For<ICacheManager>();
             _container.RegisterInstance(_mockCacheManager);
-            _container.Register<ILocalCacheProviderOptions>(factory => new LocalCacheProviderOptions(factory.GetInstance<ILogger>(), factory.GetInstance<ICacheManager>()));
-            _container.Register<ICacheProvider, LittleThunder>();
+            _container.Register<ILocalCacheProviderOptions>(factory => new LocalCacheProviderOptions(factory.GetInstance<ILogger>()));
+            _container.Register<ILocalCacheProvider, LittleThunder>();
             _demoHelper = _container.GetInstance<IDemoHelper>();
-            _cache = _container.GetInstance<ICacheProvider>();
+            _cache = _container.GetInstance<ILocalCacheProvider>();
         }
 
         [Test]
         public void SetupTests()
         {
+            _logger.Log("LittleThunderTests");
             var cacheManager = _container.GetInstance<ICacheManager>();
             Assert.NotNull(cacheManager);
             var options = _container.GetInstance<ILocalCacheProviderOptions>();
             Assert.NotNull(options);
-            var cacherovider = _container.GetInstance<ICacheProvider>();
+            var cacherovider = _container.GetInstance<ILocalCacheProvider>();
             Assert.NotNull(cacherovider);
             Assert.AreSame(cacherovider, _cache);
             Assert.IsAssignableFrom<LittleThunder>(cacherovider);

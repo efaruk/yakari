@@ -33,6 +33,7 @@ namespace Yakari.Tests
             _mockConnectionMultiplexer.GetSubscriber().Returns(_container.GetInstance<ISubscriber>());
             _container.Register<ISubscriptionManager>(factory => new RedisSubscriptionManager(factory.GetInstance<IConnectionMultiplexer>(), TestConstants.ChannelName, factory.GetInstance<ILogger>()));
             _subscriptionManager = _container.GetInstance<ISubscriptionManager>();
+            _logger.Log("RedisSubscriptionManagerTests SetupComplete");
         }
 
         [Test]

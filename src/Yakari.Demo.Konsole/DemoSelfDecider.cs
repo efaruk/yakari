@@ -2,32 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
-using Bogus;
 
 namespace Yakari.Demo.Konsole
 {
     public class DemoSelfDecider : IDisposable
     {
         private readonly DependencyContainer _dependencyContainer;
-        private Timer _timer = new Timer(100);
+        private readonly Timer _timer = new Timer(100);
 
         public DemoSelfDecider(DependencyContainer dependencyContainer)
         {
             _dependencyContainer = dependencyContainer;
             _demoHelper = _dependencyContainer.Resolve<IDemoHelper>();
             _logger = _dependencyContainer.Resolve<ILogger>();
-            _localCache = _dependencyContainer.Resolve<ICacheProvider>(DependencyContainer.LocalCacheProviderName);
+            _localCache = _dependencyContainer.Resolve<ILocalCacheProvider>();
             _timer.Elapsed += Cycle;
         }
 
         Random rnd = new Random(1);
-        private ICacheProvider _localCache;
+        private ILocalCacheProvider _localCache;
         private IDemoHelper _demoHelper;
         private ILogger _logger;
         const int Max = 1000000;
 
         private bool Decide()
         {
+            // ReSharper disable once ArrangeRedundantParentheses : Parentheses left for readability
             return (rnd.Next(Max) % 10 == 0);
         }
 

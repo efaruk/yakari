@@ -13,17 +13,16 @@ namespace Yakari.Tests
 
     public class HappyPather
     {
-        private readonly DependencyContainer _container;
-        private IDemoHelper _demoHelper;
-        private ICacheProvider _localCache;
-        private ICacheProvider _remoteCache;
+        private readonly IDemoHelper _demoHelper;
+        private readonly ILocalCacheProvider _localCache;
+        private readonly IRemoteCacheProvider _remoteCache;
 
-        public HappyPather(DependencyContainer container)
+        public HappyPather(DependencyContainer dependencyContainer)
         {
-            _container = container;
-            _demoHelper = _container.Resolve<IDemoHelper>();
-            _localCache = _container.Resolve<ICacheProvider>(DependencyContainer.LocalCacheProviderName);
-            _remoteCache = _container.Resolve<ICacheProvider>(DependencyContainer.RemoteCacheProviderName);
+            var container = dependencyContainer;
+            _demoHelper = container.Resolve<IDemoHelper>();
+            _localCache = container.Resolve<ILocalCacheProvider>();
+            _remoteCache = container.Resolve<IRemoteCacheProvider>(DependencyContainer.RemoteCacheProviderName);
         }
 
         public List<DemoObject> FillSomeDemoObjectToLocalCache(string key)

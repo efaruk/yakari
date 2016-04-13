@@ -3,7 +3,6 @@ using LightInject;
 using NSubstitute;
 using NUnit.Framework;
 using Yakari.Demo;
-using Yakari.RedisClient;
 using Yakari.Serializers.Newtonsoft;
 
 namespace Yakari.Tests
@@ -27,20 +26,20 @@ namespace Yakari.Tests
             _container.Register<IDemoHelper, DemoHelper>();
             _container.Register<ISerializer<string>, JsonNetSerializer>();
             //container.Register<ICacheProvider>((factory) => new RedisCacheProvider("192.168.99.100:6379,abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,syncTimeout=10000", factory.GetInstance<ISerializer<string>>(), factory.GetInstance<ILogger>()), RemoteCacheProviderName);
-            var redisCacheProvider = Substitute.For<ICacheProvider>();
+            var redisCacheProvider = Substitute.For<IRemoteCacheProvider>();
             //container.Register<ISubscriptionManager>(factory => new RedisSubscriptionManager("192.168.99.100:6379,abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,syncTimeout=10000", ChannelName));
             var subscriptionManager = Substitute.For<ISubscriptionManager>();
             _container.Register<IMessagePublisher>(factory => subscriptionManager);
             _container.Register<IMessageSubscriber>(factory => subscriptionManager);
+            var localCacheProvider = Substitute.For<ILocalCacheProvider>();
+            _container.Register(factory => localCacheProvider);
             _container.Register<ICacheManager>(factory
                 => new GreatEagle(Guid.NewGuid().ToString(), factory.GetInstance<IMessagePublisher>(), factory.GetInstance<IMessageSubscriber>(),
-                    factory.GetInstance<ISerializer<string>>(), redisCacheProvider, factory.GetInstance<ILogger>())
+                    factory.GetInstance<ISerializer<string>>(), localCacheProvider, redisCacheProvider, factory.GetInstance<ILogger>())
                     , TestConstants.CacheManagerName);
             _manager = _container.GetInstance<ICacheManager>(TestConstants.CacheManagerName);
             //container.Register<ILocalCacheProviderOptions>(factory => new LocalCacheProviderOptions(factory.GetInstance<ILogger>(), factory.GetInstance<ICacheManager>()));
             //container.Register<ICacheProvider, LittleThunder>(LocalCacheProviderName);
-            var localProvider = Substitute.For<ICacheProvider>();
-            _manager.SetupMember(localProvider);
         }
 
         [Test]
