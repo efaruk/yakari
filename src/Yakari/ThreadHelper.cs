@@ -38,19 +38,19 @@ namespace Yakari
             });
         }
 
-        public static void WaitFor(TimeSpan timeOut)
+        public static void WaitFor(TimeSpan timeout)
         {
-            Thread.Sleep((int)timeOut.TotalMilliseconds);
+            Thread.Sleep((int)timeout.TotalMilliseconds);
         }
 
-        public static void WaitFor(int timeOut)
+        public static void WaitFor(int timeout)
         {
-            Thread.Sleep(timeOut);
+            Thread.Sleep(timeout);
         }
 
-        public static void WaitForSeconds(int timeOut)
+        public static void WaitForSeconds(int timeout)
         {
-            Thread.Sleep(timeOut * 1000);
+            Thread.Sleep(timeout * 1000);
         }
 
         /// <summary>

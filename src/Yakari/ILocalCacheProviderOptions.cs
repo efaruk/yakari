@@ -4,7 +4,7 @@
     {
         ILogger Logger { get; set; }
 
-        //ICacheManager Manager { get; set; }
+        //ICacheObserver Observer { get; set; }
 
         int MaxRetryForLocalOperations { get; set; }
 

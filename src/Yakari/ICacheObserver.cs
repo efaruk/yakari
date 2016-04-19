@@ -2,17 +2,17 @@
 
 namespace Yakari
 {
-    public interface ICacheManager: IDisposable
+    public interface ICacheObserver: IDisposable
     {
         void OnBeforeSet(string key, InMemoryCacheItem item);
 
-        void OnAfterSet(string key, InMemoryCacheItem item);
+        void OnAfterSet(string key);
 
         void OnBeforeDelete(string key);
 
         void OnAfterDelete(string key);
 
-        void OnBeforeGet(string key, TimeSpan timeOut);
+        void OnBeforeGet(string key, TimeSpan timeout);
 
         void OnAfterGet(string key);
 

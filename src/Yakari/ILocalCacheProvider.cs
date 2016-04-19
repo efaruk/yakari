@@ -57,13 +57,13 @@ namespace Yakari
 
     public delegate void BeforeSet(string key, InMemoryCacheItem item);
 
-    public delegate void AfterSet(string key, InMemoryCacheItem item);
+    public delegate void AfterSet(string key);
 
     public delegate void BeforeDelete(string key);
 
     public delegate void AfterDelete(string key);
 
-    public delegate void BeforeGet(string key, TimeSpan timeOut);
+    public delegate void BeforeGet(string key, TimeSpan timeout);
 
     public delegate void AfterGet(string key);
 }

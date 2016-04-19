@@ -3,10 +3,11 @@
     /// <summary>
     ///     Generic Serializer Interface
     /// </summary>
-    public interface ISerializer<T>
+    public interface ISerializer
     {
-        T Serialize<TInput>(TInput instance);
+        object Serialize<TInput>(TInput instance);
 
-        TOutput Deserialize<TOutput>(T data);
+        TOutput Deserialize<TOutput>(object data);
     }
+
 }

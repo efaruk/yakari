@@ -5,19 +5,19 @@ namespace Yakari.RedisClient
 {
     public class RedisCacheProvider: BaseCacheProvider, IRemoteCacheProvider
     {
-        private readonly ISerializer<string> _serializer;
+        private readonly ISerializer _serializer;
         private readonly ILogger _logger;
         private ConnectionMultiplexer _redisConnectionMultiplexer;
         private IDatabase _database;
 
-        public RedisCacheProvider(string connectionString, ISerializer<string> serializer, ILogger logger)
+        public RedisCacheProvider(string connectionString, ISerializer serializer, ILogger logger)
         {
             _serializer = serializer;
             _logger = logger;
             SetupConfiguration(connectionString);
         }
 
-        public RedisCacheProvider(ConfigurationOptions redisConfigurationOptions, ISerializer<string> serializer, ILogger logger)
+        public RedisCacheProvider(ConfigurationOptions redisConfigurationOptions, ISerializer serializer, ILogger logger)
         {
             _serializer = serializer;
             _logger = logger;
@@ -78,7 +78,7 @@ namespace Yakari.RedisClient
         {
             _logger.Log(LogLevel.Debug, string.Format("RedisCacheProvider Set {0}", key));
             var data = _serializer.Serialize(value);
-            _database.StringSet(key, data, expiresIn, When.Always, CommandFlags.DemandMaster);
+            _database.StringSet(key, data.ToString(), expiresIn, When.Always, CommandFlags.DemandMaster);
         }
 
         public override void Delete(string key)

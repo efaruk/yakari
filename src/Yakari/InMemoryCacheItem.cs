@@ -5,6 +5,11 @@ namespace Yakari
 {
     public class InMemoryCacheItem
     {
+        private InMemoryCacheItem()
+        {
+            
+        }
+
         private InMemoryCacheItem(bool slidable)
         {
             CreatedDateUtc = DateTime.UtcNow;
@@ -47,7 +52,7 @@ namespace Yakari
         {
             var ici = obj as InMemoryCacheItem;
             if (ici == null) return false;
-            return ValueObject.Equals(ici.ValueObject);
+            return ValueObject == ici.ValueObject;
         }
 
         public override int GetHashCode()

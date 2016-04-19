@@ -16,7 +16,7 @@ namespace Yakari.Tests
         private ILogger _logger;
         private ILocalCacheProvider _cache;
         private IDemoHelper _demoHelper;
-        private ICacheManager _mockCacheManager;
+        //private ICacheObserver _mockCacheManager;
 
         private const string DemoObjectListKey = "DemoObjectList";
 
@@ -26,23 +26,86 @@ namespace Yakari.Tests
         {
             _container = new ServiceContainer();
             _container.SetDefaultLifetime<PerContainerLifetime>();
-            _container.Register<ILogger>(factory => new ConsoleLogger(LogLevel.Trace));
+            //_container.Register<ILogger>(factory => new ConsoleLogger(LogLevel.Trace));
+            _container.Register<ILogger, NullLogger>();
             _logger = _container.GetInstance<ILogger>();
             _container.Register<IDemoHelper, DemoHelper>();
-            _mockCacheManager = Substitute.For<ICacheManager>();
-            _container.RegisterInstance(_mockCacheManager);
             _container.Register<ILocalCacheProviderOptions>(factory => new LocalCacheProviderOptions(factory.GetInstance<ILogger>()));
             _container.Register<ILocalCacheProvider, LittleThunder>();
             _demoHelper = _container.GetInstance<IDemoHelper>();
             _cache = _container.GetInstance<ILocalCacheProvider>();
+            _cache.OnBeforeGet += _cache_OnBeforeGet;
+            _cache.OnAfterGet += _cache_OnAfterGet;
+            _cache.OnBeforeSet += _cache_OnBeforeSet;
+            _cache.OnAfterSet += _cache_OnAfterSet;
+            _cache.OnBeforeDelete += _cache_OnBeforeDelete;
+            _cache.OnAfterDelete += _cache_OnAfterDelete;
         }
+
+        [TearDown]
+        public void TestTearDown()
+        {
+            _onAfterDeleteKey = null;
+            _onBeforeDeleteKey = null;
+            _onAfterSetKey = null;
+            _onBeforeSetKey = null;
+            _onBeforeSetItem = null;
+            _onAfterGetKey = null;
+            _onBeforeGetKey = null;
+            _onBeforeGetTimeout = TimeSpan.Zero;
+        }
+
+        private string _onAfterDeleteKey;
+        private string _onBeforeDeleteKey;
+        private string _onAfterSetKey;
+        private string _onBeforeSetKey;
+        private InMemoryCacheItem _onBeforeSetItem;
+        private string _onAfterGetKey;
+        private string _onBeforeGetKey;
+        private TimeSpan _onBeforeGetTimeout;
+
+
+        #region Private Methods
+
+        private void _cache_OnAfterDelete(string key)
+        {
+            _onAfterDeleteKey = key;
+        }
+
+        private void _cache_OnBeforeDelete(string key)
+        {
+            _onBeforeDeleteKey = key;
+        }
+
+        private void _cache_OnAfterSet(string key)
+        {
+            _onAfterSetKey = key;
+        }
+
+        private void _cache_OnBeforeSet(string key, InMemoryCacheItem item)
+        {
+            _onBeforeSetKey = key;
+            _onBeforeSetItem = item;
+        }
+
+        private void _cache_OnAfterGet(string key)
+        {
+            _onAfterGetKey = key;
+        }
+
+        private void _cache_OnBeforeGet(string key, TimeSpan timeout)
+        {
+            _onBeforeGetKey = key;
+            _onBeforeGetTimeout = timeout;
+        }
+
+        #endregion
+
 
         [Test]
         public void SetupTests()
         {
             _logger.Log("LittleThunderTests");
-            var cacheManager = _container.GetInstance<ICacheManager>();
-            Assert.NotNull(cacheManager);
             var options = _container.GetInstance<ILocalCacheProviderOptions>();
             Assert.NotNull(options);
             var cacherovider = _container.GetInstance<ILocalCacheProvider>();
@@ -56,9 +119,18 @@ namespace Yakari.Tests
         {
             var list = _demoHelper.GenerateDemoObjects(1000);
             _cache.Set(DemoObjectListKey, list, CacheTime.FifteenMinutes);
-            _mockCacheManager.Received().OnBeforeSet(Arg.Is(DemoObjectListKey), Arg.Any<InMemoryCacheItem>());
-            _mockCacheManager.Received().OnAfterSet(Arg.Is(DemoObjectListKey), Arg.Any<InMemoryCacheItem>());
+            Thread.Sleep(500);
+            var item = new InMemoryCacheItem(list, CacheTime.FifteenMinutes);
+            Assert.AreEqual(item, _onBeforeSetItem);
+            Assert.AreEqual(DemoObjectListKey, _onBeforeSetKey);
+            Assert.AreEqual(DemoObjectListKey, _onAfterSetKey);
+            //_mockCacheManager.Received().OnBeforeSet(Arg.Is(DemoObjectListKey), Arg.Any<InMemoryCacheItem>());
+            //_mockCacheManager.Received().OnAfterSet(Arg.Is(DemoObjectListKey));
             var cachedList = _cache.Get<List<DemoObject>>(DemoObjectListKey, TimeSpan.FromSeconds(3));
+            Thread.Sleep(500);
+            Assert.AreEqual(DemoObjectListKey, _onBeforeGetKey);
+            Assert.AreEqual(DemoObjectListKey, _onAfterGetKey);
+            Assert.AreEqual(TimeSpan.FromSeconds(3), _onBeforeGetTimeout);
             Assert.NotNull(cachedList);
             Assert.AreSame(list, cachedList);
         }

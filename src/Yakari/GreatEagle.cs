@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Yakari
 {
-    public class GreatEagle: ICacheManager
+    public class GreatEagle: ICacheObserver
     {
         private const string TempItemFormat = "yakari:{0}";
 
@@ -11,11 +11,11 @@ namespace Yakari
         private readonly ILogger _logger;
         private readonly IMessagePublisher _messagePublisher;
         private readonly IMessageSubscriber _messageSubscriber;
-        private readonly ISerializer<string> _serializer;
+        private readonly ISerializer _serializer;
         private readonly ILocalCacheProvider _localCacheProvider;
         private readonly IRemoteCacheProvider _remoteCacheProvider;
 
-        public GreatEagle(string memberName, IMessagePublisher messagePublisher, IMessageSubscriber messageSubscriber, ISerializer<string> serializer, ILocalCacheProvider localCacheProvider, IRemoteCacheProvider remoteCacheProvider, ILogger logger)
+        public GreatEagle(string memberName, IMessagePublisher messagePublisher, IMessageSubscriber messageSubscriber, ISerializer serializer, ILocalCacheProvider localCacheProvider, IRemoteCacheProvider remoteCacheProvider, ILogger logger)
         {
             _memberName = memberName;
             _logger = logger;
@@ -49,9 +49,9 @@ namespace Yakari
             OnBeforeDelete(key);
         }
 
-        private void _localCacheProvider_OnAfterSet(string key, InMemoryCacheItem item)
+        private void _localCacheProvider_OnAfterSet(string key)
         {
-            OnAfterSet(key, item);
+            OnAfterSet(key);
         }
 
         private void _localCacheProvider_OnBeforeSet(string key, InMemoryCacheItem item)
@@ -64,9 +64,9 @@ namespace Yakari
             OnAfterGet(key);
         }
 
-        private void _localCacheProvider_OnBeforeGet(string key, TimeSpan timeOut)
+        private void _localCacheProvider_OnBeforeGet(string key, TimeSpan timeout)
         {
-            OnBeforeGet(key, timeOut);
+            OnBeforeGet(key, timeout);
         }
 
         private void MessageSubscriberMessageReceived(string message)
@@ -92,7 +92,7 @@ namespace Yakari
             }
         }
 
-        // TODO: It should be triggered by develper(user) indirectly...
+        // TODO: This method or some method should be triggered by developer(user) indirectly...
         public void OnBeforeSet(string key, InMemoryCacheItem item)
         {
             _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnBeforeSet {0}", key));
@@ -100,12 +100,12 @@ namespace Yakari
             //TODO: Create temp remote cache item to make wait tribe for current member
         }
 
-        public void OnAfterSet(string key, InMemoryCacheItem item)
+        public void OnAfterSet(string key)
         {
             _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnAfterSet {0}", key));
-            var data = new CacheEventMessage(key, _memberName, item, CacheEventType.Set);
+            var data = new CacheEventMessage(key, _memberName, CacheEventType.Set);
             var message = Serialize(data);
-            _messagePublisher.Publish(message);
+            _messagePublisher.Publish(message.ToString());
         }
 
         public void OnBeforeDelete(string key)
@@ -118,12 +118,12 @@ namespace Yakari
         {
             _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnAfterDelete {0}", key));
             _remoteCacheProvider.Delete(key);
-            var data = new CacheEventMessage(key, _memberName, null, CacheEventType.Delete);
+            var data = new CacheEventMessage(key, _memberName, CacheEventType.Delete);
             var message = Serialize(data);
-            _messagePublisher.Publish(message);
+            _messagePublisher.Publish(message.ToString());
         }
 
-        public void OnBeforeGet(string key, TimeSpan timeOut)
+        public void OnBeforeGet(string key, TimeSpan timeout)
         {
             _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnBeforeGet {0}", key));
             if (_localCacheProvider == null) return;
@@ -136,7 +136,7 @@ namespace Yakari
                 // Check temp key exists on master
                 if (!_remoteCacheProvider.Exists(tempKey)) return; // Temp key not exits
                 // Temp key exists, so wait for tribe member to finish his job
-                ThreadHelper.WaitFor(timeOut);
+                ThreadHelper.WaitFor(timeout);
             }
             //else
             //{
@@ -146,16 +146,16 @@ namespace Yakari
             //    if (_remoteCacheProvider.Exists(tempKey))
             //    {
             //        // If so wait for update
-            //        ThreadHelper.WaitFor(timeOut);
+            //        ThreadHelper.WaitFor(timeout);
             //    }
             //}
             var task = new Task<InMemoryCacheItem>(() =>
             {
-                var it = _remoteCacheProvider.Get<InMemoryCacheItem>(key, timeOut);
+                var it = _remoteCacheProvider.Get<InMemoryCacheItem>(key, timeout);
                 return it;
             });
             task.Start();
-            task.Wait(timeOut);
+            task.Wait(timeout);
             if (!task.IsCompleted) return;
             var item = task.Result;
             if (item == null) return;
@@ -165,9 +165,9 @@ namespace Yakari
         public void OnAfterGet(string key)
         {
             _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnAfterGet {0}", key));
-            var data = new CacheEventMessage(key, _memberName, null, CacheEventType.Get);
+            var data = new CacheEventMessage(key, _memberName, CacheEventType.Get);
             var message = Serialize(data);
-            _messagePublisher.Publish(message);
+            _messagePublisher.Publish(message.ToString());
         }
 
         public void OnRemoteSet(string key, string memberName)
@@ -195,12 +195,12 @@ namespace Yakari
             _messageSubscriber.OnMessageReceived -= MessageSubscriberMessageReceived;
         }
 
-        private string Serialize(CacheEventMessage cacheEvent)
+        private object Serialize(CacheEventMessage cacheEvent)
         {
             return _serializer.Serialize(cacheEvent);
         }
 
-        private CacheEventMessage Deserialize(string message)
+        private CacheEventMessage Deserialize(object message)
         {
             return _serializer.Deserialize<CacheEventMessage>(message);
         }

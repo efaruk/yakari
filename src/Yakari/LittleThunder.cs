@@ -23,7 +23,7 @@ namespace Yakari
         {
             _options = options;
             _options.Logger.Log(LogLevel.Trace, "LittleThunder Constructor Begin");
-            //_options.Manager.SetupMember(this);
+            //_options.Observer.SetupMember(this);
             _concurrentStore = new ConcurrentDictionary<string, InMemoryCacheItem>(_options.ConcurrencyLevel, _options.InitialCapacity);
             _timer.Elapsed += timer_Elapsed;
             _timer.Start();
@@ -144,12 +144,12 @@ namespace Yakari
             OnBeforeSetWrapper(key, item);
             var func = new Func<string, InMemoryCacheItem, InMemoryCacheItem>((s, cacheItem) => item);
             _concurrentStore.AddOrUpdate(key, item, func);
-            OnAfterSetWrapper(key, item);
+            OnAfterSetWrapper(key);
         }
 
-        private void OnAfterSetWrapper(string key, InMemoryCacheItem item)
+        private void OnAfterSetWrapper(string key)
         {
-            ThreadHelper.RunOnDifferentThread(() => { if (OnAfterSet != null) OnAfterSet(key, item); }, true);
+            ThreadHelper.RunOnDifferentThread(() => { if (OnAfterSet != null) OnAfterSet(key); }, true);
         }
 
         private void OnBeforeSetWrapper(string key, InMemoryCacheItem item)

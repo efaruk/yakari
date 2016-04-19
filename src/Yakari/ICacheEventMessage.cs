@@ -6,7 +6,7 @@ namespace Yakari
 
         string MemberName { get; }
 
-        InMemoryCacheItem Data { get; }
+        //InMemoryCacheItem Data { get; }
 
         CacheEventType CacheEventType { get; }
     }

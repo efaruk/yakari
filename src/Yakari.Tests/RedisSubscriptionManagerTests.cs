@@ -15,7 +15,7 @@ namespace Yakari.Tests
         private IConnectionMultiplexer _mockConnectionMultiplexer;
         private ISubscriber _mockSubscriber;
         private ISubscriptionManager _subscriptionManager;
-        private ISerializer<string> _serializer;
+        private ISerializer _serializer;
 
         [OneTimeSetUp]
         public void FixtureSetup()
@@ -24,8 +24,8 @@ namespace Yakari.Tests
             _container.SetDefaultLifetime<PerContainerLifetime>();
             _container.Register<ILogger>(factory => new ConsoleLogger(LogLevel.Debug));
             _logger = _container.GetInstance<ILogger>();
-            _container.Register<ISerializer<string>, JsonNetSerializer>();
-            _serializer = _container.GetInstance<ISerializer<string>>();
+            _container.Register<ISerializer, JsonNetSerializer>();
+            _serializer = _container.GetInstance<ISerializer>();
             _mockConnectionMultiplexer = Substitute.For<IConnectionMultiplexer>();
             _container.RegisterInstance(typeof(IConnectionMultiplexer), _mockConnectionMultiplexer);
             _mockSubscriber = Substitute.For<ISubscriber>();
@@ -47,9 +47,9 @@ namespace Yakari.Tests
         [Test]
         public void TestCacheEventMessagePublish()
         {
-            var message = _serializer.Serialize(new CacheEventMessage("000-111-999-000", "Beaver1", null, CacheEventType.Delete));
-            _subscriptionManager.Publish(message);
-            _mockSubscriber.Received().PublishAsync(TestConstants.ChannelName, message);
+            var message = _serializer.Serialize(new CacheEventMessage("000-111-999-000", "Beaver1", CacheEventType.Delete));
+            _subscriptionManager.Publish(message.ToString());
+            _mockSubscriber.Received().PublishAsync(TestConstants.ChannelName, message.ToString());
         }
 
     }
