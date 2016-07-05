@@ -18,7 +18,7 @@ namespace Yakari.Demo.Konsole
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
 
-            var simpleDemo0 = new DemoSelfDecider(new DependencyContainer(null));
+            var simpleDemo0 = new DemoSelfDecider(new DependencyContainer(null, null));
             //var simpleDemo1 = new SimpleDemo(new DependencyContainer(null));
             //var simpleDemo2 = new SimpleDemo(new DependencyContainer(null));
             //var simpleDemo3 = new SimpleDemo(new DependencyContainer(null));
@@ -26,7 +26,7 @@ namespace Yakari.Demo.Konsole
             simpleDemo0.StartDemo();
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
-            simpleDemo0.StartDemo();
+            simpleDemo0.StopDemo();
         }
 
         private static int Test_OnDelegate2(string data)

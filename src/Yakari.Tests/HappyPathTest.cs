@@ -35,12 +35,14 @@ namespace Yakari.Tests
         public List<DemoObject> GetSomeDemoObjectFromLocal(string key)
         {
             var list = _localCache.Get<List<DemoObject>>(key, TimeSpan.FromSeconds(3));
+            Assert.NotNull(list);
             return list;
         }
 
         public InMemoryCacheItem GetSomeDemoObjectFromRemote(string key)
         {
             var item = _remoteCache.Get<InMemoryCacheItem>(key, TimeSpan.FromSeconds(3));
+            Assert.NotNull(item);
             return item;
         }
 

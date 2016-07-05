@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using StackExchange.Redis;
 
 namespace Yakari.RedisClient
@@ -62,10 +64,11 @@ namespace Yakari.RedisClient
 
         public override bool HasSlidingSupport
         {
-            get { return true; }
+            //TODO: it can be true, but we should work on it (Another feature)
+            get { return false; }
         }
 
-        public override T Get<T>(string key, TimeSpan getTimeout)
+        public override T Get<T>(string key, TimeSpan getTimeout, bool isManagerCall)
         {
             _logger.Log(LogLevel.Trace, string.Format("RedisCacheProvider Get {0}", key));
             var data = (string)_database.StringGet(key, CommandFlags.PreferSlave);
@@ -74,14 +77,14 @@ namespace Yakari.RedisClient
             return item;
         }
 
-        public override void Set(string key, object value, TimeSpan expiresIn)
+        public override void Set(string key, object value, TimeSpan expiresIn, bool isManagerCall)
         {
             _logger.Log(LogLevel.Debug, string.Format("RedisCacheProvider Set {0}", key));
             var data = _serializer.Serialize(value);
             _database.StringSet(key, data.ToString(), expiresIn, When.Always, CommandFlags.DemandMaster);
         }
 
-        public override void Delete(string key)
+        public override void Delete(string key, bool isManagerCall)
         {
             _logger.Log(LogLevel.Trace, string.Format("RedisCacheProvider Delete {0}", key));
             _database.KeyDelete(key, CommandFlags.DemandMaster);
@@ -92,6 +95,21 @@ namespace Yakari.RedisClient
             _logger.Log(LogLevel.Trace, string.Format("RedisCacheProvider Exists {0}", key));
             var exists = _database.KeyExists(key);
             return exists;
+        }
+
+        public override List<string> AllKeys()
+        {
+            _logger.Log(LogLevel.Trace, "RedisCacheProvider AllKeys");
+            var script = "local result = redis.call(\'SCAN\', \'0\', \'MATCH\', \'*\', \'COUNT\', \'1000000\');\r\nreturn result[2];";
+            var lua = LuaScript.Prepare(script);
+            var result = _database.ScriptEvaluate(lua);
+            var keys = new string [] { };
+            if (!result.IsNull)
+            {
+                keys = (string[])result;
+            }
+            var list = keys.ToList();
+            return list;
         }
     }
 }

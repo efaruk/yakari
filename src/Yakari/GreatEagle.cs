@@ -8,25 +8,44 @@ namespace Yakari
         private const string TempItemFormat = "yakari:{0}";
 
         private readonly string _memberName;
+        private readonly ISubscriptionManager _subscriptionManager;
         private readonly ILogger _logger;
-        private readonly IMessagePublisher _messagePublisher;
-        private readonly IMessageSubscriber _messageSubscriber;
         private readonly ISerializer _serializer;
         private readonly ILocalCacheProvider _localCacheProvider;
         private readonly IRemoteCacheProvider _remoteCacheProvider;
 
-        public GreatEagle(string memberName, IMessagePublisher messagePublisher, IMessageSubscriber messageSubscriber, ISerializer serializer, ILocalCacheProvider localCacheProvider, IRemoteCacheProvider remoteCacheProvider, ILogger logger)
+        /// <summary>
+        ///     Default constructor for GreatEagle
+        /// </summary>
+        /// <param name="memberName">Observing tribe member name </param>
+        /// <param name="subscriptionManager"></param>
+        /// <param name="serializer"></param>
+        /// <param name="localCacheProvider"></param>
+        /// <param name="remoteCacheProvider"></param>
+        /// <param name="logger"></param>
+        public GreatEagle(string memberName, ISubscriptionManager subscriptionManager, ISerializer serializer, ILocalCacheProvider localCacheProvider, IRemoteCacheProvider remoteCacheProvider, ILogger logger)
         {
             _memberName = memberName;
+            _subscriptionManager = subscriptionManager;
             _logger = logger;
-            _messagePublisher = messagePublisher;
-            _messageSubscriber = messageSubscriber;
             _serializer = serializer;
             _localCacheProvider = localCacheProvider;
-            StartObserving();
             _remoteCacheProvider = remoteCacheProvider;
-            _messageSubscriber.OnMessageReceived += MessageSubscriberMessageReceived;
-            _messageSubscriber.StartSubscription();
+            _subscriptionManager.OnMessageReceived += MessageSubscriberMessageReceived;
+            ThreadHelper.RunOnDifferentThread(LoadFromRemote, ex => _logger.Log(LogLevel.Error, "Remote Cache Loading Error", ex));
+        }
+
+        private void LoadFromRemote()
+        {
+            var keys = _remoteCacheProvider.AllKeys();
+            foreach (var key in keys)
+            {
+                // TODO: Timeout should be configuration parameter
+                var item = _remoteCacheProvider.Get<InMemoryCacheItem>(key, TimeSpan.Zero, true);
+                _localCacheProvider.Set(key, item.ValueObject, item.GetExpireTimeSpan(), true);
+            }
+            StartObserving();
+            _subscriptionManager.StartSubscription();
         }
 
         private void StartObserving()
@@ -96,7 +115,7 @@ namespace Yakari
         public void OnBeforeSet(string key, InMemoryCacheItem item)
         {
             _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnBeforeSet {0}", key));
-            _remoteCacheProvider.Set(key, item, item.GetExpireTimeSpan());
+            _remoteCacheProvider.Set(key, item, item.GetExpireTimeSpan(), true);
             //TODO: Create temp remote cache item to make wait tribe for current member
         }
 
@@ -105,7 +124,7 @@ namespace Yakari
             _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnAfterSet {0}", key));
             var data = new CacheEventMessage(key, _memberName, CacheEventType.Set);
             var message = Serialize(data);
-            _messagePublisher.Publish(message.ToString());
+            _subscriptionManager.Publish(message.ToString());
         }
 
         public void OnBeforeDelete(string key)
@@ -117,10 +136,10 @@ namespace Yakari
         public void OnAfterDelete(string key)
         {
             _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnAfterDelete {0}", key));
-            _remoteCacheProvider.Delete(key);
+            _remoteCacheProvider.Delete(key, true);
             var data = new CacheEventMessage(key, _memberName, CacheEventType.Delete);
             var message = Serialize(data);
-            _messagePublisher.Publish(message.ToString());
+            _subscriptionManager.Publish(message.ToString());
         }
 
         public void OnBeforeGet(string key, TimeSpan timeout)
@@ -151,7 +170,7 @@ namespace Yakari
             //}
             var task = new Task<InMemoryCacheItem>(() =>
             {
-                var it = _remoteCacheProvider.Get<InMemoryCacheItem>(key, timeout);
+                var it = _remoteCacheProvider.Get<InMemoryCacheItem>(key, timeout, true);
                 return it;
             });
             task.Start();
@@ -159,15 +178,15 @@ namespace Yakari
             if (!task.IsCompleted) return;
             var item = task.Result;
             if (item == null) return;
-            _localCacheProvider.Set(key, item.ValueObject, item.GetExpireTimeSpan());
+            _localCacheProvider.Set(key, item.ValueObject, item.GetExpireTimeSpan(), true);
         }
 
         public void OnAfterGet(string key)
         {
             _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnAfterGet {0}", key));
-            var data = new CacheEventMessage(key, _memberName, CacheEventType.Get);
-            var message = Serialize(data);
-            _messagePublisher.Publish(message.ToString());
+            var cacheEventMessage = new CacheEventMessage(key, _memberName, CacheEventType.Get);
+            var message = Serialize(cacheEventMessage);
+            _subscriptionManager.Publish(message.ToString());
         }
 
         public void OnRemoteSet(string key, string memberName)
@@ -175,9 +194,9 @@ namespace Yakari
             _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnRemoteSet {0}", key));
             if (_memberName == memberName) return;
             if (_localCacheProvider == null) return;
-            var item = _remoteCacheProvider.Get<InMemoryCacheItem>(key, TimeSpan.Zero);
+            var item = _remoteCacheProvider.Get<InMemoryCacheItem>(key, TimeSpan.Zero, true);
             if (item == null) return;
-            _localCacheProvider.Set(key, item.ValueObject, item.GetExpireTimeSpan());
+            _localCacheProvider.Set(key, item.ValueObject, item.GetExpireTimeSpan(), true);
         }
 
         public void OnRemoteDelete(string key, string memberName)
@@ -185,14 +204,14 @@ namespace Yakari
             _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnRemoteDelete {0}", key));
             if (_memberName == memberName) return;
             if (_localCacheProvider == null) return;
-            _localCacheProvider.Delete(key);
+            _localCacheProvider.Delete(key, true);
         }
 
         public void Dispose()
         {
             _logger.Log(LogLevel.Trace, "GreatEagle Disposing");
-            _messageSubscriber.StopSubscription();
-            _messageSubscriber.OnMessageReceived -= MessageSubscriberMessageReceived;
+            _subscriptionManager.StopSubscription();
+            _subscriptionManager.OnMessageReceived -= MessageSubscriberMessageReceived;
         }
 
         private object Serialize(CacheEventMessage cacheEvent)

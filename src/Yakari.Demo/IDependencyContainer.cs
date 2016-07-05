@@ -4,7 +4,7 @@ namespace Yakari.Demo
 {
     public interface IDependencyContainer<TContainer>: IDisposable
     {
-        void Reset(TContainer container);
+        void Replace(TContainer container);
 
         T Resolve<T>();
 

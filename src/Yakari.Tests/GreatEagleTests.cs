@@ -27,12 +27,11 @@ namespace Yakari.Tests
             _container.Register<ISerializer, JsonNetSerializer>();
             var remoteCacheProvider = Substitute.For<IRemoteCacheProvider>();
             var subscriptionManager = Substitute.For<ISubscriptionManager>();
-            _container.Register<IMessagePublisher>(factory => subscriptionManager);
-            _container.Register<IMessageSubscriber>(factory => subscriptionManager);
+            _container.Register(factory => subscriptionManager);
             var localCacheProvider = Substitute.For<ILocalCacheProvider>();
             _container.Register(factory => localCacheProvider);
             _container.Register<ICacheObserver>(factory
-                => new GreatEagle(Guid.NewGuid().ToString(), factory.GetInstance<IMessagePublisher>(), factory.GetInstance<IMessageSubscriber>(),
+                => new GreatEagle(Guid.NewGuid().ToString(), factory.GetInstance<ISubscriptionManager>(), 
                     factory.GetInstance<ISerializer>(), localCacheProvider, remoteCacheProvider, factory.GetInstance<ILogger>())
                     , TestConstants.CacheObserverName);
             _observer = _container.GetInstance<ICacheObserver>(TestConstants.CacheObserverName);

@@ -70,8 +70,10 @@
     <Compile Include="JsonNetSerializerTests.cs" />
     <Compile Include="LittleThunderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RedisScripting.cs" />
     <Compile Include="RedisSubscriptionManagerTests.cs" />
     <Compile Include="TestConstants.cs" />
+    <Compile Include="TwoMemberTribeTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

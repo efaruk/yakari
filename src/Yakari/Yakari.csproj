@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Yakari.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,6 +44,7 @@
     <Compile Include="BaseCacheProvider.cs" />
     <Compile Include="CacheEventMessage.cs" />
     <Compile Include="CacheEventType.cs" />
+    <Compile Include="InMemoryLogger.cs" />
     <Compile Include="IRemoteCacheProvider.cs" />
     <Compile Include="ILocalCacheProvider.cs" />
     <Compile Include="LocalCacheProviderOptions.cs" />
