@@ -16,8 +16,8 @@ namespace Yakari.Tests
         [OneTimeSetUp]
         public void FixtureSetup()
         {
-            _redisConnectionMultiplexer = ConnectionMultiplexer.Connect("192.168.99.100:6379,abortConnect=false,defaultDatabase=0,keepAlive=300,resolveDns=false,synctimeout=5000");
-            _redisServer = _redisConnectionMultiplexer.GetServer("192.168.99.100:6379");
+            _redisConnectionMultiplexer = ConnectionMultiplexer.Connect("172.17.0.1:6379,abortConnect=false,defaultDatabase=0,keepAlive=300,resolveDns=false,synctimeout=5000");
+            _redisServer = _redisConnectionMultiplexer.GetServer("172.17.0.1:6379");
             _database = _redisConnectionMultiplexer.GetDatabase();
         }
 

@@ -11,7 +11,7 @@ namespace Yakari.Demo
         public const string ChannelName = "YakariDemo";
 
         private const string CacheManagerName = "CacheManager";
-        private const string ConnectionString = "192.168.99.100:6379,abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,synctimeout=5000";
+        private const string ConnectionString = "172.17.0.1:6379,abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,synctimeout=5000";
 
         private ServiceContainer _container;
         private ILogger _logger;

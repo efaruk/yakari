@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using LightInject;
 using NSubstitute;
@@ -32,9 +33,9 @@ namespace Yakari.Tests
             var member1Local = member1Container.Resolve<ILocalCacheProvider>();
             var member2Local = member2Container.Resolve<ILocalCacheProvider>();
             member1Local.Set(key, items, CacheTime.FifteenMinutes);
-            items = member1Local.Get<List<DemoObject>>(key, TimeSpan.Zero);
-            var list = member2Local.Get<List<DemoObject>>(key, TimeSpan.Zero);
-            Assert.AreEqual(items, list);
+            var list1 = member1Local.Get<List<DemoObject>>(key, TimeSpan.FromSeconds(1));
+            var list2 = member2Local.Get<List<DemoObject>>(key, TimeSpan.FromSeconds(1));
+            Assert.AreEqual(list1, list2);
         }
 
 

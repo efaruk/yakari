@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="28ac7d30-0a96-4762-821e-220ae7909e12" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/riderModule.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../Yakari.Demo/DependencyContainer.cs" afterPath="$PROJECT_DIR$/../../Yakari.Demo/DependencyContainer.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../Yakari.Tests/RedisScripting.cs" afterPath="$PROJECT_DIR$/../../Yakari.Tests/RedisScripting.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../Yakari.Tests/TwoMemberTribeTest.cs" afterPath="$PROJECT_DIR$/../../Yakari.Tests/TwoMemberTribeTest.cs" />
+    </list>
+    <ignored path="Yakari.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <ignored path=".idea/dataSources.local.xml" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="Yakari" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="TwoMemberTribeTest.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../Yakari.Tests/TwoMemberTribeTest.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="208">
+              <caret line="22" column="47" selection-start-line="22" selection-start-column="47" selection-end-line="22" selection-end-column="47" />
+              <folding>
+                <marker date="1473118228716" expanded="true" signature="6:219" ph="..." />
+                <marker date="1473118228716" expanded="true" signature="243:1383" ph="{...}" />
+                <marker date="1473118228716" expanded="true" signature="281:1381" ph="{...}" />
+                <marker date="1473118228716" expanded="true" signature="495:730" ph="{...}" />
+                <marker date="1473118228716" expanded="true" signature="797:1373" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DependencyContainer.cs" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../../Yakari.Demo/DependencyContainer.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="263">
+              <caret line="22" column="9" selection-start-line="22" selection-start-column="9" selection-end-line="22" selection-end-column="9" />
+              <folding>
+                <marker date="1473117011350" expanded="true" signature="6:95" ph="..." />
+                <marker date="1473117011350" expanded="true" signature="118:3502" ph="{...}" />
+                <marker date="1473117011350" expanded="true" signature="198:3500" ph="{...}" />
+                <marker date="1473117011350" expanded="true" signature="716:841" ph="{...}" />
+                <marker date="1473117011350" expanded="true" signature="916:2551" ph="{...}" />
+                <marker date="1473117011350" expanded="true" signature="2586:2645" ph="{...}" />
+                <marker date="1473117011350" expanded="true" signature="2702:2758" ph="{...}" />
+                <marker date="1473117011350" expanded="true" signature="2789:2880" ph="{...}" />
+                <marker date="1473117011350" expanded="true" signature="2922:3017" ph="{...}" />
+                <marker date="1473117011350" expanded="true" signature="3059:3151" ph="{...}" />
+                <marker date="1473117011350" expanded="true" signature="3206:3304" ph="{...}" />
+                <marker date="1473117011350" expanded="true" signature="3345:3409" ph="{...}" />
+                <marker date="1473117011350" expanded="true" signature="3440:3494" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/../../Yakari.Demo/DependencyContainer.cs" />
+        <option value="$PROJECT_DIR$/../../Yakari.Tests/RedisScripting.cs" />
+        <option value="$PROJECT_DIR$/../../Yakari.Tests/TwoMemberTribeTest.cs" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-1" />
+    <option name="y" value="24" />
+    <option name="width" value="1368" />
+    <option name="height" value="745" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="SolutionExplorer" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="SolutionExplorer">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Yakari (6 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Yakari.Tests" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Yakari (6 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Yakari (6 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Yakari.Demo" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+        <option name="show-file-system" value="false" />
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
+  </component>
+  <component name="RunManager" selected=".NET Project.Default">
+    <configuration default="true" type="DotNetProject" factoryName=".NET Project">
+      <option name="PROJECT_PATH" value="" />
+      <option name="PROJECT_KIND" value="None" />
+      <option name="EXE_PATH" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Default" type="DotNetProject" factoryName=".NET Project">
+      <option name="PROJECT_PATH" value="" />
+      <option name="PROJECT_KIND" value="None" />
+      <option name="EXE_PATH" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <method />
+    </configuration>
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue=".NET Project.Default" />
+    </list>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="28ac7d30-0a96-4762-821e-220ae7909e12" name="Default" comment="" />
+      <created>1471087206608</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1471087206608</updated>
+      <workItem from="1471087209628" duration="543000" />
+      <workItem from="1471087782592" duration="258000" />
+      <workItem from="1472683158366" duration="30000" />
+      <workItem from="1473116803182" duration="1708000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="2539000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-1" y="24" width="1368" height="745" extended-state="6" />
+    <editor active="false" />
+    <layout>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Errors in solution" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32978722" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Regex Tester" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="UnitTesting" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4528" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="NuGet" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Change Signature" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2560423" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet breakpoint">
+          <url>file://$PROJECT_DIR$/../../Yakari.Tests/TwoMemberTribeTest.cs</url>
+          <line>35</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="4" />
+    </breakpoint-manager>
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/../../Yakari.Tests/RedisScripting.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1473117171520" expanded="true" signature="6:98" ph="..." />
+            <marker date="1473117171520" expanded="true" signature="122:2534" ph="{...}" />
+            <marker date="1473117171520" expanded="true" signature="174:2532" ph="{...}" />
+            <marker date="1473117171520" expanded="true" signature="430:779" ph="{...}" />
+            <marker date="1473117171520" expanded="true" signature="824:1082" ph="{...}" />
+            <marker date="1473117171520" expanded="true" signature="1141:1254" ph="{...}" />
+            <marker date="1473117171520" expanded="true" signature="1300:1983" ph="{...}" />
+            <marker date="1473117171520" expanded="true" signature="2029:2525" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../Yakari.Tests/RedisScripting.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1473117171520" expanded="true" signature="6:98" ph="..." />
+            <marker date="1473117171520" expanded="true" signature="122:2534" ph="{...}" />
+            <marker date="1473117171520" expanded="true" signature="174:2532" ph="{...}" />
+            <marker date="1473117171520" expanded="true" signature="430:779" ph="{...}" />
+            <marker date="1473117171520" expanded="true" signature="824:1082" ph="{...}" />
+            <marker date="1473117171520" expanded="true" signature="1141:1254" ph="{...}" />
+            <marker date="1473117171520" expanded="true" signature="1300:1983" ph="{...}" />
+            <marker date="1473117171520" expanded="true" signature="2029:2525" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../Yakari.Tests/TestConstants.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="7" column="64" selection-start-line="7" selection-start-column="64" selection-end-line="7" selection-end-column="64" />
+          <folding>
+            <marker date="1471087205523" expanded="true" signature="22:342" ph="{...}" />
+            <marker date="1471087205523" expanded="true" signature="55:340" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../Yakari.Tests/CacheProviderOptionsTests.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding>
+            <marker date="1471087205523" expanded="true" signature="6:55" ph="..." />
+            <marker date="1471087205523" expanded="true" signature="79:2068" ph="{...}" />
+            <marker date="1471087205523" expanded="true" signature="142:2066" ph="{...}" />
+            <marker date="1471087205523" expanded="true" signature="257:389" ph="{...}" />
+            <marker date="1471087205523" expanded="true" signature="484:616" ph="{...}" />
+            <marker date="1471087205523" expanded="true" signature="730:971" ph="{...}" />
+            <marker date="1471087205523" expanded="true" signature="1075:1332" ph="{...}" />
+            <marker date="1471087205523" expanded="true" signature="1436:1693" ph="{...}" />
+            <marker date="1471087205523" expanded="true" signature="1791:2060" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.local/share/JetBrains/Shared/v07/DecompilerCache/decompiler/6B4638CF-E642-4747-AA92-6A39392F6800/a1/c05d6802/RedisConnectionException.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="15" column="22" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../Yakari.Tests/RedisSubscriptionManagerTests.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-323">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding>
+            <marker date="1471087205523" expanded="true" signature="6:150" ph="..." />
+            <marker date="1471087205523" expanded="true" signature="174:2448" ph="{...}" />
+            <marker date="1471087205523" expanded="true" signature="241:2446" ph="{...}" />
+            <marker date="1471087205523" expanded="true" signature="596:1793" ph="{...}" />
+            <marker date="1471087205523" expanded="true" signature="1856:2065" ph="{...}" />
+            <marker date="1471087205523" expanded="true" signature="2132:2439" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../Yakari.Tests/RedisScripting.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="69" column="13" selection-start-line="69" selection-start-column="13" selection-end-line="69" selection-end-column="13" />
+          <folding>
+            <marker date="1473117171520" expanded="true" signature="6:98" ph="..." />
+            <marker date="1473117171520" expanded="true" signature="122:2534" ph="{...}" />
+            <marker date="1473117171520" expanded="true" signature="174:2532" ph="{...}" />
+            <marker date="1473117171520" expanded="true" signature="430:779" ph="{...}" />
+            <marker date="1473117171520" expanded="true" signature="824:1082" ph="{...}" />
+            <marker date="1473117171520" expanded="true" signature="1141:1254" ph="{...}" />
+            <marker date="1473117171520" expanded="true" signature="1300:1983" ph="{...}" />
+            <marker date="1473117171520" expanded="true" signature="2029:2525" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../Yakari.Demo.Konsole/Program.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="40" column="9" selection-start-line="40" selection-start-column="9" selection-end-line="40" selection-end-column="9" />
+          <folding>
+            <marker date="1471087205523" expanded="true" signature="6:37" ph="..." />
+            <marker date="1471087205523" expanded="true" signature="68:1450" ph="{...}" />
+            <marker date="1471087205523" expanded="true" signature="88:1448" ph="{...}" />
+            <marker date="1471087205523" expanded="true" signature="190:1089" ph="{...}" />
+            <marker date="1471087205523" expanded="true" signature="609:912" ph="/* ... */" />
+            <marker date="1471087205523" expanded="true" signature="1147:1276" ph="{...}" />
+            <marker date="1471087205523" expanded="true" signature="1335:1442" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../Yakari/InMemoryLogger.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="8" column="39" selection-start-line="8" selection-start-column="39" selection-end-line="8" selection-end-column="39" />
+          <folding>
+            <marker date="1471087205527" expanded="true" signature="6:47" ph="..." />
+            <marker date="1471087205527" expanded="true" signature="65:1901" ph="{...}" />
+            <marker date="1471087205527" expanded="true" signature="72:133" ph="/// ..." />
+            <marker date="1471087205527" expanded="true" signature="175:1899" ph="{...}" />
+            <marker date="1471087205527" expanded="true" signature="242:302" ph="/// ..." />
+            <marker date="1471087205527" expanded="true" signature="383:499" ph="/// ..." />
+            <marker date="1471087205527" expanded="true" signature="555:623" ph="{...}" />
+            <marker date="1471087205527" expanded="true" signature="664:733" ph="{...}" />
+            <marker date="1471087205527" expanded="true" signature="790:860" ph="{...}" />
+            <marker date="1471087205527" expanded="true" signature="922:1003" ph="{...}" />
+            <marker date="1471087205527" expanded="true" signature="1081:1153" ph="{...}" />
+            <marker date="1471087205527" expanded="true" signature="1247:1893" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../Yakari.Tests/TwoMemberTribeTest.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="22" column="47" selection-start-line="22" selection-start-column="47" selection-end-line="22" selection-end-column="47" />
+          <folding>
+            <marker date="1473118228716" expanded="true" signature="6:219" ph="..." />
+            <marker date="1473118228716" expanded="true" signature="243:1383" ph="{...}" />
+            <marker date="1473118228716" expanded="true" signature="281:1381" ph="{...}" />
+            <marker date="1473118228716" expanded="true" signature="495:730" ph="{...}" />
+            <marker date="1473118228716" expanded="true" signature="797:1373" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../Yakari.Demo/DependencyContainer.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="263">
+          <caret line="22" column="9" selection-start-line="22" selection-start-column="9" selection-end-line="22" selection-end-column="9" />
+          <folding>
+            <marker date="1473117011350" expanded="true" signature="6:95" ph="..." />
+            <marker date="1473117011350" expanded="true" signature="118:3502" ph="{...}" />
+            <marker date="1473117011350" expanded="true" signature="198:3500" ph="{...}" />
+            <marker date="1473117011350" expanded="true" signature="716:841" ph="{...}" />
+            <marker date="1473117011350" expanded="true" signature="916:2551" ph="{...}" />
+            <marker date="1473117011350" expanded="true" signature="2586:2645" ph="{...}" />
+            <marker date="1473117011350" expanded="true" signature="2702:2758" ph="{...}" />
+            <marker date="1473117011350" expanded="true" signature="2789:2880" ph="{...}" />
+            <marker date="1473117011350" expanded="true" signature="2922:3017" ph="{...}" />
+            <marker date="1473117011350" expanded="true" signature="3059:3151" ph="{...}" />
+            <marker date="1473117011350" expanded="true" signature="3206:3304" ph="{...}" />
+            <marker date="1473117011350" expanded="true" signature="3345:3409" ph="{...}" />
+            <marker date="1473117011350" expanded="true" signature="3440:3494" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
