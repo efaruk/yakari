@@ -18,11 +18,11 @@ namespace Yakari.Demo.Konsole
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
 
-            var simpleDemo0 = new DemoSelfDecider(new DependencyContainer(null, null));
-            //var simpleDemo1 = new SimpleDemo(new DependencyContainer(null));
-            //var simpleDemo2 = new SimpleDemo(new DependencyContainer(null));
-            //var simpleDemo3 = new SimpleDemo(new DependencyContainer(null));
-            //var simpleDemo4 = new SimpleDemo(new DependencyContainer(null));
+            var simpleDemo0 = new DemoSelfDecider(new DemoDependencyContainer(null, null));
+            //var simpleDemo1 = new SimpleDemo(new DemoDependencyContainer(null));
+            //var simpleDemo2 = new SimpleDemo(new DemoDependencyContainer(null));
+            //var simpleDemo3 = new SimpleDemo(new DemoDependencyContainer(null));
+            //var simpleDemo4 = new SimpleDemo(new DemoDependencyContainer(null));
             simpleDemo0.StartDemo();
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();

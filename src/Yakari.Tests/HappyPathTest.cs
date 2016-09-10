@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using NUnit.Framework;
 using Yakari.Demo;
 
@@ -8,7 +9,19 @@ namespace Yakari.Tests
     [TestFixture]
     public class HappyPathTest
     {
-         
+        [Test]
+        public void TestHappyPath()
+        {
+            var key = "happy_bird";
+            var container = new DemoDependencyContainer(null, "Single Bird");
+            var happy = new HappyPather(container);
+            var list1 = happy.FillSomeDemoObjectToLocalCache(key);
+            Thread.Sleep(1000);
+            var list2 = happy.GetSomeDemoObjectFromLocal(key);
+            Assert.AreSame(list1, list2);
+            var item = happy.GetSomeDemoObjectFromRemote(key);
+            Assert.AreEqual(list1.Count, ((List<DemoObject>)item.ValueObject).Count);
+        }
     }
 
     public class HappyPather
@@ -17,12 +30,12 @@ namespace Yakari.Tests
         private readonly ILocalCacheProvider _localCache;
         private readonly IRemoteCacheProvider _remoteCache;
 
-        public HappyPather(DependencyContainer dependencyContainer)
+        public HappyPather(DemoDependencyContainer demoDependencyContainer)
         {
-            var container = dependencyContainer;
+            var container = demoDependencyContainer;
             _demoHelper = container.Resolve<IDemoHelper>();
             _localCache = container.Resolve<ILocalCacheProvider>();
-            _remoteCache = container.Resolve<IRemoteCacheProvider>(DependencyContainer.RemoteCacheProviderName);
+            _remoteCache = container.Resolve<IRemoteCacheProvider>();
         }
 
         public List<DemoObject> FillSomeDemoObjectToLocalCache(string key)

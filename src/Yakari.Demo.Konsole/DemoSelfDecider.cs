@@ -7,15 +7,15 @@ namespace Yakari.Demo.Konsole
 {
     public class DemoSelfDecider : IDisposable
     {
-        private readonly DependencyContainer _dependencyContainer;
+        private readonly DemoDependencyContainer _demoDependencyContainer;
         private readonly Timer _timer = new Timer(100);
 
-        public DemoSelfDecider(DependencyContainer dependencyContainer)
+        public DemoSelfDecider(DemoDependencyContainer demoDependencyContainer)
         {
-            _dependencyContainer = dependencyContainer;
-            _demoHelper = _dependencyContainer.Resolve<IDemoHelper>();
-            _logger = _dependencyContainer.Resolve<ILogger>();
-            _localCache = _dependencyContainer.Resolve<ILocalCacheProvider>();
+            _demoDependencyContainer = demoDependencyContainer;
+            _demoHelper = _demoDependencyContainer.Resolve<IDemoHelper>();
+            _logger = _demoDependencyContainer.Resolve<ILogger>();
+            _localCache = _demoDependencyContainer.Resolve<ILocalCacheProvider>();
             _timer.Elapsed += Cycle;
         }
 
@@ -59,7 +59,7 @@ namespace Yakari.Demo.Konsole
 
         public void Dispose()
         {
-            _dependencyContainer.Dispose();
+            _demoDependencyContainer.Dispose();
         }
 
         public void StartDemo()

@@ -68,23 +68,24 @@ namespace Yakari.RedisClient
             get { return false; }
         }
 
-        public override T Get<T>(string key, TimeSpan getTimeout, bool isManagerCall)
+        public override T Get<T>(string key, TimeSpan getTimeout, bool isManagerCall = false)
         {
             _logger.Log(LogLevel.Trace, string.Format("RedisCacheProvider Get {0}", key));
             var data = (string)_database.StringGet(key, CommandFlags.PreferSlave);
+            if (string.IsNullOrWhiteSpace(data)) return default(T);
             // Make get with sliding
             var item = _serializer.Deserialize<T>(data);
             return item;
         }
 
-        public override void Set(string key, object value, TimeSpan expiresIn, bool isManagerCall)
+        public override void Set(string key, object value, TimeSpan expiresIn, bool isManagerCall = false)
         {
             _logger.Log(LogLevel.Debug, string.Format("RedisCacheProvider Set {0}", key));
             var data = _serializer.Serialize(value);
             _database.StringSet(key, data.ToString(), expiresIn, When.Always, CommandFlags.DemandMaster);
         }
 
-        public override void Delete(string key, bool isManagerCall)
+        public override void Delete(string key, bool isManagerCall = false)
         {
             _logger.Log(LogLevel.Trace, string.Format("RedisCacheProvider Delete {0}", key));
             _database.KeyDelete(key, CommandFlags.DemandMaster);
@@ -100,7 +101,7 @@ namespace Yakari.RedisClient
         public override List<string> AllKeys()
         {
             _logger.Log(LogLevel.Trace, "RedisCacheProvider AllKeys");
-            var script = "local result = redis.call(\'SCAN\', \'0\', \'MATCH\', \'*\', \'COUNT\', \'1000000\');\r\nreturn result[2];";
+            const string script = "local result = redis.call(\'SCAN\', \'0\', \'MATCH\', \'*\', \'COUNT\', \'1000000\');\r\nreturn result[2];";
             var lua = LuaScript.Prepare(script);
             var result = _database.ScriptEvaluate(lua);
             var keys = new string [] { };

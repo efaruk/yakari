@@ -5,9 +5,9 @@ using Yakari.Serializers.Newtonsoft;
 
 namespace Yakari.Demo
 {
-    public class DependencyContainer : IDependencyContainer<ServiceContainer>
+    public class DemoDependencyContainer : IDependencyContainer<ServiceContainer>
     {
-        public const string RemoteCacheProviderName = "RemoteCacheProvider";
+        //public const string RemoteCacheProviderName = "RemoteCacheProvider";
         public const string ChannelName = "YakariDemo";
 
         private const string CacheManagerName = "CacheManager";
@@ -16,7 +16,7 @@ namespace Yakari.Demo
         private ServiceContainer _container;
         private ILogger _logger;
 
-        public DependencyContainer(ServiceContainer container, string memberName)
+        public DemoDependencyContainer(ServiceContainer container, string memberName)
         {
             _container = container ?? new ServiceContainer();
             Setup(_container, memberName);
@@ -31,15 +31,15 @@ namespace Yakari.Demo
             _logger.Log("Registering Dependencies...");
             container.Register<IDemoHelper, DemoHelper>();
             container.Register<ISerializer, JsonNetSerializer>();
-            container.Register<IRemoteCacheProvider>(factory => new RedisCacheProvider(ConnectionString, factory.GetInstance<ISerializer>(), factory.GetInstance<ILogger>()), RemoteCacheProviderName);
-            container.GetInstance<IRemoteCacheProvider>(RemoteCacheProviderName);
+            container.Register<IRemoteCacheProvider>(factory => new RedisCacheProvider(ConnectionString, factory.GetInstance<ISerializer>(), factory.GetInstance<ILogger>()));
+            container.GetInstance<IRemoteCacheProvider>();
             container.Register<ISubscriptionManager>(factory
                 => new RedisSubscriptionManager(ConnectionString, ChannelName, factory.GetInstance<ILogger>()));
             container.Register<ILocalCacheProviderOptions>(factory => new LocalCacheProviderOptions(factory.GetInstance<ILogger>()));
             container.Register<ILocalCacheProvider, LittleThunder>();
             if (string.IsNullOrEmpty(memberName)) memberName = Guid.NewGuid().ToString();
             container.Register<ICacheObserver>(factory
-                => new GreatEagle(memberName, factory.GetInstance<ISubscriptionManager>(), factory.GetInstance<ISerializer>(), factory.GetInstance<ILocalCacheProvider>(), factory.GetInstance<IRemoteCacheProvider>(RemoteCacheProviderName), factory.GetInstance<ILogger>())
+                => new GreatEagle(memberName, factory.GetInstance<ISubscriptionManager>(), factory.GetInstance<ISerializer>(), factory.GetInstance<ILocalCacheProvider>(), factory.GetInstance<IRemoteCacheProvider>(), factory.GetInstance<ILogger>())
             , CacheManagerName);
             Initialize();
         }

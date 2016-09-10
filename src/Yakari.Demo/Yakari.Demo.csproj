@@ -58,7 +58,7 @@
   <ItemGroup>
     <Compile Include="DemoHelper.cs" />
     <Compile Include="DemoObject.cs" />
-    <Compile Include="DependencyContainer.cs" />
+    <Compile Include="DemoDependencyContainer.cs" />
     <Compile Include="IDemoHelper.cs" />
     <Compile Include="IDependencyContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

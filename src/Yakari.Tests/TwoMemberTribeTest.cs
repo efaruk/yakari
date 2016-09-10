@@ -13,16 +13,16 @@ namespace Yakari.Tests
 {
     public class TwoMemberTribeTest
     {
-        private DependencyContainer member1Container;
-        private DependencyContainer member2Container;
+        private DemoDependencyContainer _member1Container;
+        private DemoDependencyContainer _member2Container;
         private IDemoHelper _demoHelper;
 
         [OneTimeSetUp]
         public void FixtureSetup()
         {
-            member1Container = new DependencyContainer(null, "Member 1");
-            member2Container = new DependencyContainer(null, "Member 2");
-            _demoHelper = member1Container.Resolve<IDemoHelper>();
+            _member1Container = new DemoDependencyContainer(null, "Member 1");
+            _member2Container = new DemoDependencyContainer(null, "Member 2");
+            _demoHelper = _member1Container.Resolve<IDemoHelper>();
         }
 
         [Test]
@@ -30,12 +30,12 @@ namespace Yakari.Tests
         {
             var key = "demo_object_list";
             var items = _demoHelper.GenerateDemoObjects(1000);
-            var member1Local = member1Container.Resolve<ILocalCacheProvider>();
-            var member2Local = member2Container.Resolve<ILocalCacheProvider>();
+            var member1Local = _member1Container.Resolve<ILocalCacheProvider>();
+            var member2Local = _member2Container.Resolve<ILocalCacheProvider>();
             member1Local.Set(key, items, CacheTime.FifteenMinutes);
             var list1 = member1Local.Get<List<DemoObject>>(key, TimeSpan.FromSeconds(5));
             var list2 = member2Local.Get<List<DemoObject>>(key, TimeSpan.FromSeconds(5));
-            Assert.AreEqual(list1, list2);
+            Assert.AreEqual(list1.Count, list2.Count);
         }
 
 
