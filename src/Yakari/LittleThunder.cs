@@ -159,7 +159,8 @@ namespace Yakari
         private void OnBeforeSetWrapper(string key, InMemoryCacheItem item, bool isManagerCall)
         {
             if (isManagerCall) return;
-            ThreadHelper.RunOnDifferentThread(() => { if (OnBeforeSet != null) OnBeforeSet(key, item); }, true);
+            //ThreadHelper.RunOnDifferentThread(() => { if (OnBeforeSet != null) OnBeforeSet(key, item); }, true);
+            if (OnBeforeSet != null) OnBeforeSet(key, item);
         }
 
         public override void Delete(string key, bool isManagerCall)

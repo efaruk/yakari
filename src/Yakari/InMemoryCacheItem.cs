@@ -5,7 +5,7 @@ namespace Yakari
 {
     public class InMemoryCacheItem
     {
-        private InMemoryCacheItem()
+        public InMemoryCacheItem()
         {
             
         }
@@ -16,13 +16,13 @@ namespace Yakari
             Slidable = slidable;
         }
 
-        public InMemoryCacheItem(object valueObject, DateTime expiresAt, bool slidable = false): this(slidable)
+        public InMemoryCacheItem(dynamic valueObject, DateTime expiresAt, bool slidable = false): this(slidable)
         {
             ValueObject = valueObject;
             ExpireDateUtc = expiresAt;
         }
 
-        public InMemoryCacheItem(object valueObject, TimeSpan expiresAfter, bool slidable = false) : this(slidable)
+        public InMemoryCacheItem(dynamic valueObject, TimeSpan expiresAfter, bool slidable = false) : this(slidable)
         {
             ValueObject = valueObject;
             ExpireDateUtc = DateTime.UtcNow.Add(expiresAfter);
@@ -33,7 +33,7 @@ namespace Yakari
         /// <summary>
         ///     It has to be serializable with chosen serialization method.
         /// </summary>
-        public object ValueObject { get; }
+        public dynamic ValueObject { get; set; }
 
         public DateTime ExpireDateUtc { get; private set; }
 
