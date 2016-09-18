@@ -1,5 +1,7 @@
 **Yakari**
 
+[![Build status](https://ci.appveyor.com/api/projects/status/0e86yl55qxo81xkr?svg=true)](https://ci.appveyor.com/project/efaruk/yakari)
+
 Yakari is aimed to reduce distributed caching systems serialization/deserialization and network operation costs.
 You simply work with your localCache, the GreatEagle observe's your operations and take care of everything.
 In yakari if you set 1 object it makes 1 serialization and 1 network operation, for first get operation it makes 1 network operation, 1 deserialization, after then there is no deserialization or network operation you can get your cache object from your localCache, how much you want. 
