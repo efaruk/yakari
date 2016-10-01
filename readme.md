@@ -9,6 +9,8 @@ Project is aimed to reduce distributed caching systems serialization/deserializa
 You simply work with your localCache, the GreatEagle observe's your operations and take care of everything.
 In yakari if you set 1 object it makes 1 serialization and 1 network operation, for first get operation it makes 1 network operation, 1 deserialization, after then there is no deserialization or network operation you can get your cache object from your localCache, how much you want. 
 
+And it will be easy as adding Yakari nuget package **(coming soon)**...
+
 Under heavy development, don't try anything fancy, just wait for developments(Press **Watch** if you really curious...)
 
 Currently unit tests are passing but there are lot more to do...
