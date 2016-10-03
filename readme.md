@@ -27,6 +27,6 @@ You can ping me at: https://twitter.com/farukpehlivanli
 
 [1.1]: http://i.imgur.com/wWzX9uB.png
 
-Please [![tweet][1.1]][1] (https://twitter.com/intent/tweet?url=https://github.com/efaruk/yakari&text=Yakari%20Cache%20Distributor&hashtags=Distributed,InMemory,Cache,.Net,dotnet) us ;)
+Please [![tweet][1.1]][tweet] (https://twitter.com/intent/tweet?url=https://github.com/efaruk/yakari&text=Yakari%20Cache%20Distributor&hashtags=Distributed,InMemory,Cache,.Net,dotnet) us ;)
 
 Regards...
