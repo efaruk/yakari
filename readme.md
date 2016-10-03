@@ -25,6 +25,6 @@ We Need Help for
 
 You can ping me at: https://twitter.com/farukpehlivanli
 
-Please tweer us [https://twitter.com/intent/tweet?url=https://github.com/efaruk/yakari&text=Yakari Cache Distributor&hashtags=Distributed,InMemory,Cache,.Net,dotnet]
+Please [tweet](https://twitter.com/intent/tweet?url=https://github.com/efaruk/yakari&text=Yakari%20Cache%20Distributor&hashtags=Distributed,InMemory,Cache,.Net,dotnet) us ;)
 
 Regards...
