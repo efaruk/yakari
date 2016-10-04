@@ -23,7 +23,9 @@ We Need Help for
 3. Review
 4. Coding
 
-You can ping me at: https://twitter.com/farukpehlivanli
+You can ping me at: https://twitter.com/farukpehlivanli or https://tr.linkedin.com/in/efaruk
+Our Slack Team Domain: https://yakariteam.slack.com/
+
 
 [1.1]: http://i.imgur.com/wWzX9uB.png
 
