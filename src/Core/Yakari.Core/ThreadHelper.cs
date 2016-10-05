@@ -9,7 +9,6 @@ namespace Yakari.Core
         public static void RunOnDifferentThread(Action action, bool swallowException = false)
         {
             ThreadPool.QueueUserWorkItem(t =>
-            //Task.Run(() =>
             {
                 try
                 {
@@ -27,7 +26,6 @@ namespace Yakari.Core
         public static void RunOnDifferentThread(Action action, Action<Exception> catchAction)
         {
             ThreadPool.QueueUserWorkItem(t =>
-            //Task.Run(() =>
             {
                 try
                 {
