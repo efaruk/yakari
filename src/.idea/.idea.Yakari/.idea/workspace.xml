@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="28ac7d30-0a96-4762-821e-220ae7909e12" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../Yakari.RedisClient/packages.config" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../Yakari.Demo.Konsole/Yakari.Demo.Konsole.csproj" afterPath="$PROJECT_DIR$/../../Yakari.Demo.Konsole/Yakari.Demo.Konsole.csproj" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../Yakari.Demo.Konsole/packages.config" afterPath="$PROJECT_DIR$/../../Yakari.Demo.Konsole/packages.config" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../Yakari.Demo/Yakari.Demo.csproj" afterPath="$PROJECT_DIR$/../../Yakari.Demo/Yakari.Demo.csproj" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../Yakari.Demo/packages.config" afterPath="$PROJECT_DIR$/../../Yakari.Demo/packages.config" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../Yakari.RedisClient/Yakari.RedisClient.csproj" afterPath="$PROJECT_DIR$/../../Yakari.RedisClient/Yakari.RedisClient.csproj" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../Yakari.Tests/Yakari.Tests.csproj" afterPath="$PROJECT_DIR$/../../Yakari.Tests/Yakari.Tests.csproj" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../Yakari.Tests/packages.config" afterPath="$PROJECT_DIR$/../../Yakari.Tests/packages.config" />
     </list>
     <ignored path="Yakari.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -50,8 +42,8 @@
       <file leaf-file-name="packages.config" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../../Yakari.RedisClient/packages.config">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="51">
+              <caret line="3" column="11" selection-start-line="3" selection-start-column="11" selection-end-line="3" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -113,20 +105,6 @@
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Yakari (6 projects)" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Yakari.RedisClient" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
         <option name="show-file-system" value="false" />
       </pane>
@@ -178,12 +156,12 @@
       <workItem from="1471087782592" duration="258000" />
       <workItem from="1472683158366" duration="30000" />
       <workItem from="1473116803182" duration="1708000" />
-      <workItem from="1475679932556" duration="476000" />
+      <workItem from="1475679932556" duration="712000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3015000" />
+    <option name="totallyTimeSpent" value="3251000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -196,10 +174,10 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1365" y="0" width="1922" height="1081" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Change Signature" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25572917" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25572917" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Errors in solution" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32978722" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3296146" sideWeight="0.49791667" order="7" side_tool="false" content_ui="tabs" />
@@ -339,8 +317,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../Yakari.RedisClient/packages.config">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="51">
+          <caret line="3" column="11" selection-start-line="3" selection-start-column="11" selection-end-line="3" selection-end-column="11" />
           <folding />
         </state>
       </provider>
