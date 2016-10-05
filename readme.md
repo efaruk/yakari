@@ -1,11 +1,9 @@
+![Yakari Logo](https://github.com/efaruk/yakari/blob/master/docs/logo/YakariLogoSmall.png) 
 Yakari
 ======
 [1.1]: http://i.imgur.com/wWzX9uB.png
 
 [![Build status](https://ci.appveyor.com/api/projects/status/0e86yl55qxo81xkr?svg=true)](https://ci.appveyor.com/project/efaruk/yakari)
-
-![Yakari Logo]
-(https://github.com/efaruk/yakari/blob/master/docs/logo/YakariLogoSmall.png)
 
 Yakari is simply in memory cache distributor.
 
