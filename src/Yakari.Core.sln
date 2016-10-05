@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Yakari.Core", "Core\Yakari.Core\Yakari.Core.xproj", "{C0AEA439-D4EE-4F12-A074-04EC0558141C}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Yakari.Core.RedisClient", "Core\Yakari.Core.RedisClient\Yakari.Core.RedisClient.xproj", "{C5CEF490-D2DF-40E0-8B36-7EB48F2C0CFC}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Yakari.Core.Serializers.Newtonsoft", "Core\Yakari.Core.Serializers.Newtonsoft\Yakari.Core.Serializers.Newtonsoft.xproj", "{A8E05AE6-04C5-4332-92C6-D38D9C850B71}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{24B55800-CE2A-4155-9067-EC421E593CF7}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Yakari.Core.Tests", "Core\Yakari.Core.Tests\Yakari.Core.Tests.xproj", "{4A826A47-BAD1-4877-A1CD-FE9F236C8CB9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{657378BD-21B1-402D-8589-39552FC851C7}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Yakari.Core.Demo", "Core\Yakari.Core.Demo\Yakari.Core.Demo.xproj", "{0F835326-3D5F-4A77-AA36-51B0DD6F6F5C}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Yakari.Core.Demo.Konsole", "Core\Yakari.Core.Demo.Konsole\Yakari.Core.Demo.Konsole.xproj", "{93E50299-7683-41A0-A060-A80B82B96D4A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C0AEA439-D4EE-4F12-A074-04EC0558141C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0AEA439-D4EE-4F12-A074-04EC0558141C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0AEA439-D4EE-4F12-A074-04EC0558141C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0AEA439-D4EE-4F12-A074-04EC0558141C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5CEF490-D2DF-40E0-8B36-7EB48F2C0CFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5CEF490-D2DF-40E0-8B36-7EB48F2C0CFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5CEF490-D2DF-40E0-8B36-7EB48F2C0CFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5CEF490-D2DF-40E0-8B36-7EB48F2C0CFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8E05AE6-04C5-4332-92C6-D38D9C850B71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8E05AE6-04C5-4332-92C6-D38D9C850B71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8E05AE6-04C5-4332-92C6-D38D9C850B71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8E05AE6-04C5-4332-92C6-D38D9C850B71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A826A47-BAD1-4877-A1CD-FE9F236C8CB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A826A47-BAD1-4877-A1CD-FE9F236C8CB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A826A47-BAD1-4877-A1CD-FE9F236C8CB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A826A47-BAD1-4877-A1CD-FE9F236C8CB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F835326-3D5F-4A77-AA36-51B0DD6F6F5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F835326-3D5F-4A77-AA36-51B0DD6F6F5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F835326-3D5F-4A77-AA36-51B0DD6F6F5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F835326-3D5F-4A77-AA36-51B0DD6F6F5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93E50299-7683-41A0-A060-A80B82B96D4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93E50299-7683-41A0-A060-A80B82B96D4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93E50299-7683-41A0-A060-A80B82B96D4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93E50299-7683-41A0-A060-A80B82B96D4A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4A826A47-BAD1-4877-A1CD-FE9F236C8CB9} = {24B55800-CE2A-4155-9067-EC421E593CF7}
+		{0F835326-3D5F-4A77-AA36-51B0DD6F6F5C} = {657378BD-21B1-402D-8589-39552FC851C7}
+		{93E50299-7683-41A0-A060-A80B82B96D4A} = {657378BD-21B1-402D-8589-39552FC851C7}
+	EndGlobalSection
+EndGlobal
