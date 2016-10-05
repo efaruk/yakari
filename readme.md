@@ -1,6 +1,8 @@
 Yakari
 ======
 
+![Yakari Logo](https://github.com/efaruk/yakari/blob/master/docs/logo/YakariLogoSmall.png)
+
 [![Build status](https://ci.appveyor.com/api/projects/status/0e86yl55qxo81xkr?svg=true)](https://ci.appveyor.com/project/efaruk/yakari)
 
 Yakari is simply in memory cache distributor.
@@ -23,6 +25,11 @@ We Need Help for
 3. Review
 4. Coding
 
-You can ping me at: https://twitter.com/farukpehlivanli
+You can ping me at: https://twitter.com/farukpehlivanli or https://tr.linkedin.com/in/efaruk
 
-Regards...
+Our #Slack Team Domain: https://yakariteam.slack.com/
+
+
+Please [![Tweet](http://i.imgur.com/wWzX9uB.png)](https://twitter.com/intent/tweet?url=https://github.com/efaruk/yakari&text=Yakari%20Cache%20Distributor&hashtags=Distributed,InMemory,Cache,dotnet) us ;)
+
+Thanks and regards...
