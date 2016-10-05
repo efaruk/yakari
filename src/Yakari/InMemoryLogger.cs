@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Yakari.Interfaces;
 
 namespace Yakari
 {
@@ -8,7 +9,7 @@ namespace Yakari
     /// </summary>
     public class InMemoryLogger : ILogger
     {
-        private readonly LogLevel _minimumLogLevel;
+        readonly LogLevel _minimumLogLevel;
         /// <summary>
         ///     LogList
         /// </summary>
@@ -43,7 +44,7 @@ namespace Yakari
             LogInternal(level, message, exception);
         }
 
-        private void LogInternal(LogLevel level, string message, Exception exception = null)
+        void LogInternal(LogLevel level, string message, Exception exception = null)
         {
             ThreadHelper.RunOnDifferentThread(() =>
             {

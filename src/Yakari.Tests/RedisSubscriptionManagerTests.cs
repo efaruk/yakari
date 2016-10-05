@@ -2,20 +2,21 @@
 using NSubstitute;
 using NUnit.Framework;
 using StackExchange.Redis;
+using Yakari.Interfaces;
 using Yakari.RedisClient;
-using Yakari.Serializers.Newtonsoft;
+using Yakari.Serializer.Newtonsoft;
 
 namespace Yakari.Tests
 {
     [TestFixture]
     public class RedisSubscriptionManagerTests
     {
-        private ILogger _logger;
-        private ServiceContainer _container;
-        private IConnectionMultiplexer _mockConnectionMultiplexer;
-        private ISubscriber _mockSubscriber;
-        private ISubscriptionManager _subscriptionManager;
-        private ISerializer _serializer;
+        ILogger _logger;
+        ServiceContainer _container;
+        IConnectionMultiplexer _mockConnectionMultiplexer;
+        ISubscriber _mockSubscriber;
+        ISubscriptionManager _subscriptionManager;
+        ISerializer _serializer;
 
         [OneTimeSetUp]
         public void FixtureSetup()

@@ -10,7 +10,7 @@ namespace Yakari
             
         }
 
-        private InMemoryCacheItem(bool slidable)
+        InMemoryCacheItem(bool slidable)
         {
             CreatedDateUtc = DateTime.UtcNow;
             Slidable = slidable;
@@ -39,14 +39,8 @@ namespace Yakari
 
         public readonly DateTime CreatedDateUtc;
 
-        private long _hitCount;
-        public long HitCount
-        {
-            get
-            {
-                return Interlocked.Read(ref _hitCount);
-            }
-        }
+        long _hitCount;
+        public long HitCount => Interlocked.Read(ref _hitCount);
 
         public override bool Equals(object obj)
         {
@@ -71,10 +65,7 @@ namespace Yakari
             ExpireDateUtc = DateTime.UtcNow.Add(slideFor);
         }
 
-        public bool IsExpired()
-        {
-            return DateTime.UtcNow >= ExpireDateUtc;
-        }
+        public bool IsExpired => DateTime.UtcNow >= ExpireDateUtc;
 
         public bool WillBeExpired(TimeSpan after)
         {
@@ -86,11 +77,6 @@ namespace Yakari
             return at >= ExpireDateUtc;
         }
 
-        public TimeSpan GetExpireTimeSpan()
-        {
-            var current = ExpireDateUtc.Subtract(DateTime.UtcNow);
-            return current;
-        }
-
+        public TimeSpan ExpiresAtTimeSpan => ExpireDateUtc.Subtract(DateTime.UtcNow);
     }
 }

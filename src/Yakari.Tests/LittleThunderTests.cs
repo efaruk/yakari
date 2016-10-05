@@ -6,19 +6,20 @@ using LightInject;
 using NSubstitute;
 using NUnit.Framework;
 using Yakari.Demo;
+using Yakari.Interfaces;
 
 namespace Yakari.Tests
 {
     [TestFixture]
     public class LittleThunderTests
     {
-        private ServiceContainer _container;
-        private ILogger _logger;
-        private ILocalCacheProvider _cache;
-        private IDemoHelper _demoHelper;
+        ServiceContainer _container;
+        ILogger _logger;
+        ILocalCacheProvider _cache;
+        IDemoHelper _demoHelper;
         //private ICacheObserver _mockCacheManager;
 
-        private const string DemoObjectListKey = "DemoObjectList";
+        const string DemoObjectListKey = "DemoObjectList";
 
 
         [OneTimeSetUp]
@@ -55,45 +56,45 @@ namespace Yakari.Tests
             _onBeforeGetTimeout = TimeSpan.Zero;
         }
 
-        private string _onAfterDeleteKey;
-        private string _onBeforeDeleteKey;
-        private string _onAfterSetKey;
-        private string _onBeforeSetKey;
-        private InMemoryCacheItem _onBeforeSetItem;
-        private string _onAfterGetKey;
-        private string _onBeforeGetKey;
-        private TimeSpan _onBeforeGetTimeout;
+        string _onAfterDeleteKey;
+        string _onBeforeDeleteKey;
+        string _onAfterSetKey;
+        string _onBeforeSetKey;
+        InMemoryCacheItem _onBeforeSetItem;
+        string _onAfterGetKey;
+        string _onBeforeGetKey;
+        TimeSpan _onBeforeGetTimeout;
 
 
         #region Private Methods
 
-        private void _cache_OnAfterDelete(string key)
+        void _cache_OnAfterDelete(string key)
         {
             _onAfterDeleteKey = key;
         }
 
-        private void _cache_OnBeforeDelete(string key)
+        void _cache_OnBeforeDelete(string key)
         {
             _onBeforeDeleteKey = key;
         }
 
-        private void _cache_OnAfterSet(string key)
+        void _cache_OnAfterSet(string key)
         {
             _onAfterSetKey = key;
         }
 
-        private void _cache_OnBeforeSet(string key, InMemoryCacheItem item)
+        void _cache_OnBeforeSet(string key, InMemoryCacheItem item)
         {
             _onBeforeSetKey = key;
             _onBeforeSetItem = item;
         }
 
-        private void _cache_OnAfterGet(string key)
+        void _cache_OnAfterGet(string key)
         {
             _onAfterGetKey = key;
         }
 
-        private void _cache_OnBeforeGet(string key, TimeSpan timeout)
+        void _cache_OnBeforeGet(string key, TimeSpan timeout)
         {
             _onBeforeGetKey = key;
             _onBeforeGetTimeout = timeout;

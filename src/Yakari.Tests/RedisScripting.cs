@@ -1,23 +1,29 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using StackExchange.Redis;
+using Yakari.Tests.Helper;
 
 namespace Yakari.Tests
 {
     [TestFixture]
     public class RedisScripting
     {
-        private IDatabase _database;
-        private ConnectionMultiplexer _redisConnectionMultiplexer;
-        private IServer _redisServer;
-        private const int TestItemCount = 10000;
+        IDatabase _database;
+        ConnectionMultiplexer _redisConnectionMultiplexer;
+        IServer _redisServer;
+        const int TestItemCount = 10000;
 
         [OneTimeSetUp]
         public void FixtureSetup()
         {
-            _redisConnectionMultiplexer = ConnectionMultiplexer.Connect("172.17.0.1:6379,abortConnect=false,defaultDatabase=0,keepAlive=300,resolveDns=false,synctimeout=5000");
-            _redisServer = _redisConnectionMultiplexer.GetServer("172.17.0.1:6379");
+            var redis = SettingsHelper.Redis;
+            if (string.IsNullOrEmpty(redis))
+                redis = "127.0.0.1:6379";
+
+            _redisConnectionMultiplexer = ConnectionMultiplexer.Connect($"{redis},abortConnect=false,defaultDatabase=0,keepAlive=300,resolveDns=false,synctimeout=5000");
+            _redisServer = _redisConnectionMultiplexer.GetServer(redis);
             _database = _redisConnectionMultiplexer.GetDatabase();
         }
 

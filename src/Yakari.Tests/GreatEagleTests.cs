@@ -3,16 +3,17 @@ using LightInject;
 using NSubstitute;
 using NUnit.Framework;
 using Yakari.Demo;
-using Yakari.Serializers.Newtonsoft;
+using Yakari.Interfaces;
+using Yakari.Serializer.Newtonsoft;
 
 namespace Yakari.Tests
 {
     [TestFixture]
     public class GreatEagleTests
     {
-        private ILogger _logger;
-        private ServiceContainer _container;
-        private ICacheObserver _observer;
+        ILogger _logger;
+        ServiceContainer _container;
+        ICacheObserver _observer;
 
 
         [OneTimeSetUp]

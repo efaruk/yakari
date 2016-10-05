@@ -1,6 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
-using Yakari.Serializers.Newtonsoft;
+using Yakari.Serializer.Newtonsoft;
 
 namespace Yakari.Tests
 {

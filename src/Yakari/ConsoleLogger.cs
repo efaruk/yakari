@@ -1,10 +1,11 @@
 ﻿using System;
+using Yakari.Interfaces;
 
 namespace Yakari
 {
     public class ConsoleLogger : ILogger
     {
-        private readonly LogLevel _minimumLogLevel;
+        readonly LogLevel _minimumLogLevel;
 
         public ConsoleLogger(LogLevel minimumLogLevel)
         {
@@ -31,7 +32,7 @@ namespace Yakari
             LogInternal(level, message, exception);
         }
 
-        private void LogInternal(LogLevel level, string message, Exception exception = null)
+        void LogInternal(LogLevel level, string message, Exception exception = null)
         {
             ThreadHelper.RunOnDifferentThread(() =>
             {

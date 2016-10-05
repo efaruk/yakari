@@ -1,4 +1,5 @@
 ﻿using System;
+using Yakari.Interfaces;
 
 namespace Yakari
 {

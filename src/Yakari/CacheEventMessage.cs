@@ -1,3 +1,5 @@
+using Yakari.Interfaces;
+
 namespace Yakari
 {
     public class CacheEventMessage : ICacheEventMessage
