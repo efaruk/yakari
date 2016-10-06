@@ -3,7 +3,7 @@
 
     "dependencies": {
         "NETStandard.Library": "1.6.0",
-        "StackExchange.Redis": "1.1.605",
+        "StackExchange.Redis": "1.1.608",
         "Yakari": "1.0.0-*"
     },
 

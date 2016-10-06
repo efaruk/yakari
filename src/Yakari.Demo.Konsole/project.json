@@ -4,13 +4,10 @@
     "emitEntryPoint": true
   },
 
-  "dependencies": {
-    "Microsoft.NETCore.App": {
-        "type": "platform",
-        "version": "1.0.1"
+    "dependencies": {
+        "Microsoft.NETCore.App": "1.0.1",
+        "Yakari.Demo": "1.0.0-*"
     },
-    "Yakari.Demo": "1.0.0-*"
-  },
 
   "frameworks": {
     "netcoreapp1.0": {

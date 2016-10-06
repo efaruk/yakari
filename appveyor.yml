@@ -1,0 +1,40 @@
+# branches to build
+branches:
+  # whitelist
+  only:
+    - master
+
+# Do not build on tags (GitHub and BitBucket)
+skip_tags: true
+
+# Maximum number of concurrent jobs for the project
+max_jobs: 1
+
+# clone directory
+clone_folder: c:\yakari
+
+# fetch repository as zip archive
+shallow_clone: true 
+
+# set clone depth
+clone_depth: 5 
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+
+# build platform, i.e. x86, x64, Any CPU. This setting is optional.
+platform: Any CPU
+
+# build Configuration, i.e. Debug, Release, etc.
+configuration: Release
+
+build:
+  parallel: true               # enable MSBuild parallel builds
+  project: src/Yakari.sln      # path to Visual Studio solution or project
+
+  # MSBuild verbosity level
+  verbosity: minimal
+
+before_build:
+  - nuget restore
