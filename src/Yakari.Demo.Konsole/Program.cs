@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace Yakari.Demo.Konsole
 {
-    class Program
+    internal class Program
     {
         // ReSharper disable once UnusedParameter.Local
         static void Main(string[] args)
@@ -26,16 +26,15 @@ namespace Yakari.Demo.Konsole
             simpleDemo0.StartDemo();
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
-            simpleDemo0.StopDemo();
         }
 
-        private static int Test_OnDelegate2(string data)
+        static int Test_OnDelegate2(string data)
         {
             Console.WriteLine("Delegate2: {0}", Thread.CurrentThread.ManagedThreadId);
             return 0;
         }
 
-        private static void Test_OnDelegate1(string data)
+        static void Test_OnDelegate1(string data)
         {
             Console.WriteLine("Delegate1: {0}", Thread.CurrentThread.ManagedThreadId);
         }

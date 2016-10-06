@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2CF75E5D-8AD2-49A9-B3BF-E40EE167C360}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Yakari.Tests</RootNamespace>
+    <AssemblyName>Yakari.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Bogus, Version=7.1.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bogus.7.1.6\lib\net40\Bogus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="LightInject, Version=4.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LightInject.4.1.2\lib\net46\LightInject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NSubstitute, Version=1.10.0.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
+      <HintPath>..\packages\NSubstitute.1.10.0.0\lib\net45\NSubstitute.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StackExchange.Redis, Version=1.1.608.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StackExchange.Redis.1.1.608\lib\net46\StackExchange.Redis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Yakari.Tests\CacheProviderOptionsTests.cs">
+      <Link>CacheProviderOptionsTests.cs</Link>
+    </Compile>
+    <Compile Include="..\Yakari.Tests\GreatEagleTests.cs">
+      <Link>GreatEagleTests.cs</Link>
+    </Compile>
+    <Compile Include="..\Yakari.Tests\HappyPathTest.cs">
+      <Link>HappyPathTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Yakari.Tests\JsonNetSerializerTests.cs">
+      <Link>JsonNetSerializerTests.cs</Link>
+    </Compile>
+    <Compile Include="..\Yakari.Tests\LittleThunderTests.cs">
+      <Link>LittleThunderTests.cs</Link>
+    </Compile>
+    <Compile Include="..\Yakari.Tests\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Yakari.Tests\RedisScripting.cs">
+      <Link>RedisScripting.cs</Link>
+    </Compile>
+    <Compile Include="..\Yakari.Tests\RedisSubscriptionManagerTests.cs">
+      <Link>RedisSubscriptionManagerTests.cs</Link>
+    </Compile>
+    <Compile Include="..\Yakari.Tests\TestConstants.cs">
+      <Link>TestConstants.cs</Link>
+    </Compile>
+    <Compile Include="..\Yakari.Tests\TwoMemberTribeTest.cs">
+      <Link>TwoMemberTribeTest.cs</Link>
+    </Compile>
+    <Compile Include="Helper\SettingsHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Yakari.Build\Yakari.csproj">
+      <Project>{c799c180-f985-4e79-86f2-199f8e868d06}</Project>
+      <Name>Yakari</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yakari.Demo.Build\Yakari.Demo.csproj">
+      <Project>{a36c27bb-0d67-42e5-94b3-57cf568099ed}</Project>
+      <Name>Yakari.Demo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yakari.Demo.Konsole.Build\Yakari.Demo.Konsole.csproj">
+      <Project>{9499a148-fee9-445f-9b12-c6610f3c799b}</Project>
+      <Name>Yakari.Demo.Konsole</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yakari.RedisClient.Build\Yakari.RedisClient.csproj">
+      <Project>{63e626e2-68f1-4fb4-ad39-8ac3ee7179e8}</Project>
+      <Name>Yakari.RedisClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yakari.Serializers.Newtonsoft.Build\Yakari.Serializers.Newtonsoft.csproj">
+      <Project>{2735112d-5c31-488d-a822-32be5e74a99d}</Project>
+      <Name>Yakari.Serializers.Newtonsoft</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

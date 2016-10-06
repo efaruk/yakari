@@ -1,18 +1,19 @@
 ﻿using System;
 using StackExchange.Redis;
+using Yakari.Interfaces;
 
 namespace Yakari.RedisClient
 {
     public class RedisSubscriptionManager : ISubscriptionManager
     {
-        private string _channelName;
-        private readonly ILogger _logger;
-        private static IConnectionMultiplexer _redisConnectionMultiplexer;
+        string _channelName;
+        readonly ILogger _logger;
+        static IConnectionMultiplexer _redisConnectionMultiplexer;
 
         public RedisSubscriptionManager(string connectionString, string channelName, ILogger logger)
         {
             _logger = logger;
-            _logger.Log(LogLevel.Trace, string.Format("RedisSubscriptionManager : connectionString={0}, channelName={1}", connectionString, channelName));
+            _logger.Log(LogLevel.Trace, $"RedisSubscriptionManager : connectionString={connectionString}, channelName={channelName}");
             _channelName = channelName;
             _redisConnectionMultiplexer = ConnectionMultiplexer.Connect(connectionString);
         }
@@ -20,7 +21,7 @@ namespace Yakari.RedisClient
         public RedisSubscriptionManager(ConfigurationOptions redisConfigurationOptions, string channelName, ILogger logger)
         {
             _logger = logger;
-            _logger.Log(LogLevel.Trace, string.Format("RedisSubscriptionManager : redisConfigurationOptions={0}, channelName={1}", redisConfigurationOptions, channelName));
+            _logger.Log(LogLevel.Trace, $"RedisSubscriptionManager : redisConfigurationOptions={redisConfigurationOptions}, channelName={channelName}");
             _channelName = channelName;
             _redisConnectionMultiplexer = ConnectionMultiplexer.Connect(redisConfigurationOptions);
         }
@@ -34,40 +35,31 @@ namespace Yakari.RedisClient
 
         public void ReConnect(string connectionString, string channelName,  bool waitForDisconnect = true)
         {
-            _logger.Log(LogLevel.Trace, string.Format("RedisSubscriptionManager ReConnect: connectionString={0}, channelName={1}", connectionString, channelName));
+            _logger.Log(LogLevel.Trace, $"RedisSubscriptionManager ReConnect: connectionString={connectionString}, channelName={channelName}");
             _channelName = channelName;
-            if (_redisConnectionMultiplexer != null)
-            {
-                _redisConnectionMultiplexer.Close(waitForDisconnect);
-            }
+            _redisConnectionMultiplexer?.Close(waitForDisconnect);
             _redisConnectionMultiplexer = ConnectionMultiplexer.Connect(connectionString);
         }
 
         public void ReConnect(ConfigurationOptions redisConfigurationOptions, string channelName, bool waitForDisconnect = true)
         {
-            _logger.Log(LogLevel.Trace, string.Format("RedisSubscriptionManager ReConnect: redisConfigurationOptions={0}, channelName={1}", redisConfigurationOptions, channelName));
+            _logger.Log(LogLevel.Trace, $"RedisSubscriptionManager ReConnect: redisConfigurationOptions={redisConfigurationOptions}, channelName={channelName}");
             _channelName = channelName;
-            if (_redisConnectionMultiplexer != null)
-            {
-                _redisConnectionMultiplexer.Close(waitForDisconnect);
-            }
+            _redisConnectionMultiplexer?.Close(waitForDisconnect);
             _redisConnectionMultiplexer = ConnectionMultiplexer.Connect(redisConfigurationOptions);
         }
 
-        private ISubscriber Subscriber
-        {
-            get { return _redisConnectionMultiplexer.GetSubscriber(); }
-        }
+        ISubscriber Subscriber => _redisConnectionMultiplexer.GetSubscriber();
 
         public virtual void Publish(string message)
         {
-            _logger.Log(LogLevel.Trace, string.Format("RedisSubscriptionManager Publish Message : {0}", message));
+            _logger.Log(LogLevel.Trace, $"RedisSubscriptionManager Publish Message : {message}");
             if (Subscriber == null) throw InvalidOperationException();
             var redisChannel = new RedisChannel(_channelName, RedisChannel.PatternMode.Auto);
             Subscriber.PublishAsync(redisChannel, message);
         }
 
-        private void OnReceived(RedisChannel redisChannel, RedisValue redisValue)
+        void OnReceived(RedisChannel redisChannel, RedisValue redisValue)
         {
             if (_channelName != redisChannel) return;
             MessageReceived(redisValue);
@@ -89,15 +81,12 @@ namespace Yakari.RedisClient
 
         public void MessageReceived(string message)
         {
-            _logger.Log(LogLevel.Trace, string.Format("RedisSubscriptionManager Message Received: {0}", message));
-            if (OnMessageReceived != null)
-            {
-                OnMessageReceived(message);
-            }
+            _logger.Log(LogLevel.Trace, $"RedisSubscriptionManager Message Received: {message}");
+            OnMessageReceived?.Invoke(message);
         }
 
         public event MessageReceived OnMessageReceived;
 
-        private InvalidOperationException InvalidOperationException() { return new InvalidOperationException("Subscriber can't be null, manager not initialized properly..."); }
+        InvalidOperationException InvalidOperationException() { return new InvalidOperationException("Subscriber can't be null, manager not initialized properly..."); }
     }
 }

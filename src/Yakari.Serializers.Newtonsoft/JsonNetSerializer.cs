@@ -1,10 +1,11 @@
 ﻿using Newtonsoft.Json;
+using Yakari.Interfaces;
 
-namespace Yakari.Serializers.Newtonsoft
+namespace Yakari.Serializer.Newtonsoft
 {
     public class JsonNetSerializer : ISerializer
     {
-        private JsonSerializerSettings _settings;
+        JsonSerializerSettings _settings;
 
         public JsonNetSerializer()
         {

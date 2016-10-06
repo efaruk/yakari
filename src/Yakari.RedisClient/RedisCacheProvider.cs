@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using StackExchange.Redis;
+using Yakari.Interfaces;
 
 namespace Yakari.RedisClient
 {
     public class RedisCacheProvider: BaseCacheProvider, IRemoteCacheProvider
     {
-        private readonly ISerializer _serializer;
-        private readonly ILogger _logger;
-        private ConnectionMultiplexer _redisConnectionMultiplexer;
-        private IDatabase _database;
+        readonly ISerializer _serializer;
+        readonly ILogger _logger;
+        ConnectionMultiplexer _redisConnectionMultiplexer;
+        IDatabase _database;
 
         public RedisCacheProvider(string connectionString, ISerializer serializer, ILogger logger)
         {
@@ -28,29 +29,23 @@ namespace Yakari.RedisClient
 
         public void ReConnect(string connectionString, bool waitForDisconnect = true)
         {
-            if (_redisConnectionMultiplexer != null)
-            {
-                _redisConnectionMultiplexer.Close(waitForDisconnect);
-            }
+            _redisConnectionMultiplexer?.Close(waitForDisconnect);
             SetupConfiguration(connectionString);
         }
 
         public void ReConnect(ConfigurationOptions redisConfigurationOptions, bool waitForDisconnect = true)
         {
-            if (_redisConnectionMultiplexer != null)
-            {
-                _redisConnectionMultiplexer.Close(waitForDisconnect);
-            }
+            _redisConnectionMultiplexer?.Close(waitForDisconnect);
             SetupConfiguration(redisConfigurationOptions);
         }
 
-        private void SetupConfiguration(string connectionString)
+        void SetupConfiguration(string connectionString)
         {
             _redisConnectionMultiplexer = ConnectionMultiplexer.Connect(connectionString);
             _database = _redisConnectionMultiplexer.GetDatabase();
         }
 
-        private void SetupConfiguration(ConfigurationOptions redisConfigurationOptions)
+        void SetupConfiguration(ConfigurationOptions redisConfigurationOptions)
         {
             _redisConnectionMultiplexer = ConnectionMultiplexer.Connect(redisConfigurationOptions);
             _database = _redisConnectionMultiplexer.GetDatabase();

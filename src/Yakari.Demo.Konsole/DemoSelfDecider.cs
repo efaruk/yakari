@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Timers;
+using System.Threading;
+using Yakari.Interfaces;
 
 namespace Yakari.Demo.Konsole
 {
     public class DemoSelfDecider : IDisposable
     {
-        private readonly DemoDependencyContainer _demoDependencyContainer;
-        private readonly Timer _timer = new Timer(100);
+        readonly DemoDependencyContainer _demoDependencyContainer;
+        readonly Timer _timer;
 
         public DemoSelfDecider(DemoDependencyContainer demoDependencyContainer)
         {
@@ -16,22 +17,22 @@ namespace Yakari.Demo.Konsole
             _demoHelper = _demoDependencyContainer.Resolve<IDemoHelper>();
             _logger = _demoDependencyContainer.Resolve<ILogger>();
             _localCache = _demoDependencyContainer.Resolve<ILocalCacheProvider>();
-            _timer.Elapsed += Cycle;
+            _timer = new Timer(Cycle, null, int.MaxValue, 0);
         }
 
         Random rnd = new Random(1);
-        private ILocalCacheProvider _localCache;
-        private IDemoHelper _demoHelper;
-        private ILogger _logger;
+        ILocalCacheProvider _localCache;
+        IDemoHelper _demoHelper;
+        ILogger _logger;
         const int Max = 1000000;
 
-        private bool Decide()
+        bool Decide()
         {
             // ReSharper disable once ArrangeRedundantParentheses : Parentheses left for readability
             return (rnd.Next(Max) % 10 == 0);
         }
 
-        private void Cycle(object sender, ElapsedEventArgs e)
+        void Cycle(object sender)
         {
             if (Decide())
             {
@@ -46,7 +47,7 @@ namespace Yakari.Demo.Konsole
             }
         }
 
-        private void DoSomethingExpensive()
+        void DoSomethingExpensive()
         {
             var list = _localCache.Get("personlist", TimeSpan.FromSeconds(3), () =>
             {
@@ -64,13 +65,7 @@ namespace Yakari.Demo.Konsole
 
         public void StartDemo()
         {
-            _timer.Start();
+            _timer.Change(100, 100);
         }
-
-        public void StopDemo()
-        {
-            _timer.Stop();
-        }
-
     }
 }

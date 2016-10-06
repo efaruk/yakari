@@ -1,0 +1,25 @@
+﻿<?xml version="1.0"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>Yakari.Core</id>
+    <version>0.0.1-beta</version>  <!-- The real version will be added by rake -->
+    <authors>E. Faruk Pehlivanlı and contributers</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Distributed InMemory Cache for .Net.</description>
+    <summary>Project is aimed to reduce distributed caching systems serialization/deserialization and network operation costs.</summary>
+    <language>en-US</language>
+	<copyright>E. Faruk Pehlivanlı and contributors</copyright>
+	<iconUrl></iconUrl>
+    <licenseUrl>https://github.com/efaruk/yakari/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/efaruk/yakari</projectUrl>
+    <dependencies>
+    </dependencies> 
+    <tags>Yakari,dotnetcore</tags>
+  </metadata>
+  <files>
+    <file src="bin\Release\Nancy.Authentication.Basic.dll" target="lib\net45" />
+    <file src="build\binaries\Nancy.Authentication.Basic.pdb" target="lib\net45" />
+    <file src="build\binaries\Nancy.Authentication.Basic.XML" target="lib\net45" />
+    <file src="src\Nancy.Authentication.Basic\**\*.cs" target="src" />
+  </files>
+</package>

@@ -1,7 +1,9 @@
 ﻿using System;
 using LightInject;
+using Yakari.Demo.Helper;
+using Yakari.Interfaces;
 using Yakari.RedisClient;
-using Yakari.Serializers.Newtonsoft;
+using Yakari.Serializer.Newtonsoft;
 
 namespace Yakari.Demo
 {
@@ -10,11 +12,14 @@ namespace Yakari.Demo
         //public const string RemoteCacheProviderName = "RemoteCacheProvider";
         public const string ChannelName = "YakariDemo";
 
-        private const string CacheManagerName = "CacheManager";
-        private const string ConnectionString = "172.17.0.1:6379,abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,synctimeout=5000";
+        const string CacheManagerName = "CacheManager";
+        static readonly string RedisIP = string.IsNullOrEmpty(SettingsHelper.Redis) ? "127.0.0.1:6379" : SettingsHelper.Redis;
 
-        private ServiceContainer _container;
-        private ILogger _logger;
+
+        readonly string _connectionString = $"{RedisIP},abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,synctimeout=5000";
+
+        ServiceContainer _container;
+        ILogger _logger;
 
         public DemoDependencyContainer(ServiceContainer container, string memberName)
         {
@@ -22,7 +27,7 @@ namespace Yakari.Demo
             Setup(_container, memberName);
         }
 
-        private void Setup(ServiceContainer container, string memberName)
+        void Setup(ServiceContainer container, string memberName)
         {
             container.SetDefaultLifetime<PerContainerLifetime>();
             //container.Register<ILogger>(factory => new ConsoleLogger(LogLevel.Debug));
@@ -31,10 +36,10 @@ namespace Yakari.Demo
             _logger.Log("Registering Dependencies...");
             container.Register<IDemoHelper, DemoHelper>();
             container.Register<ISerializer, JsonNetSerializer>();
-            container.Register<IRemoteCacheProvider>(factory => new RedisCacheProvider(ConnectionString, factory.GetInstance<ISerializer>(), factory.GetInstance<ILogger>()));
+            container.Register<IRemoteCacheProvider>(factory => new RedisCacheProvider(_connectionString, factory.GetInstance<ISerializer>(), factory.GetInstance<ILogger>()));
             container.GetInstance<IRemoteCacheProvider>();
             container.Register<ISubscriptionManager>(factory
-                => new RedisSubscriptionManager(ConnectionString, ChannelName, factory.GetInstance<ILogger>()));
+                => new RedisSubscriptionManager(_connectionString, ChannelName, factory.GetInstance<ILogger>()));
             container.Register<ILocalCacheProviderOptions>(factory => new LocalCacheProviderOptions(factory.GetInstance<ILogger>()));
             container.Register<ILocalCacheProvider, LittleThunder>();
             if (string.IsNullOrEmpty(memberName)) memberName = Guid.NewGuid().ToString();
@@ -44,7 +49,7 @@ namespace Yakari.Demo
             Initialize();
         }
 
-        private void Initialize()
+        void Initialize()
         {
             Resolve<ICacheObserver>();
         }

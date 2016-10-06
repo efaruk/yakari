@@ -8,14 +8,15 @@ using LightInject;
 using NSubstitute;
 using NUnit.Framework;
 using Yakari.Demo;
+using Yakari.Interfaces;
 
 namespace Yakari.Tests
 {
     public class TwoMemberTribeTest
     {
-        private DemoDependencyContainer _member1Container;
-        private DemoDependencyContainer _member2Container;
-        private IDemoHelper _demoHelper;
+        DemoDependencyContainer _member1Container;
+        DemoDependencyContainer _member2Container;
+        IDemoHelper _demoHelper;
 
         [OneTimeSetUp]
         public void FixtureSetup()
