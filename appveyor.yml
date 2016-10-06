@@ -38,3 +38,6 @@ build:
 
 before_build:
   - nuget restore src/Yakari.sln
+  - choco install redis-64
+  - redis-server --service-install
+  - redis-server --service-start
