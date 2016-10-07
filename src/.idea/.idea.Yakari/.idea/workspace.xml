@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="28ac7d30-0a96-4762-821e-220ae7909e12" name="Default" comment="idea commit">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../docs/Yakari Architecture.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../../docs/YakariBasicActivityDiagram.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="28ac7d30-0a96-4762-821e-220ae7909e12" name="Default" comment="idea commit" />
     <ignored path="Yakari.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -80,6 +76,20 @@
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Yakari (6 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Yakari" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
         <option name="show-file-system" value="false" />
       </pane>
@@ -133,7 +143,7 @@
       <workItem from="1473116803182" duration="1708000" />
       <workItem from="1475679932556" duration="1483000" />
       <workItem from="1475690564738" duration="960000" />
-      <workItem from="1475692972847" duration="804000" />
+      <workItem from="1475692972847" duration="2605000" />
     </task>
     <task id="LOCAL-00001" summary="idea commit">
       <created>1475680665012</created>
@@ -146,7 +156,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5786000" />
+    <option name="totallyTimeSpent" value="7587000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
