@@ -65,6 +65,6 @@ exec { & dotnet pack .\src\Yakari -c Release -o .\artifacts --version-suffix=$re
 
 exec { & dotnet pack .\src\Yakari.RedisClient -c Release -o .\artifacts --version-suffix=$revision }
 
-exec { & dotnet pack .\src\Yakari.Serializer.Newtonsoftt -c Release -o .\artifacts --version-suffix=$revision }
+exec { & dotnet pack .\src\Yakari.Serializer.Newtonsoft -c Release -o .\artifacts --version-suffix=$revision }
 
 exec { & dotnet pack .\src\Yakari.Pack -c Release -o .\artifacts --version-suffix=$revision }
