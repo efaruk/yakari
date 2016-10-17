@@ -8,7 +8,7 @@ using LightInject;
 using NSubstitute;
 using NUnit.Framework;
 using Yakari.Demo;
-using Yakari.Interfaces;
+using Yakari;
 
 namespace Yakari.Tests
 {

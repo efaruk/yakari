@@ -2,7 +2,7 @@
 using NSubstitute;
 using NUnit.Framework;
 using StackExchange.Redis;
-using Yakari.Interfaces;
+using Yakari;
 using Yakari.RedisClient;
 using Yakari.Serializer.Newtonsoft;
 

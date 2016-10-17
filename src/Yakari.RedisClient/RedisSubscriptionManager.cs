@@ -1,6 +1,6 @@
 ﻿using System;
 using StackExchange.Redis;
-using Yakari.Interfaces;
+using Yakari;
 
 namespace Yakari.RedisClient
 {

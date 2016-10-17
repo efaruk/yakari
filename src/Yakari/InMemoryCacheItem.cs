@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 
 namespace Yakari
@@ -16,13 +17,13 @@ namespace Yakari
             Slidable = slidable;
         }
 
-        public InMemoryCacheItem(dynamic valueObject, DateTime expiresAt, bool slidable = false): this(slidable)
+        public InMemoryCacheItem(object valueObject, DateTime expiresAt, bool slidable = false): this(slidable)
         {
             ValueObject = valueObject;
             ExpireDateUtc = expiresAt;
         }
 
-        public InMemoryCacheItem(dynamic valueObject, TimeSpan expiresAfter, bool slidable = false) : this(slidable)
+        public InMemoryCacheItem(object valueObject, TimeSpan expiresAfter, bool slidable = false) : this(slidable)
         {
             ValueObject = valueObject;
             ExpireDateUtc = DateTime.UtcNow.Add(expiresAfter);
@@ -33,7 +34,7 @@ namespace Yakari
         /// <summary>
         ///     It has to be serializable with chosen serialization method.
         /// </summary>
-        public dynamic ValueObject { get; set; }
+        public object ValueObject { get; set; }
 
         public DateTime ExpireDateUtc { get; private set; }
 

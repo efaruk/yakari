@@ -1,4 +1,4 @@
-﻿namespace Yakari.Interfaces
+﻿namespace Yakari
 {
     /// <summary>
     ///     Generic Serializer Interface

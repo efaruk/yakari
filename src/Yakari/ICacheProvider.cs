@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Yakari.Interfaces
+namespace Yakari
 {
     public interface ICacheProvider : IDisposable
     {

@@ -1,4 +1,4 @@
-﻿namespace Yakari.Interfaces
+﻿namespace Yakari
 {
     public interface IMessagePublisher
     {

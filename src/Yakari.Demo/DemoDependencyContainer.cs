@@ -1,7 +1,7 @@
 ﻿using System;
 using LightInject;
+using Yakari;
 using Yakari.Demo.Helper;
-using Yakari.Interfaces;
 using Yakari.RedisClient;
 using Yakari.Serializer.Newtonsoft;
 

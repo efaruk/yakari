@@ -1,43 +1,33 @@
-# branches to build
+version: '{build}'
+pull_requests:
+  do_not_increment_build_number: true
 branches:
-  # whitelist
   only:
-    - master
-
-# Do not build on tags (GitHub and BitBucket)
-skip_tags: true
-
-# Maximum number of concurrent jobs for the project
-max_jobs: 1
-
-# clone directory
-clone_folder: c:\yakari
-
-# fetch repository as zip archive
-shallow_clone: true 
-
-# set clone depth
-clone_depth: 5 
-
-#---------------------------------#
-#       build configuration       #
-#---------------------------------#
-
-# build platform, i.e. x86, x64, Any CPU. This setting is optional.
-platform: Any CPU
-
-# build Configuration, i.e. Debug, Release, etc.
-configuration: Release
-
-build:
-  parallel: true               # enable MSBuild parallel builds
-  project: src/Yakari.sln      # path to Visual Studio solution or project
-
-  # MSBuild verbosity level
-  verbosity: minimal
-
+  - master
+nuget:
+  disable_publish_on_pr: true
+build_script:
+- ps: .\Build.ps1
+#test: off
+artifacts:
+- path: .\artifacts\**\*.nupkg
+  name: NuGet
+deploy:
+- provider: NuGet
+  server: https://www.myget.org/F/yakari-ci/api/v2/package
+  api_key:
+    secure: 64AEV6/BX+Xb/FIUC2A5nXvrEkTfGtskyClMskouGgWzhSvARnA4Kc7biwPFx4aW
+  skip_symbols: true
+  on:
+    branch: master
+- provider: NuGet
+  name: production
+  api_key:
+    secure: r0rRvl6AQRcItuMiwnM7z5PgmuIQEyb3wkdb+Q/mNp+V007MVWHWRSjM4u+w0Jyd
+  on:
+    branch: master
+    appveyor_repo_tag: true
 before_build:
-  - nuget restore src/Yakari.sln
   - choco install redis-64
   - redis-server --service-install
   - redis-server --service-start

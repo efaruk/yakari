@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using NUnit.Framework;
 using Yakari.Demo;
-using Yakari.Interfaces;
+using Yakari;
 
 namespace Yakari.Tests
 {

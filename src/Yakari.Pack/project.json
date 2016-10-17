@@ -1,11 +1,16 @@
 {
   "version": "1.0.0-beta-*",
+  "dependencies": {
+    "Yakari": "1.0.0-*",
+    "Yakari.RedisClient": "1.0.0-*",
+    "Yakari.Serializer.Newtonsoft": "1.0.0-*"
+  },
   "authors": [ "Yakari Tribe and contributers" ],
   "copyright": "Copyright Yakari Tribe and contributers",
   "description": "Project is aimed to reduce distributed caching systems serialization/deserialization and network operation costs.",
   "packOptions": {
     "summary": "Distributed InMemory Cache for .Net.",
-    "tags": [ "distributed", "cache", "dotnet", "core", "yakari" ],
+    "tags": [ "redis", "distributed", "cache", "dotnet", "yakari" ],
 
     "licenseUrl": "https://github.com/TitaniumSoft/yakari/blob/master/LICENSE",
     "iconUrl": "https://raw.githubusercontent.com/TitaniumSoft/yakari/master/docs/logo/YakariLogoSmall.png",
@@ -13,12 +18,17 @@
     "repository": {
       "type": "git",
       "url": "git://github.com/TitaniumSoft/yakari"
-    }
+    },
+
+    "files": [
+
+    ]
   },
 
   "frameworks": {
     "net46": {
-      "dependencies": {}
+      "dependencies": {
+      }
     },
     "netstandard1.6": {
       "dependencies": {

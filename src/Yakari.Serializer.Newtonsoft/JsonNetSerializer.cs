@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Yakari.Interfaces;
+using Yakari;
 
 namespace Yakari.Serializer.Newtonsoft
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Yakari.Interfaces
+namespace Yakari
 {
     public interface ILocalCacheProvider : IDisposable
     {

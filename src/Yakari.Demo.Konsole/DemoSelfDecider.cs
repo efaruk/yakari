@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Yakari.Interfaces;
+using Yakari;
 
 namespace Yakari.Demo.Konsole
 {

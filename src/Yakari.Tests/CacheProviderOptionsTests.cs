@@ -1,7 +1,7 @@
 ﻿using System;
 using NSubstitute;
 using NUnit.Framework;
-using Yakari.Interfaces;
+using Yakari;
 
 namespace Yakari.Tests
 {

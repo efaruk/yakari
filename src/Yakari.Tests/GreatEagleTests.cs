@@ -3,7 +3,7 @@ using LightInject;
 using NSubstitute;
 using NUnit.Framework;
 using Yakari.Demo;
-using Yakari.Interfaces;
+using Yakari;
 using Yakari.Serializer.Newtonsoft;
 
 namespace Yakari.Tests
