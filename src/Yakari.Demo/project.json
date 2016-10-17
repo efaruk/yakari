@@ -6,7 +6,7 @@
 
   "dependencies": {
     "LightInject": "4.1.2",
-    "Bogus": "7.1.6",
+    "Bogus": "7.1.7",
     "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
     "Microsoft.Extensions.Configuration.Json": "1.0.0",
     "Microsoft.Extensions.Configuration.UserSecrets": "1.0.0",
