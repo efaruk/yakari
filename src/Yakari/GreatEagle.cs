@@ -38,11 +38,14 @@ namespace Yakari
         void LoadFromRemote()
         {
             var keys = _remoteCacheProvider.AllKeys();
-            foreach (var key in keys)
+            if (keys != null)
             {
-                // TODO: Timeout should be configuration parameter
-                var item = _remoteCacheProvider.Get<InMemoryCacheItem>(key, TimeSpan.Zero, true);
-                _localCacheProvider.Set(key, item.ValueObject, item.ExpiresAtTimeSpan, true);
+                foreach (var key in keys)
+                {
+                    // TODO: Timeout should be configuration parameter
+                    var item = _remoteCacheProvider.Get<InMemoryCacheItem>(key, TimeSpan.Zero, true);
+                    _localCacheProvider.Set(key, item.ValueObject, item.ExpiresAtTimeSpan, true);
+                }
             }
             StartObserving();
             _subscriptionManager.StartSubscription();
