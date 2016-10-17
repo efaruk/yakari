@@ -5,25 +5,19 @@
   // redis = <IP Address>:6379,abortConnect=false,defaultDatabase=0,keepAlive=300,resolveDns=false,synctimeout=5000
 
   "dependencies": {
-    "NETStandard.Library": "1.6.0",
-    "LightInject": "4.1.2",
     "NSubstitute": "2.0.0-rc",
     "System.Threading.Tasks.Parallel": "4.0.1",
-    "Yakari.Demo": "1.0.0-*",
     "dotnet-test-nunit": "3.4.0-beta-2",
     "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
-    "Microsoft.NETCore.App": {
-      "type": "platform",
-      "version": "1.0.1"
-    },
-    "NUnit": "3.5.0"
+    "NUnit": "3.5.0",
+    "Yakari.Demo": "1.0.0-*"
   },
 
   "testRunner": "nunit",
 
-  "tools": {
-    "Microsoft.Extensions.SecretManager.Tools": "1.0.0-preview2-final"
-  },
+  //"tools": {
+  //  "Microsoft.Extensions.SecretManager.Tools": "1.0.0-preview2-final"
+  //},
 
   "buildOptions": {
     "copyToOutput": { "includeFiles": [ "appsettings.json" ] }
@@ -31,12 +25,17 @@
 
   "frameworks": {
     "netcoreapp1.0": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.0",
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.0"
+        }
+      },
       "imports": [
         "netcoreapp1.0",
         "portable-net45+win8"
-      ],
-      "dependencies": {
-      }
+      ]
     }
   }
 }
