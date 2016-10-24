@@ -8,7 +8,7 @@ using Yakari;
 namespace Yakari.Tests
 {
     [TestFixture]
-    [Ignore("This tests is a bit fragile")]
+    //[Ignore("This tests is a bit fragile")]
     public class HappyPathTest
     {
         [OneTimeTearDown]
@@ -27,6 +27,7 @@ namespace Yakari.Tests
             Thread.Sleep(1000);
             var list2 = happy.GetSomeDemoObjectFromLocal(key);
             Assert.AreSame(list1, list2);
+            Thread.Sleep(1000);
             var item = happy.GetSomeDemoObjectFromRemote(key);
             Assert.AreEqual(list1.Count, ((List<DemoObject>)item.ValueObject).Count);
         }
