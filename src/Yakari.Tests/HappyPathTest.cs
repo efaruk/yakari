@@ -8,7 +8,7 @@ using Yakari;
 namespace Yakari.Tests
 {
     [TestFixture]
-    //[Ignore("This tests is a bit fragile")]
+    [Ignore("This tests is a bit fragile")]
     public class HappyPathTest
     {
         [OneTimeTearDown]
