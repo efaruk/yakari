@@ -32,5 +32,5 @@ before_build:
   #- redis-server --service-install test.redis.windows-service.conf 
   #- redis-server --service-start
   - cmd: nuget install redis-64 -excludeversion 
-  - cmd: redis-64\redis-server.exe --service-install 
-  - cmd: redis-64\redis-server.exe --service-start
+  - cmd: redis-server.exe --service-install 
+  - cmd: redis-server.exe --service-start
