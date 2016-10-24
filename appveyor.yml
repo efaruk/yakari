@@ -29,5 +29,5 @@ deploy:
     appveyor_repo_tag: true
 before_build:
   - choco install redis-64
-  - redis-server --service-install .\test.redis.windows-service.conf 
+  - redis-server --service-install test.redis.windows-service.conf 
   - redis-server --service-start
