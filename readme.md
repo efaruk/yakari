@@ -69,7 +69,7 @@ localCacheProvider.Delete(key);
 Happy distributing :smile:
 
 
-Tests are passing we are beta now, please feed us...
+All tests are passing, we are stable now, please feed us...
 
 
 We Need Help for
