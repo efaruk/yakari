@@ -1,3 +1,6 @@
 {
-  "projects": [ "src" ]
+  "projects": [ "src\\Yakari", "src\\Yakari.Demo", "src\\Yakari.Demo.Konsole", "src\\Yakari.Pack", "src\\Yakari.RedisClient", "src\\Yakari.Serializer.Newtonsoft", "src\\Yakari.Tests"],
+  "sdk": {
+    "version": "1.0.0-preview2-003121"
+  }
 }

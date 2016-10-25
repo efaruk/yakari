@@ -29,7 +29,7 @@
         "NETStandard.Library": "1.6.0",
         "Microsoft.NETCore.App": {
           "type": "platform",
-          "version": "1.0.0"
+          "version": "1.0.*"
         }
       },
       "imports": [

@@ -5,6 +5,25 @@
     "Newtonsoft.Json": "9.0.1",
     "Yakari": "1.0.0-*"
   },
+  "authors": [ "Yakari Tribe and contributers" ],
+  "copyright": "Copyright Yakari Tribe and contributers",
+  "description": "Yakari is aimed to reduce distributed caching systems serialization/deserialization and network operation costs.",
+  "packOptions": {
+    "summary": "Distributed InMemory Cache for .Net.",
+    "tags": [ "redis", "distributed", "cache", "dotnet", "yakari" ],
+
+    "licenseUrl": "https://github.com/TitaniumSoft/yakari/blob/master/LICENSE",
+    "iconUrl": "https://raw.githubusercontent.com/TitaniumSoft/yakari/master/docs/logo/YakariLogoSmall.png",
+    "projectUrl": "https://github.com/TitaniumSoft/yakari",
+    "repository": {
+      "type": "git",
+      "url": "git://github.com/TitaniumSoft/yakari"
+    },
+
+    "files": [
+
+    ]
+  },
 
   "frameworks": {
     "net46": {

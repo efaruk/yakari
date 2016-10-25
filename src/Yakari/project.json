@@ -2,7 +2,7 @@
   "version": "1.0.0-beta-*",
   "authors": [ "Yakari Tribe and contributers" ],
   "copyright": "Copyright Yakari Tribe and contributers",
-  "description": "Project is aimed to reduce distributed caching systems serialization/deserialization and network operation costs.",
+  "description": "Yakari is aimed to reduce distributed caching systems serialization/deserialization and network operation costs.",
   "packOptions": {
     "summary": "Distributed InMemory Cache for .Net.",
     "tags": [ "distributed", "cache", "dotnet", "core", "yakari" ],
@@ -25,7 +25,9 @@
         "NETStandard.Library": "1.6.0",
         "System.Threading.Timer": "4.0.1",
         "System.Threading.Thread": "4.0.0",
-        "System.Threading.ThreadPool": "4.0.10"
+        "System.Threading.ThreadPool": "4.0.10",
+        "System.Dynamic.Runtime": "4.0.11",
+        "Microsoft.CSharp": "4.0.1"
       }
     }
   }
