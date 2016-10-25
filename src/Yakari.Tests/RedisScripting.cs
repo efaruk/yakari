@@ -22,7 +22,7 @@ namespace Yakari.Tests
             if (string.IsNullOrEmpty(redis))
                 redis = "127.0.0.1:6379";
 
-            _redisConnectionMultiplexer = ConnectionMultiplexer.Connect($"{redis},abortConnect=false,defaultDatabase=0,keepAlive=300,resolveDns=false,synctimeout=5000");
+            _redisConnectionMultiplexer = ConnectionMultiplexer.Connect($"{redis},abortConnect=false,defaultDatabase=0,keepAlive=300,resolveDns=false,synctimeout=5000,allowAdmin=true");
             _redisServer = _redisConnectionMultiplexer.GetServer(redis);
             _database = _redisConnectionMultiplexer.GetDatabase();
         }
@@ -30,7 +30,8 @@ namespace Yakari.Tests
         [SetUp]
         public void Setup()
         {
-            var keys = _redisServer.Keys();
+            _redisServer.ConfigSet("save", "");
+            var keys = _redisServer.Keys(pageSize:1000000);
             _database.KeyDelete(keys.ToArray());
             for (int i = 0; i < TestItemCount; i++)
             {

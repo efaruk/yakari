@@ -77,7 +77,7 @@ namespace Yakari.RedisClient
         {
             _logger.Log(LogLevel.Debug, string.Format("RedisCacheProvider Set {0}", key));
             var data = _serializer.Serialize(value);
-            _database.StringSet(key, data.ToString(), expiresIn, When.Always, CommandFlags.DemandMaster);
+            _database.StringSet(key, data.ToString(), expiresIn);
         }
 
         public override void Delete(string key, bool isManagerCall = false)

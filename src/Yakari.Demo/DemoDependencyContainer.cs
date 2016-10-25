@@ -16,7 +16,7 @@ namespace Yakari.Demo
         static readonly string RedisIP = string.IsNullOrEmpty(SettingsHelper.Redis) ? "127.0.0.1:6379" : SettingsHelper.Redis;
 
 
-        readonly string _connectionString = $"{RedisIP},abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,synctimeout=5000";
+        readonly string _connectionString = $"{RedisIP},abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,synctimeout=5000,allowAdmin=true";
 
         ServiceContainer _container;
         ILogger _logger;
@@ -30,8 +30,8 @@ namespace Yakari.Demo
         void Setup(ServiceContainer container, string memberName)
         {
             container.SetDefaultLifetime<PerContainerLifetime>();
-            //container.Register<ILogger>(factory => new ConsoleLogger(LogLevel.Debug));
-            container.Register<ILogger>(factory => new InMemoryLogger(LogLevel.Debug));
+            container.Register<ILogger>(factory => new ConsoleLogger(LogLevel.Debug));
+            //container.Register<ILogger>(factory => new InMemoryLogger(LogLevel.Debug));
             _logger = container.GetInstance<ILogger>();
             _logger.Log("Registering Dependencies...");
             container.Register<IDemoHelper, DemoHelper>();

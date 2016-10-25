@@ -32,6 +32,7 @@ namespace Yakari
             _localCacheProvider = localCacheProvider;
             _remoteCacheProvider = remoteCacheProvider;
             _subscriptionManager.OnMessageReceived += MessageSubscriberMessageReceived;
+            StartObserving();
             ThreadHelper.RunOnDifferentThread(LoadFromRemote, ex => _logger.Log(LogLevel.Error, "Remote Cache Loading Error", ex));
         }
 
@@ -47,7 +48,6 @@ namespace Yakari
                     _localCacheProvider.Set(key, item.ValueObject, item.ExpiresAtTimeSpan, true);
                 }
             }
-            StartObserving();
             _subscriptionManager.StartSubscription();
         }
 

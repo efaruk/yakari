@@ -92,7 +92,7 @@ namespace Yakari
             _options.Logger.Log(LogLevel.Trace, "LittleThunder RemoveExpiredItems End");
         }
 
-        public override T Get<T>(string key, TimeSpan getTimeout, bool isManagerCall)
+        public override T Get<T>(string key, TimeSpan getTimeout, bool isManagerCall = false)
         {
             return GetInternal<T>(key, getTimeout, isManagerCall);
         }
@@ -140,7 +140,7 @@ namespace Yakari
             OnBeforeGet?.Invoke(key, getTimeout);
         }
 
-        public override void Set(string key, object value, TimeSpan expiresIn, bool isManagerCall)
+        public override void Set(string key, object value, TimeSpan expiresIn, bool isManagerCall = false)
         {
             _options.Logger.Log(LogLevel.Debug, "LittleThunder Set");
             var item = new InMemoryCacheItem(value, expiresIn);
@@ -163,7 +163,7 @@ namespace Yakari
             OnBeforeSet?.Invoke(key, item);
         }
 
-        public override void Delete(string key, bool isManagerCall)
+        public override void Delete(string key, bool isManagerCall = false)
         {
             _options.Logger.Log(LogLevel.Trace, "LittleThunder Delete");
             OnBeforeDeleteWrapper(key, isManagerCall);
