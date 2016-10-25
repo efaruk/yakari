@@ -1,9 +1,9 @@
 {
-  "version": "1.0.0-beta-*",
+  "version": "1.0.1-*",
   "dependencies": {
-    "Yakari": "1.0.0-*",
-    "Yakari.RedisClient": "1.0.0-*",
-    "Yakari.Serializer.Newtonsoft": "1.0.0-*"
+    "Yakari": "1.0.*",
+    "Yakari.RedisClient": "1.0.*",
+    "Yakari.Serializer.Newtonsoft": "1.0.*"
   },
   "authors": [ "Yakari Tribe and contributers" ],
   "copyright": "Copyright Yakari Tribe and contributers",

@@ -1,9 +1,9 @@
 {
-  "version": "1.0.0-beta-*",
+  "version": "1.0.1-*",
 
   "dependencies": {
     "Newtonsoft.Json": "9.0.1",
-    "Yakari": "1.0.0-*"
+    "Yakari": "1.0.*"
   },
   "authors": [ "Yakari Tribe and contributers" ],
   "copyright": "Copyright Yakari Tribe and contributers",

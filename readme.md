@@ -15,7 +15,7 @@ In yakari if you set 1 object it makes 1 serialization and 1 network operation, 
 
 1. Install: Using Nuget
 ```powershell
-Install-Package Yakari.Pack -Pre
+Install-Package Yakari.Pack
 ```
 
 2. Configure:
