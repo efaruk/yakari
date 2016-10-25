@@ -26,6 +26,9 @@
   },
 
   "frameworks": {
+    "net45": {
+      "dependencies": {}
+    },
     "net46": {
       "dependencies": {
       }

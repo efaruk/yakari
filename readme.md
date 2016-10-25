@@ -28,7 +28,7 @@ var memberName = "Beaver1";
 //StackExchange.Redis connectionstring
 var redisConnectionString = "127.0.0.1:6379,abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,synctimeout=5000,allowAdmin=true";
 // Default Logger
-var logger = new ConsoleLogger(LoggerLevel.Info);
+var logger = new ConsoleLogger(LogLevel.Info);
 // Default Serializer
 var serializer = new JsonNetSerializer();
 //Redis Remote Cache Provider for Yakari
