@@ -11,9 +11,9 @@
     "Microsoft.Extensions.Configuration.Json": "1.0.0",
     "Microsoft.Extensions.Configuration.UserSecrets": "1.0.0",
     "NETStandard.Library": "1.6.0",
-    "Yakari": "1.0.0-*",
-    "Yakari.RedisClient": "1.0.0-*",
-    "Yakari.Serializer.Newtonsoft": "1.0.0-*"
+    "Yakari": "1.0.*",
+    "Yakari.RedisClient": "1.0.*",
+    "Yakari.Serializer.Newtonsoft": "1.0.*"
   },
 
     "tools": {
