@@ -1,5 +1,5 @@
 {
-  "version": "1.0.1-*",
+  "version": "1.0.1.*",
   "authors": [ "Yakari Tribe and contributers" ],
   "copyright": "Copyright Yakari Tribe and contributers",
   "description": "Yakari is aimed to reduce distributed caching systems serialization/deserialization and network operation costs.",
