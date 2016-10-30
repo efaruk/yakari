@@ -1,5 +1,5 @@
 {
-  "version": "1.0.1",
+  "version": "1.0.2",
   "dependencies": {
     "Yakari": "1.0.*",
     "Yakari.RedisClient": "1.0.*",
