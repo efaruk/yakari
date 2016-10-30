@@ -11,22 +11,30 @@ namespace Yakari
         const int MinimumInitialCapacity = 10;
         const int DefaultInitialCapacity = 100;
 
-        public LocalCacheProviderOptions(ILogger logger, int maxRetryForLocalOperations = DefaultMaxRetryForLocalOperations, int concurrencyLevel = DefaultConcurrencyLevel, int initialCapacity = DefaultInitialCapacity, bool dontWaitForTribe = false)
+        public LocalCacheProviderOptions(ILogger logger)
+        {
+            if (logger == null) throw new ArgumentNullException("logger");
+            Logger = logger;
+            // Defaults
+            MaxRetryForLocalOperations = DefaultMaxRetryForLocalOperations;
+            ConcurrencyLevel = DefaultConcurrencyLevel;
+            InitialCapacity = DefaultInitialCapacity;
+        }
+
+        public LocalCacheProviderOptions(ILogger logger, int maxRetryForLocalOperations = DefaultMaxRetryForLocalOperations, int concurrencyLevel = DefaultConcurrencyLevel, int initialCapacity = DefaultInitialCapacity, bool dontWaitForTribe = false): this(logger)
         {
             // Check
-            if (logger == null) throw new ArgumentNullException("logger");
             if (maxRetryForLocalOperations < MinimumMaxRetryForLocalOperations) throw new ArgumentOutOfRangeException("maxRetryForLocalOperations");
             // Set
-            Logger = logger;
             MaxRetryForLocalOperations = maxRetryForLocalOperations;
             ConcurrencyLevel = concurrencyLevel;
             InitialCapacity = initialCapacity;
             DontWaitForTribe = dontWaitForTribe;
-            // Defaults
-            if (ConcurrencyLevel == 0) ConcurrencyLevel = DefaultConcurrencyLevel;
+
             if (ConcurrencyLevel < MinimumConcurrencyLevel) ConcurrencyLevel = MinimumConcurrencyLevel;
-            if (InitialCapacity == 0) InitialCapacity = DefaultInitialCapacity;
             if (InitialCapacity < MinimumInitialCapacity) InitialCapacity = MinimumInitialCapacity;
+            if (MaxRetryForLocalOperations < MinimumMaxRetryForLocalOperations)
+                MaxRetryForLocalOperations = DefaultMaxRetryForLocalOperations;
         }
 
         public ILogger Logger { get; set; }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Yakari
 {
@@ -50,6 +51,11 @@ namespace Yakari
         /// <param name="key"></param>
         /// <returns></returns>
         bool Exists(string key);
+
+        /// <summary>
+        ///     Return all cache keys
+        /// </summary>
+        List<string> AllKeys();
 
         event BeforeGet OnBeforeGet;
         event AfterGet OnAfterGet;
