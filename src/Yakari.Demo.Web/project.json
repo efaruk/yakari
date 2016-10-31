@@ -32,7 +32,11 @@
     "Microsoft.VisualStudio.Web.CodeGenerators.Mvc": {
       "version": "1.0.0-preview2-update1",
       "type": "build"
-    }
+    },
+    "Autofac.Extensions.DependencyInjection": "4.0.0",
+    "Yakari": "1.0.*",
+    "Yakari.RedisClient": "1.0.*",
+    "Yakari.Serializer.Newtonsoft": "1.0.*"
   },
 
   "tools": {

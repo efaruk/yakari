@@ -8,6 +8,13 @@ namespace Yakari.Demo.Web.Controllers
 {
     public class HomeController : Controller
     {
+        ILocalCacheProvider _littleThunder;
+
+        public HomeController (ILocalCacheProvider littleThunder)
+        {
+          _littleThunder = littleThunder;
+        }
+        
         public IActionResult Index()
         {
             return View();
@@ -15,14 +22,9 @@ namespace Yakari.Demo.Web.Controllers
 
         public IActionResult Dashboard()
         {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
+            var keys = _littleThunder.AllKeys();
+            
+            ViewData["Data"] = keys;
 
             return View();
         }
