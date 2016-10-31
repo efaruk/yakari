@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Yakari;
 using Yakari.RedisClient;
 using Yakari.Serializer.Newtonsoft;
 
@@ -50,9 +47,11 @@ namespace Yakari.Demo.Web
             // Application name, desired to share same cache items
             var tribeName = "IstanbulCoders";
             // To seperate app instances, diagnostinc purposes, * Must ne unique: You can use Guid.NewGuid().ToString();
-            var memberName = Guid.NewGuid().ToString();
+            var memberName = string.Format("Beaver-{0}-{1}", Environment.MachineName, Process.GetCurrentProcess().Id);
             //StackExchange.Redis connectionstring
-            var redisConnectionString = "172.17.0.1:6379,abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,synctimeout=5000,allowAdmin=true";
+            var redisConnectionString = "127.0.0.1:6379,abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,synctimeout=5000,allowAdmin=true";
+            // Demo Helper
+            builder.Register(c => new DemoHelper(tribeName, memberName)).As<IDemoHelper>().SingleInstance();
             // Default Logger
             var logger = new InMemoryLogger(LogLevel.Info);
             builder.RegisterInstance(logger).As<ILogger>().SingleInstance();
@@ -76,6 +75,7 @@ namespace Yakari.Demo.Web
                             new GreatEagle(memberName, c.Resolve<ISubscriptionManager>(), c.Resolve<ISerializer>(),
                                 c.Resolve<ILocalCacheProvider>(), c.Resolve<IRemoteCacheProvider>(),
                                 c.Resolve<ILogger>())).As<ICacheObserver>().SingleInstance();
+
             builder.Populate(services);
             ApplicationContainer = builder.Build();
 

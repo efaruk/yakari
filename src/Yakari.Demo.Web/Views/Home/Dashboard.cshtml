@@ -1,5 +1,14 @@
 @{
     ViewData["Title"] = "Dashboard";
 }
+<h3>Tribe-Member Name: @Html.Raw(ViewData["TribeName"] + "-" + ViewData["MemberName"]) </h3>
+<div class="row">
+    <input type="button" id="btnGenerate" class="btn-primary" value="Generate A Cache Item" onclick="" />
+</div>
+<ul> All Cache Items:
+    @foreach (var k in (List<string>)ViewData["Data"])
+    {
+        <li>@k</li>
+    }
+</ul>
 
-@ViewData["Data"]

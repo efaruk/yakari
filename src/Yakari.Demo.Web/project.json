@@ -36,7 +36,8 @@
     "Autofac.Extensions.DependencyInjection": "4.0.0",
     "Yakari": "1.0.*",
     "Yakari.RedisClient": "1.0.*",
-    "Yakari.Serializer.Newtonsoft": "1.0.*"
+    "Yakari.Serializer.Newtonsoft": "1.0.*",
+    "Yakari.Demo": "1.0.*"
   },
 
   "tools": {

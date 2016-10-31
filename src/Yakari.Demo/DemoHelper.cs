@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Bogus;
 
@@ -7,6 +6,17 @@ namespace Yakari.Demo
 {
     public class DemoHelper : IDemoHelper
     {
+        public DemoHelper()
+        {
+            
+        }
+
+        public DemoHelper(string tribeName, string memberName)
+        {
+            TribeName = tribeName;
+            MemberName = memberName;
+        }
+
         const int Million = 1000000;
 
         static byte[] _bytes;
@@ -31,6 +41,9 @@ namespace Yakari.Demo
         }
 
         Faker<DemoObject> _demoFaker;
+        public string TribeName { get; set; }
+        public string MemberName { get; set; }
+
         public List<DemoObject> GenerateDemoObjects(int count)
         {
             SetupDemoFaker();
