@@ -3,7 +3,7 @@
 }
 <h3>Tribe-Member Name: @Html.Raw(ViewData["TribeName"] + "-" + ViewData["MemberName"]) </h3>
 <div class="row">
-    <input type="button" id="btnGenerate" class="btn-primary" value="Generate A Cache Item" onclick="" />
+    Generate a cache item: <input type="button" id="btnGenerate" class="btn btn-link btn-" value="Generate" onclick="" />
 </div>
 <ul> All Cache Items:
     @foreach (var k in (List<string>)ViewData["Data"])

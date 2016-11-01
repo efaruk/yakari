@@ -26,11 +26,7 @@ namespace Yakari.Demo.Web.Controllers
         {
             ViewData["TribeName"] = _demoHelper.TribeName;
             ViewData["MemberName"] = _demoHelper.MemberName;
-
-            var list = _demoHelper.GenerateDemoObjects(1000);
-            var key = string.Format("{0}-{1}", _demoHelper.MemberName, Guid.NewGuid().ToString());
-            _littleThunder.Set(key, list, CacheTime.FifteenMinutes);
-
+            
             var keys = _littleThunder.AllKeys();
             
             ViewData["Data"] = keys;
