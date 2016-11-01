@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Yakari
 {
-    public class GreatEagle: ICacheObserver
+    public class GreatEagle : ICacheObserver
     {
         const string TempItemFormat = "yakari:{0}";
 
@@ -23,7 +23,8 @@ namespace Yakari
         /// <param name="localCacheProvider"></param>
         /// <param name="remoteCacheProvider"></param>
         /// <param name="logger"></param>
-        public GreatEagle(string memberName, ISubscriptionManager subscriptionManager, ISerializer serializer, ILocalCacheProvider localCacheProvider, IRemoteCacheProvider remoteCacheProvider, ILogger logger)
+        public GreatEagle(string memberName, ISubscriptionManager subscriptionManager, ISerializer serializer,
+            ILocalCacheProvider localCacheProvider, IRemoteCacheProvider remoteCacheProvider, ILogger logger)
         {
             _memberName = memberName;
             _subscriptionManager = subscriptionManager;
@@ -33,10 +34,24 @@ namespace Yakari
             _remoteCacheProvider = remoteCacheProvider;
             _subscriptionManager.OnMessageReceived += MessageSubscriberMessageReceived;
             StartObserving();
-            ThreadHelper.RunOnDifferentThread(LoadFromRemote, ex => _logger.Log(LogLevel.Error, "Remote Cache Loading Error", ex));
+            LoadFromRemote();
         }
 
-        void LoadFromRemote()
+        private void LoadFromRemote()
+        {
+            //ThreadHelper.RunOnDifferentThread(LoadFromRemoteInternal,
+            //    ex => _logger.Log(LogLevel.Error, "Remote Cache Loading Error", ex));
+            try
+            {
+                LoadFromRemoteInternal();
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, "Remote Cache Loading Error", ex);
+            }
+        }
+
+        internal void LoadFromRemoteInternal()
         {
             var keys = _remoteCacheProvider.AllKeys();
             if (keys != null)
@@ -50,6 +65,8 @@ namespace Yakari
             }
             _subscriptionManager.StartSubscription();
         }
+
+
 
         void StartObserving()
         {

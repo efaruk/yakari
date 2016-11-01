@@ -9,6 +9,7 @@ namespace Yakari.Demo.Web.Controllers
     {
         private readonly ILocalCacheProvider _littleThunder;
         private readonly IDemoHelper _demoHelper;
+        private const string KeyFormat = "{0}:{1}";
 
         public CacheController(ILocalCacheProvider littleThunder, IDemoHelper demoHelper)
         {
@@ -18,7 +19,7 @@ namespace Yakari.Demo.Web.Controllers
 
         // GET api/cache
         [HttpGet]
-        public IEnumerable<string> Get()
+        public List<string> Get()
         {
             var keys = _littleThunder.AllKeys();
             return keys;
@@ -29,8 +30,8 @@ namespace Yakari.Demo.Web.Controllers
         public object Generate()
         {
             var list = _demoHelper.GenerateDemoObjects(1000);
-            var key = string.Format("{0}-{1}", _demoHelper.MemberName, Guid.NewGuid().ToString());
-            _littleThunder.Set(key, list, CacheTime.FifteenMinutes);
+            var key = string.Format(KeyFormat, _demoHelper.MemberName, Guid.NewGuid());
+            _littleThunder.Set(key, list, CacheTime.OneDay);
             return list;
         }
 
@@ -47,8 +48,8 @@ namespace Yakari.Demo.Web.Controllers
         public void Post()
         {
             var list = _demoHelper.GenerateDemoObjects(1000);
-            var key = string.Format("{0}-{1}", _demoHelper.MemberName, Guid.NewGuid().ToString());
-            _littleThunder.Set(key, list, CacheTime.FifteenMinutes);
+            var key = string.Format(KeyFormat, _demoHelper.MemberName, Guid.NewGuid());
+            _littleThunder.Set(key, list, CacheTime.OneDay);
         }
 
         // PUT api/cache/5
@@ -56,8 +57,7 @@ namespace Yakari.Demo.Web.Controllers
         public void Put(string id)
         {
             var list = _demoHelper.GenerateDemoObjects(1000);
-            //var key = string.Format("{0}-{1}", _demoHelper.MemberName, Guid.NewGuid().ToString());
-            _littleThunder.Set(id, list, CacheTime.FifteenMinutes);
+            _littleThunder.Set(id, list, CacheTime.OneDay);
         }
 
         // DELETE api/cache/5

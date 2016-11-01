@@ -1,12 +1,14 @@
 @{
     ViewData["Title"] = "Dashboard";
+    var list = (List<string>)ViewData["Data"];
 }
-<h3>Tribe-Member Name: @Html.Raw(ViewData["TribeName"] + "-" + ViewData["MemberName"]) </h3>
+<h3>Tribe Name: @Html.Raw(ViewData["TribeName"])</h3>
+<h5>Member Name@Html.Raw(ViewData["MemberName"]) </h5>
 <div class="row">
     Generate a cache item: <input type="button" id="btnGenerate" class="btn btn-link btn-" value="Generate" onclick="" />
 </div>
 <div class="row">
-    <ul>All Cache Items:
+    <ul><h3>All Cache Items:@Html.Raw(((List<string>)ViewData["Data"]).Count)</h3>
         @foreach (var k in (List<string>)ViewData["Data"])
         {
             <li>@k</li>

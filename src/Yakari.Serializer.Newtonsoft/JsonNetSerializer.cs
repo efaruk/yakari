@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Yakari;
 
 namespace Yakari.Serializer.Newtonsoft
 {
@@ -12,7 +11,7 @@ namespace Yakari.Serializer.Newtonsoft
             _settings = new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.All,
-                NullValueHandling = NullValueHandling.Ignore,
+                NullValueHandling = NullValueHandling.Ignore
             };
         }
 

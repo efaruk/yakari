@@ -25,7 +25,7 @@ namespace Yakari
         public InMemoryCacheItem(dynamic valueObject, TimeSpan expiresAfter, bool slidable = false) : this(slidable)
         {
             ValueObject = valueObject;
-            ExpireDateUtc = DateTime.UtcNow.Add(expiresAfter);
+            ExpireDateUtc = CreatedDateUtc.Add(expiresAfter);
         }
 
         public bool Slidable { get; set; }
@@ -35,12 +35,19 @@ namespace Yakari
         /// </summary>
         public dynamic ValueObject { get; set; }
 
-        public DateTime ExpireDateUtc { get; private set; }
+        public DateTime ExpireDateUtc { get; set; }
 
-        public readonly DateTime CreatedDateUtc;
+        public DateTime CreatedDateUtc { get; set; }
 
         long _hitCount;
-        public long HitCount => Interlocked.Read(ref _hitCount);
+
+        public long HitCount
+        {
+            get
+            {
+                return Interlocked.Read(ref _hitCount);
+            }
+        } 
 
         public override bool Equals(object obj)
         {
@@ -65,18 +72,30 @@ namespace Yakari
             ExpireDateUtc = DateTime.UtcNow.Add(slideFor);
         }
 
-        public bool IsExpired => DateTime.UtcNow >= ExpireDateUtc;
+        public bool IsExpired
+        {
+            get
+            {
+                return DateTime.UtcNow > ExpireDateUtc;
+            }  
+        }
 
         public bool WillBeExpired(TimeSpan after)
         {
-            return DateTime.UtcNow.Add(after) >= ExpireDateUtc;
+            return DateTime.UtcNow.Add(after) > ExpireDateUtc;
         }
 
         public bool WillBeExpired(DateTime at)
         {
-            return at >= ExpireDateUtc;
+            return at > ExpireDateUtc;
         }
 
-        public TimeSpan ExpiresAtTimeSpan => ExpireDateUtc.Subtract(DateTime.UtcNow);
+        public TimeSpan ExpiresAtTimeSpan
+        {
+            get
+            {
+                return ExpireDateUtc.Subtract(DateTime.UtcNow);
+            }
+        } 
     }
 }
