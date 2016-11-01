@@ -1,15 +1,22 @@
 @{
     ViewData["Title"] = "Dashboard";
     var list = (List<string>)ViewData["Data"];
+    if (list == null)
+    {
+        list = new List<string>();
+    }
 }
+<h1>Demo Dashboard</h1>
+<hr/>
 <h3>Tribe Name: @Html.Raw(ViewData["TribeName"])</h3>
-<h5>Member Name@Html.Raw(ViewData["MemberName"]) </h5>
+<h4>Member Name: @Html.Raw(ViewData["MemberName"])</h4>
+<hr />
 <div class="row">
-    Generate a cache item: <input type="button" id="btnGenerate" class="btn btn-link btn-" value="Generate" onclick="" />
+    Generate a cache item: <input type="button" id="btnGenerate" class="btn btn-success" value="Generate" onclick="generateCacheItem();" />
 </div>
 <div class="row">
-    <ul><h3>All Cache Items:@Html.Raw(((List<string>)ViewData["Data"]).Count)</h3>
-        @foreach (var k in (List<string>)ViewData["Data"])
+    <ul><h3>All Cache Items:@Html.Raw(list.Count)</h3>
+        @foreach (var k in list)
         {
             <li>@k</li>
         }
