@@ -15,7 +15,7 @@ namespace Yakari.Demo.Web
                 .UseKestrel()
                 .UseUrls(url)
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                //.UseIISIntegration()
+                .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();
 

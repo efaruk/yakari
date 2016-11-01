@@ -5,10 +5,11 @@
 <div class="row">
     Generate a cache item: <input type="button" id="btnGenerate" class="btn btn-link btn-" value="Generate" onclick="" />
 </div>
-<ul> All Cache Items:
-    @foreach (var k in (List<string>)ViewData["Data"])
-    {
-        <li>@k</li>
-    }
-</ul>
-
+<div class="row">
+    <ul>All Cache Items:
+        @foreach (var k in (List<string>)ViewData["Data"])
+        {
+            <li>@k</li>
+        }
+    </ul>
+</div>
