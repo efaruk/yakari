@@ -9,13 +9,13 @@ namespace Yakari.Demo.Web
     {
         public static void Main(string[] args)
         {
-            var options = Parse(args);
-            var url = string.Format("http://localhost:{0}", options.PortNumber);
+            //var options = Parse(args);
+            //var url = string.Format("http://0.0.0.0:{0}", options.PortNumber);
             var host = new WebHostBuilder()
                 .UseKestrel()
-                .UseUrls(url)
+                // .UseUrls(url)
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
+                // .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();
 

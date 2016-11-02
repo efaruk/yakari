@@ -1,16 +1,16 @@
-﻿# Base Image
-FROM microsoft/aspnetcore:1.0.1
+FROM microsoft/aspnetcore
 
 # LABEL
-LABEL author="efaruk"
-LABEL version="1.0.0"
-LABEL description="Yakari Demo image based microsoft/aspnetcore"
-MAINTAINER E. Faruk Pehlivanli
+LABEL author="efaruk" \
+      version="1.0.0" \
+      description="Yakari Demo image based microsoft/aspnetcore"
 
 # Copy
 COPY ./bin/Debug/netcoreapp1.0/publish /app
 
 # Define
+ENV ASPNETCORE_ENVIRONMENT="Development"
+
 WORKDIR /app
 EXPOSE 80
 ENTRYPOINT ["dotnet", "Yakari.Demo.Web.dll"]

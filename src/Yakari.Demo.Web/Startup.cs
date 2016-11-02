@@ -14,6 +14,8 @@ namespace Yakari.Demo.Web
 {
     public class Startup
     {
+        private string RedisHostPort = "";
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -21,15 +23,17 @@ namespace Yakari.Demo.Web
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
             
-            if (env.IsDevelopment())
-            {
-                // For more details on using the user secret store see https://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
-            }
+//            if (env.IsDevelopment())
+//            {
+//                // For more details on using the user secret store see https://go.microsoft.com/fwlink/?LinkID=532709
+//                builder.AddUserSecrets();
+//            }
 
             builder.AddEnvironmentVariables();
 
             Configuration = builder.Build();
+
+            RedisHostPort = string.Format("{0}:{1}", Configuration["REDIS_PORT_6379_TCP_ADDR"], Configuration["REDIS_PORT_6379_TCP_PORT"]);
         }
 
         public IContainer ApplicationContainer { get; private set; }
@@ -50,6 +54,10 @@ namespace Yakari.Demo.Web
             var memberName = string.Format("Beaver-{0}-{1}", Environment.MachineName, Process.GetCurrentProcess().Id);
             //StackExchange.Redis connectionstring
             var redisConnectionString = "127.0.0.1:6379,abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,synctimeout=5000,allowAdmin=true";
+            if (RedisHostPort.Length > 1) {
+                Console.WriteLine(RedisHostPort);
+                redisConnectionString = string.Format("{0},abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,synctimeout=5000,allowAdmin=true", RedisHostPort);
+            }
             // Demo Helper
             builder.Register(c => new DemoHelper(tribeName, memberName)).As<IDemoHelper>().SingleInstance();
             // Default Logger
