@@ -9,9 +9,10 @@ LABEL author="efaruk" \
 COPY ./bin/Debug/netcoreapp1.0/publish /app
 
 # Define
-ENV ASPNETCORE_ENVIRONMENT="Development"
+ENV ASPNETCORE_URLS http://+:5000 \
+    ASPNETCORE_ENVIRONMENT="Development"
 
 WORKDIR /app
-EXPOSE 80
+EXPOSE 5000
 ENTRYPOINT ["dotnet", "Yakari.Demo.Web.dll"]
 

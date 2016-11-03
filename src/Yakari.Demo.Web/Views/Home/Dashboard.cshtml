@@ -1,24 +1,42 @@
 @{
     ViewData["Title"] = "Dashboard";
     var list = (List<string>)ViewData["Data"];
-    if (list == null)
-    {
-        list = new List<string>();
-    }
+    if (list == null) {
+        list = new List<string>(); 
+    } 
 }
-<h1>Demo Dashboard</h1>
-<hr/>
-<h3>Tribe Name: @Html.Raw(ViewData["TribeName"])</h3>
-<h4>Member Name: @Html.Raw(ViewData["MemberName"])</h4>
-<hr />
-<div class="row">
-    Generate a cache item: <input type="button" id="btnGenerate" class="btn btn-success" value="Generate" onclick="generateCacheItem();" />
+<div class="row panel well">
+    <div class="cl-md-6 pull-left">
+        <h1>Dashboard</h1>
+    </div>
+    <div class="cl-md-6 pull-right">
+        <h3>Tribe Name: @Html.Raw(ViewData["TribeName"])</h3>
+        <h4>Member Name: @Html.Raw(ViewData["MemberName"])</h4>
+    </div>
 </div>
 <div class="row">
-    <ul><h3>All Cache Items:@Html.Raw(list.Count)</h3>
-        @foreach (var k in list)
-        {
-            <li>@k</li>
-        }
-    </ul>
+    <span class="pull-right">
+        Generate a cache item: <input type="button" id="btnGenerate" class="btn btn-success" value="Generate" onclick="generateCacheItem();" />
+    </span>
+</div>
+<hr />
+<div class="list-group">
+    <div class="list-group-item active panel-title">All Cache Items<span class="badge">@list.Count</span></div>
+    @foreach (var k in list) {
+        <div class="list-group-item">
+            <div class="row inline">
+                <div class="col-md-10 pull-left">
+                    &nbsp;@k
+                </div>
+                <div class="cl-md-2 pull-right"> 
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-danger"onclick="removeCacheItem('@k');">
+                            <span class="glyphicon glyphicon glyphicon-minus" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+    }
 </div>
