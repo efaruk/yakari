@@ -39,16 +39,16 @@ namespace Yakari
 
         private void LoadFromRemote()
         {
-            //ThreadHelper.RunOnDifferentThread(LoadFromRemoteInternal,
-            //    ex => _logger.Log(LogLevel.Error, "Remote Cache Loading Error", ex));
-            try
-            {
-                LoadFromRemoteInternal();
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(LogLevel.Error, "Remote Cache Loading Error", ex);
-            }
+            ThreadHelper.RunOnDifferentThread(LoadFromRemoteInternal,
+               ex => _logger.Log(LogLevel.Error, "Remote Cache Loading Error", ex));
+            // try
+            // {
+            //     LoadFromRemoteInternal();
+            // }
+            // catch (Exception ex)
+            // {
+            //     _logger.Log(LogLevel.Error, "Remote Cache Loading Error", ex);
+            // }
         }
 
         internal void LoadFromRemoteInternal()

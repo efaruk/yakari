@@ -1,5 +1,9 @@
 #!/bin/bash
 
+## If you dont have redis already, uncomment following lines
+# docker pull redis
+# docker run --name redis -p 6379:6379 -d redis
+
 docker run --name yakariweb0 -d -p 5000:5000 --link redis:redis efaruk/yakariweb
 docker run --name yakariweb1 -d -p 5001:5000 --link redis:redis efaruk/yakariweb
 docker run --name yakariweb2 -d -p 5002:5000 --link redis:redis efaruk/yakariweb
