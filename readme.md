@@ -79,6 +79,7 @@ We Need Help for
 2. Test
 3. Review
 4. Coding
+5. Porting Other Languages, [Java](https://github.com/TitaniumSoft/jakari), [Go](https://github.com/TitaniumSoft/gakari), etc...
 
 You can ping me at: https://twitter.com/farukpehlivanli or https://tr.linkedin.com/in/efaruk
 
