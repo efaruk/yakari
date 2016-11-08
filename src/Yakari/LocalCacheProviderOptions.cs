@@ -11,17 +11,17 @@ namespace Yakari
         const int MinimumInitialCapacity = 10;
         const int DefaultInitialCapacity = 100;
 
-        public LocalCacheProviderOptions(ILogger logger)
+        public LocalCacheProviderOptions()
         {
-            if (logger == null) throw new ArgumentNullException("logger");
-            Logger = logger;
+            //if (logger == null) throw new ArgumentNullException("logger");
+            //Logger = logger;
             // Defaults
             MaxRetryForLocalOperations = DefaultMaxRetryForLocalOperations;
             ConcurrencyLevel = DefaultConcurrencyLevel;
             InitialCapacity = DefaultInitialCapacity;
         }
 
-        public LocalCacheProviderOptions(ILogger logger, int maxRetryForLocalOperations = DefaultMaxRetryForLocalOperations, int concurrencyLevel = DefaultConcurrencyLevel, int initialCapacity = DefaultInitialCapacity, bool dontWaitForTribe = false): this(logger)
+        public LocalCacheProviderOptions(int maxRetryForLocalOperations = DefaultMaxRetryForLocalOperations, int concurrencyLevel = DefaultConcurrencyLevel, int initialCapacity = DefaultInitialCapacity): this()
         {
             // Check
             if (maxRetryForLocalOperations < MinimumMaxRetryForLocalOperations) throw new ArgumentOutOfRangeException("maxRetryForLocalOperations");
@@ -29,7 +29,6 @@ namespace Yakari
             MaxRetryForLocalOperations = maxRetryForLocalOperations;
             ConcurrencyLevel = concurrencyLevel;
             InitialCapacity = initialCapacity;
-            DontWaitForTribe = dontWaitForTribe;
 
             if (ConcurrencyLevel < MinimumConcurrencyLevel) ConcurrencyLevel = MinimumConcurrencyLevel;
             if (InitialCapacity < MinimumInitialCapacity) InitialCapacity = MinimumInitialCapacity;
@@ -41,6 +40,5 @@ namespace Yakari
         public int MaxRetryForLocalOperations { get; set; }
         public int ConcurrencyLevel { get; set; }
         public int InitialCapacity { get; set; }
-        public bool DontWaitForTribe { get; set; }
     }
 }

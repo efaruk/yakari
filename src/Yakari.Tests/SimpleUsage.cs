@@ -25,9 +25,9 @@ namespace Yakari.Tests
             //Redis Subscription Manager for tribe communication.
             var subscriptionManager = new RedisSubscriptionManager(redisConnectionString, tribeName, logger);
             // Options class for LittleThunder.
-            var localCacheProviderOptions = new LocalCacheProviderOptions(logger);
+            var localCacheProviderOptions = new LocalCacheProviderOptions();
             // Little Thunder the Local Cache Provider
-            var localCacheProvider = new LittleThunder(localCacheProviderOptions);
+            var localCacheProvider = new LittleThunder(localCacheProviderOptions,logger);
             // The Great Eagle
             var observer = new GreatEagle(memberName, subscriptionManager, serializer, localCacheProvider, remoteCacheProvider, logger);
             // Great eagle start observing and loads every previous remote cache items in seperate thread

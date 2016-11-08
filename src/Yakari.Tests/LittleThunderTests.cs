@@ -31,8 +31,8 @@ namespace Yakari.Tests
             _container.Register<ILogger, NullLogger>();
             _logger = _container.GetInstance<ILogger>();
             _container.Register<IDemoHelper, DemoHelper>();
-            _container.Register<ILocalCacheProviderOptions>(factory => new LocalCacheProviderOptions(factory.GetInstance<ILogger>()));
-            _container.Register<ILocalCacheProvider, LittleThunder>();
+            _container.Register<ILocalCacheProviderOptions,LocalCacheProviderOptions>();
+            _container.Register<ILocalCacheProvider>(factory => new LittleThunder(factory.GetInstance<ILocalCacheProviderOptions>(),factory.GetInstance<ILogger>()));
             _demoHelper = _container.GetInstance<IDemoHelper>();
             _cache = _container.GetInstance<ILocalCacheProvider>();
             _cache.OnBeforeGet += _cache_OnBeforeGet;

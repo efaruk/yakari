@@ -13,6 +13,7 @@ namespace Yakari
     {
         const int Thousand = 1000;
         ILocalCacheProviderOptions _options;
+        ILogger _logger;
         ConcurrentDictionary<string, InMemoryCacheItem> _concurrentStore;
         readonly Timer _timer;
 
@@ -20,39 +21,26 @@ namespace Yakari
         ///     Constructor with options as <see cref="ILocalCacheProviderOptions">ICacheProviderOptions</see>
         /// </summary>
         /// <param name="options"></param>
-        public LittleThunder(ILocalCacheProviderOptions options)
+        /// <param name="logger"></param>
+        public LittleThunder(ILocalCacheProviderOptions options, ILogger logger)
         {
+            _logger = logger;
             _options = options;
-            _options.Logger.Log(LogLevel.Trace, "LittleThunder Constructor Begin");
+            _logger.Log(LogLevel.Trace, "LittleThunder Constructor Begin");
             //_options.Observer.SetupMember(this);
             _concurrentStore = new ConcurrentDictionary<string, InMemoryCacheItem>(_options.ConcurrencyLevel, _options.InitialCapacity);
             _timer = new Timer(timer_Elapsed, null, Thousand, Thousand);
-            _options.Logger.Log(LogLevel.Trace, "LittleThunder Constructor End");
-        }
-
-        /// <summary>
-        ///     Reset (Reset whole provider) provider with Concurrency Level and Initial Capacity parameters.
-        /// </summary>
-        public void Reset(ILocalCacheProviderOptions options)
-        {
-            // Set options
-            _options = options;
-            _options.Logger.Log(LogLevel.Trace, "LittleThunder Reset Begin");
-            //_timer.Stop();
-            _concurrentStore = new ConcurrentDictionary<string, InMemoryCacheItem>(_options.ConcurrencyLevel, _options.InitialCapacity);
-            //_timer.Start();
-            _timer.Change(Thousand, Thousand);
-            _options.Logger.Log(LogLevel.Trace, "LittleThunder Reset End");
+            _logger.Log(LogLevel.Trace, "LittleThunder Constructor End");
         }
 
         bool _inPeriod;
 
         void timer_Elapsed(object sender)
         {
-            _options.Logger.Log(LogLevel.Trace, "LittleThunder Timer Elapsed");
+            _logger.Log(LogLevel.Trace, "LittleThunder Timer Elapsed");
             if (_disposing) return;
             if (_inPeriod) return;
-            _options.Logger.Log(LogLevel.Trace, "LittleThunder In Period Begin");
+            _logger.Log(LogLevel.Trace, "LittleThunder In Period Begin");
             try
             {
                 _inPeriod = true;
@@ -61,13 +49,13 @@ namespace Yakari
             // ReSharper disable once EmptyGeneralCatchClause
             catch(Exception ex)
             {
-                _options.Logger.Log("LittleThunder In Period Exception", ex);
+                _logger.Log("LittleThunder In Period Exception", ex);
             }
             finally
             {
                 _inPeriod = false;
             }
-            _options.Logger.Log(LogLevel.Trace, "LittleThunder In Period End");
+            _logger.Log(LogLevel.Trace, "LittleThunder In Period End");
         }
 
         /// <summary>
@@ -75,9 +63,9 @@ namespace Yakari
         /// </summary>
         void RemoveExpiredItems()
         {
-            _options.Logger.Log(LogLevel.Trace, "LittleThunder RemoveExpiredItems Begin");
+            _logger.Log(LogLevel.Trace, "LittleThunder RemoveExpiredItems Begin");
             var expiredItems = _concurrentStore.Where(o => o.Value.IsExpired).ToArray();
-            _options.Logger.Log(LogLevel.Trace, string.Format("LittleThunder Removing {0} Item(s)", expiredItems.Length));
+            _logger.Log(LogLevel.Trace, string.Format("LittleThunder Removing {0} Item(s)", expiredItems.Length));
             foreach (var pair in expiredItems)
             {
                 var c = 0;
@@ -89,7 +77,7 @@ namespace Yakari
                     if (c >= _options.MaxRetryForLocalOperations) break;
                 }
             }
-            _options.Logger.Log(LogLevel.Trace, "LittleThunder RemoveExpiredItems End");
+            _logger.Log(LogLevel.Trace, "LittleThunder RemoveExpiredItems End");
         }
 
         public override T Get<T>(string key, TimeSpan getTimeout, bool isManagerCall = false)
@@ -100,7 +88,7 @@ namespace Yakari
         T GetInternal<T>(string key, TimeSpan getTimeout, bool isManagerCall, bool secondCall = false)
         {
             T t = default(T);
-            _options.Logger.Log(LogLevel.Trace, "LittleThunder Get");
+            _logger.Log(LogLevel.Trace, "LittleThunder Get");
             OnBeforeGetWrapper(key, getTimeout, isManagerCall);
             if (_concurrentStore.ContainsKey(key))
             {
@@ -142,7 +130,7 @@ namespace Yakari
 
         public override void Set(string key, object value, TimeSpan expiresIn, bool isManagerCall = false)
         {
-            _options.Logger.Log(LogLevel.Debug, "LittleThunder Set");
+            _logger.Log(LogLevel.Debug, "LittleThunder Set");
             var item = new InMemoryCacheItem(value, expiresIn);
             OnBeforeSetWrapper(key, item, isManagerCall);
             var func = new Func<string, InMemoryCacheItem, InMemoryCacheItem>((s, cacheItem) => item);
@@ -165,7 +153,7 @@ namespace Yakari
 
         public override void Delete(string key, bool isManagerCall = false)
         {
-            _options.Logger.Log(LogLevel.Trace, "LittleThunder Delete");
+            _logger.Log(LogLevel.Trace, "LittleThunder Delete");
             OnBeforeDeleteWrapper(key, isManagerCall);
             if (!_concurrentStore.ContainsKey(key)) return;
             InMemoryCacheItem outItem;
@@ -196,7 +184,7 @@ namespace Yakari
 
         public override bool Exists(string key)
         {
-            _options.Logger.Log(LogLevel.Trace, "LittleThunder Exists");
+            _logger.Log(LogLevel.Trace, "LittleThunder Exists");
             if (_concurrentStore.ContainsKey(key)) return true;
             return false;
         }
@@ -218,7 +206,7 @@ namespace Yakari
         public override void Dispose()
         {
             if (_disposing) return;
-            _options.Logger.Log(LogLevel.Trace, "LittleThunder Disposing");
+            _logger.Log(LogLevel.Trace, "LittleThunder Disposing");
             _disposing = true;
             //_timer.Stop();
             _timer.Dispose();

@@ -40,8 +40,8 @@ namespace Yakari.Demo
             container.GetInstance<IRemoteCacheProvider>();
             container.Register<ISubscriptionManager>(factory
                 => new RedisSubscriptionManager(_connectionString, ChannelName, factory.GetInstance<ILogger>()));
-            container.Register<ILocalCacheProviderOptions>(factory => new LocalCacheProviderOptions(factory.GetInstance<ILogger>()));
-            container.Register<ILocalCacheProvider, LittleThunder>();
+            container.Register<ILocalCacheProviderOptions>(factory => new LocalCacheProviderOptions());
+            container.Register<ILocalCacheProvider>(factory => new LittleThunder(factory.GetInstance<ILocalCacheProviderOptions>(), factory.GetInstance<ILogger>()));
             if (string.IsNullOrEmpty(memberName)) memberName = Guid.NewGuid().ToString();
             container.Register<ICacheObserver>(factory
                 => new GreatEagle(memberName, factory.GetInstance<ISubscriptionManager>(), factory.GetInstance<ISerializer>(), factory.GetInstance<ILocalCacheProvider>(), factory.GetInstance<IRemoteCacheProvider>(), factory.GetInstance<ILogger>())

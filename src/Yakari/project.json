@@ -1,7 +1,7 @@
 {
   "version": "1.0.2",
   "authors": [ "Yakari Tribe and contributers" ],
-  "copyright": "Copyright Yakari Tribe and contributers",
+  "copyright": "Copyright (c) 2016 Edip Faruk Pehlivanlı",
   "description": "Yakari is aimed to reduce distributed caching systems serialization/deserialization and network operation costs.",
   "packOptions": {
     "summary": "Distributed InMemory Cache for .Net.",
