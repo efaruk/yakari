@@ -79,7 +79,7 @@ We Need Help for
 2. Test
 3. Review
 4. Coding
-5. Porting Other Languages, [Java](https://github.com/TitaniumSoft/jakari), [Go](https://github.com/TitaniumSoft/gakari), etc...
+5. Porting Other Languages, [Java:Jakari](https://github.com/TitaniumSoft/jakari), [Go:Gakari](https://github.com/TitaniumSoft/gakari), etc...
 
 You can ping me at: https://twitter.com/farukpehlivanli or https://tr.linkedin.com/in/efaruk
 
@@ -88,4 +88,9 @@ Our #Slack Team Domain: https://yakariteam.slack.com/
 
 Please [![Tweet](http://i.imgur.com/wWzX9uB.png)](https://twitter.com/intent/tweet?url=https://github.com/efaruk/yakari&text=Yakari%20Cache%20Distributor&hashtags=Distributed,InMemory,Cache,dotnet) us ;)
 
-Thanks and regards...
+
+# Many Thanks to Our Sponsors: 
+
+[![kloia](https://www.google.com/a/cpanel/kloia.com/images/logo.gif)](http://kloia.com)
+
+- to be a [sponsor](https://tr.linkedin.com/in/efaruk)
