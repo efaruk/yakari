@@ -93,6 +93,6 @@ Please [![Tweet](http://i.imgur.com/wWzX9uB.png)](https://twitter.com/intent/twe
 
 [![kloia](https://www.google.com/a/cpanel/kloia.com/images/logo.gif)](http://kloia.com)
 
-<a href="https://www.jetbrains.com/" title="JetBrains Rule'z" target="_blank"><img src="https://resources.jetbrains.com/assets/media/open-graph/jetbrains_250x250.png" height="55"></img></a>
+<a href="https://www.jetbrains.com/" title="JetBrains Rule'z" target="_blank"><img src="https://resources.jetbrains.com/assets/media/open-graph/jetbrains_250x250.png"></img></a>
 
 - to be a [sponsor](https://tr.linkedin.com/in/efaruk)
