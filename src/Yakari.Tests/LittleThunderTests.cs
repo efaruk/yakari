@@ -26,12 +26,12 @@ namespace Yakari.Tests
         public void FixtureSetup()
         {
             var builder = new ContainerBuilder();
-            
+
             _logger = new NullLogger();
             builder.RegisterInstance(_logger).As<ILogger>().SingleInstance();
             builder.RegisterType<DemoHelper>().As<IDemoHelper>().SingleInstance();
             builder.RegisterType<LocalCacheProviderOptions>().As<ILocalCacheProviderOptions>().SingleInstance();
-            builder.Register<ILocalCacheProvider>(c => new LittleThunder(c.Resolve<ILocalCacheProviderOptions>(), c.Resolve<ILogger>()));
+            builder.Register<LittleThunder>(c => new LittleThunder(c.Resolve<ILocalCacheProviderOptions>(), c.Resolve<ILogger>())).As<ILocalCacheProvider>().SingleInstance();
             _container = builder.Build();
 
             _demoHelper = _container.Resolve<IDemoHelper>();
