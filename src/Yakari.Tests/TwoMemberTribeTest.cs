@@ -5,14 +5,14 @@ using Yakari.Demo;
 
 namespace Yakari.Tests
 {
-    //[TestFixture]
+    [TestFixture]
     public class TwoMemberTribeTest
     {
         DemoDependencyContainer _member1Container;
         DemoDependencyContainer _member2Container;
         IDemoHelper _demoHelper;
 
-        //[OneTimeSetUp]
+        [OneTimeSetUp]
         public void FixtureSetup()
         {
             _member1Container = new DemoDependencyContainer(null, "Member 1");
@@ -20,7 +20,7 @@ namespace Yakari.Tests
             _demoHelper = _member1Container.Resolve<IDemoHelper>();
         }
 
-        //[Test]
+        [Test]
         public void Mermber1SetMember2ExistsTest()
         {
             var key = "demo_object_list";
