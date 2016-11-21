@@ -12,8 +12,6 @@ namespace Yakari.Demo
 
         object Resolve(Type type);
 
-        object Resolve(Type type, string name);
-
         IDisposable BeginScope();
 
     }

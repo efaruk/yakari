@@ -36,19 +36,19 @@ namespace Yakari.Tests
             var key = "pebbles";
 
             // Simple Set
-            localCacheProvider.Set(key, new[] { "pebble1", "pebble2", "pebble3" }, CacheTime.FifteenMinutes);
+            localCacheProvider.Set(key, new[] { "pebble1", "pebble2", "pebble3" }, CacheTime.FifteenMinutes, false);
 
             // Simple Get
-            var pebbles = localCacheProvider.Get<string[]>(key, TimeSpan.FromSeconds(5));
+            var pebbles = localCacheProvider.Get<string[]>(key, TimeSpan.FromSeconds(5), false);
 
             // Get with Acquire Function *Recommended
             var item = localCacheProvider.Get<string[]>(key, TimeSpan.FromSeconds(5), () =>
             {
                 return new[] { "pebble1", "pebble2", "pebble3" };
-            }, CacheTime.FifteenMinutes);
+            }, CacheTime.FifteenMinutes, false);
 
             // Simple Delete
-            localCacheProvider.Delete(key);
+            localCacheProvider.Delete(key, false);
         }
     }
 }

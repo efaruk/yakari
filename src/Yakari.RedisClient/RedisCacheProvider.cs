@@ -73,11 +73,11 @@ namespace Yakari.RedisClient
             return item;
         }
 
-        public override void Set(string key, object value, TimeSpan expiresIn, bool isManagerCall = false)
+        public override void Set(string key, object data, TimeSpan expiresIn, bool isManagerCall = false)
         {
             _logger.Log(LogLevel.Debug, string.Format("RedisCacheProvider Set {0}", key));
-            var data = _serializer.Serialize(value);
-            _database.StringSet(key, data.ToString(), expiresIn);
+            var _data = _serializer.Serialize(data);
+            _database.StringSet(key, _data.ToString(), expiresIn);
         }
 
         public override void Delete(string key, bool isManagerCall = false)
@@ -107,5 +107,7 @@ namespace Yakari.RedisClient
             var list = keys.ToList();
             return list;
         }
+
     }
+
 }

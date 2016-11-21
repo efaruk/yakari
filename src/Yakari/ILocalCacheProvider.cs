@@ -1,16 +1,21 @@
-﻿using System;
+using System;
 
 namespace Yakari
 {
     public interface ILocalCacheProvider : ICacheProvider
     {
+        #region Events
+
         event BeforeGet OnBeforeGet;
         event AfterGet OnAfterGet;
         event BeforeSet OnBeforeSet;
         event AfterSet OnAfterSet;
         event BeforeDelete OnBeforeDelete;
         event AfterDelete OnAfterDelete;
+
+        #endregion
     }
+
 
     public delegate void BeforeSet(string key, InMemoryCacheItem item);
 

@@ -29,7 +29,7 @@
         "System.Threading.Timer": "4.0.1",
         "System.Threading.Thread": "4.0.0",
         "System.Threading.ThreadPool": "4.0.10",
-        "System.Dynamic.Runtime": "4.0.11",
+        //"System.Dynamic.Runtime": "4.0.11",
         "Microsoft.CSharp": "4.0.1"
       }
     }

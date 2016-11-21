@@ -1,5 +1,5 @@
 ﻿using System;
-using LightInject;
+using Autofac;
 using Yakari;
 using Yakari.Demo.Helper;
 using Yakari.RedisClient;
@@ -7,7 +7,7 @@ using Yakari.Serializer.Newtonsoft;
 
 namespace Yakari.Demo
 {
-    public class DemoDependencyContainer : IDependencyContainer<ServiceContainer>
+    public class DemoDependencyContainer : IDependencyContainer<IContainer>
     {
         //public const string RemoteCacheProviderName = "RemoteCacheProvider";
         public const string ChannelName = "YakariDemo";
@@ -18,35 +18,50 @@ namespace Yakari.Demo
 
         readonly string _connectionString = $"{RedisIP},abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,synctimeout=5000,allowAdmin=true";
 
-        ServiceContainer _container;
+        IContainer _container;
         ILogger _logger;
 
-        public DemoDependencyContainer(ServiceContainer container, string memberName)
+        public DemoDependencyContainer(IContainer container, string memberName)
         {
-            _container = container ?? new ServiceContainer();
-            Setup(_container, memberName);
+            _container = container;
+            if (_container == null) {
+             _container = Setup(memberName);   
+            }
         }
 
-        void Setup(ServiceContainer container, string memberName)
+        IContainer Setup(string memberName)
         {
-            container.SetDefaultLifetime<PerContainerLifetime>();
-            container.Register<ILogger>(factory => new ConsoleLogger(LogLevel.Debug));
-            //container.Register<ILogger>(factory => new InMemoryLogger(LogLevel.Debug));
-            _logger = container.GetInstance<ILogger>();
+            var builder = new ContainerBuilder();
+            
+            // Default Logger
+            _logger = new InMemoryLogger(LogLevel.Debug);
+            builder.RegisterInstance(_logger).As<ILogger>().SingleInstance();
             _logger.Log("Registering Dependencies...");
-            container.Register<IDemoHelper, DemoHelper>();
-            container.Register<ISerializer, JsonNetSerializer>();
-            container.Register<IRemoteCacheProvider>(factory => new RedisCacheProvider(_connectionString, factory.GetInstance<ISerializer>(), factory.GetInstance<ILogger>()));
-            container.GetInstance<IRemoteCacheProvider>();
-            container.Register<ISubscriptionManager>(factory
-                => new RedisSubscriptionManager(_connectionString, ChannelName, factory.GetInstance<ILogger>()));
-            container.Register<ILocalCacheProviderOptions>(factory => new LocalCacheProviderOptions());
-            container.Register<ILocalCacheProvider>(factory => new LittleThunder(factory.GetInstance<ILocalCacheProviderOptions>(), factory.GetInstance<ILogger>()));
-            if (string.IsNullOrEmpty(memberName)) memberName = Guid.NewGuid().ToString();
-            container.Register<ICacheObserver>(factory
-                => new GreatEagle(memberName, factory.GetInstance<ISubscriptionManager>(), factory.GetInstance<ISerializer>(), factory.GetInstance<ILocalCacheProvider>(), factory.GetInstance<IRemoteCacheProvider>(), factory.GetInstance<ILogger>())
-            , CacheManagerName);
+            // Demo Helper
+            builder.Register(c => new DemoHelper(ChannelName, memberName)).As<IDemoHelper>().SingleInstance();
+            // Default Serializer
+            builder.RegisterType<JsonNetSerializer>().As<ISerializer>().SingleInstance();
+            //Redis Remote Cache Provider for Yakari
+            builder.Register(
+                        c =>
+                            new RedisCacheProvider(_connectionString, c.Resolve<ISerializer>(), c.Resolve<ILogger>()))
+                        .As<IRemoteCacheProvider>()
+                        .SingleInstance();
+            //Redis Subscription Manager for tribe communication.
+            builder.Register(c => new RedisSubscriptionManager(_connectionString, ChannelName, c.Resolve<ILogger>())).As<ISubscriptionManager>().SingleInstance();
+            // Options class for LittleThunder.
+            builder.RegisterType<LocalCacheProviderOptions>().As<ILocalCacheProviderOptions>().SingleInstance();
+            // Little Thunder the Local Cache Provider
+            builder.RegisterType<LittleThunder>().As<ILocalCacheProvider>().SingleInstance();
+            // The Great Eagle
+            builder.Register(
+                        c =>
+                            new GreatEagle(memberName, c.Resolve<ISubscriptionManager>(), c.Resolve<ISerializer>(),
+                                c.Resolve<ILocalCacheProvider>(), c.Resolve<IRemoteCacheProvider>(),
+                                c.Resolve<ILogger>())).As<ICacheObserver>().SingleInstance();
+            _container = builder.Build();
             Initialize();
+            return _container;
         }
 
         void Initialize()
@@ -54,38 +69,32 @@ namespace Yakari.Demo
             Resolve<ICacheObserver>();
         }
 
-        public void Replace(ServiceContainer container)
+        public void Replace(IContainer container)
         {
             _container = container;
         }
 
         public T Resolve<T>()
         {
-            var t = _container.GetInstance<T>();
+            var t = _container.Resolve<T>();
             return t;
         }
 
         public T Resolve<T>(string name)
         {
-            var t = _container.GetInstance<T>(name);
+            var t = _container.ResolveNamed<T>(name);
             return t;
         }
 
         public object Resolve(Type type)
         {
-            var t = _container.GetInstance(type);
+            var t = _container.Resolve(type);
             return t;
-        }
-
-        public object Resolve(Type type, string name)
-        {
-            var t = _container.GetInstance(type, name);
-            return t;
-        }
+        }        
 
         public IDisposable BeginScope()
         {
-            return _container.BeginScope();
+            return _container.BeginLifetimeScope();
         }
 
         public void Dispose()

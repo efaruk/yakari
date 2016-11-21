@@ -1,4 +1,4 @@
-﻿using LightInject;
+﻿using Autofac;
 using NSubstitute;
 using NUnit.Framework;
 using StackExchange.Redis;
@@ -12,7 +12,7 @@ namespace Yakari.Tests
     public class RedisSubscriptionManagerTests
     {
         ILogger _logger;
-        ServiceContainer _container;
+        IContainer _container;
         IConnectionMultiplexer _mockConnectionMultiplexer;
         ISubscriber _mockSubscriber;
         ISubscriptionManager _subscriptionManager;
@@ -21,19 +21,20 @@ namespace Yakari.Tests
         [OneTimeSetUp]
         public void FixtureSetup()
         {
-            _container = new ServiceContainer();
-            _container.SetDefaultLifetime<PerContainerLifetime>();
-            _container.Register<ILogger>(factory => new ConsoleLogger(LogLevel.Debug));
-            _logger = _container.GetInstance<ILogger>();
-            _container.Register<ISerializer, JsonNetSerializer>();
-            _serializer = _container.GetInstance<ISerializer>();
+            var builder = new ContainerBuilder();
+            _logger = new ConsoleLogger(LogLevel.Debug);
+            builder.RegisterInstance(_logger).As<ILogger>().SingleInstance();
+            builder.RegisterType<JsonNetSerializer>().As<ISerializer>().SingleInstance();
             _mockConnectionMultiplexer = Substitute.For<IConnectionMultiplexer>();
-            _container.RegisterInstance(typeof(IConnectionMultiplexer), _mockConnectionMultiplexer);
+            builder.RegisterInstance(_mockConnectionMultiplexer).As<IConnectionMultiplexer>().SingleInstance();
             _mockSubscriber = Substitute.For<ISubscriber>();
-            _container.RegisterInstance(typeof(ISubscriber), _mockSubscriber);
-            _mockConnectionMultiplexer.GetSubscriber().Returns(_container.GetInstance<ISubscriber>());
-            _container.Register<ISubscriptionManager>(factory => new RedisSubscriptionManager(factory.GetInstance<IConnectionMultiplexer>(), TestConstants.ChannelName, factory.GetInstance<ILogger>()));
-            _subscriptionManager = _container.GetInstance<ISubscriptionManager>();
+            builder.RegisterInstance(_mockSubscriber).As<ISubscriber>().SingleInstance();
+            builder.Register(c => new RedisSubscriptionManager(c.Resolve<IConnectionMultiplexer>(), TestConstants.ChannelName, c.Resolve<ILogger>())).As<ISubscriptionManager>().SingleInstance();
+            
+            _container = builder.Build();
+            _subscriptionManager = _container.Resolve<ISubscriptionManager>();
+            _mockConnectionMultiplexer.GetSubscriber().Returns(_container.Resolve<ISubscriber>());
+            _serializer = _container.Resolve<ISerializer>();
             _logger.Log("RedisSubscriptionManagerTests SetupComplete");
         }
 

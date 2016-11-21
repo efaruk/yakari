@@ -13,6 +13,14 @@ namespace Yakari
 
         public abstract bool HasSlidingSupport { get; }
 
+        bool ICacheProvider.HasSlidingSupport
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public abstract T Get<T>(string key, TimeSpan getTimeout, bool isManagerCall = false) where T : class;
 
         public T Get<T>(string key, TimeSpan getTimeout, Func<T> acquireFunction, TimeSpan expiresIn, bool isManagerCall = false) where T : class
@@ -35,5 +43,39 @@ namespace Yakari
 
         public abstract List<string> AllKeys();
 
+        T ICacheProvider.Get<T>(string key, TimeSpan getTimeout, bool isManagerCall = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        T ICacheProvider.Get<T>(string key, TimeSpan getTimeout, Func<T> acquireFunction, TimeSpan expiresIn, bool isManagerCall = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICacheProvider.Set(string key, object value, TimeSpan expiresIn, bool isManagerCall = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICacheProvider.Delete(string key, bool isManagerCall = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool ICacheProvider.Exists(string key)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<string> ICacheProvider.AllKeys()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IDisposable.Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

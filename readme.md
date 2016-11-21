@@ -8,7 +8,9 @@ Yakari is simply in memory cache distributor.
 
 Project is aimed to reduce distributed caching systems serialization/deserialization and network operation costs.
 You simply work with your localCache, the GreatEagle observe's your operations and take care of everything.
-In yakari if you set 1 object it makes 1 serialization and 1 network operation, for first get operation it makes 1 network operation, 1 deserialization, after then there is no deserialization or network operation you can get your cache object from your localCache, how much you want. 
+In yakari if you set 1 object it makes 1 serialization and 1 network operation, for first get operation it makes 1 network operation, 1 deserialization, after then there is no deserialization or network operation you can get your cache object from your localCache, how much you want.
+
+[Presentation: Concept of Yakari](https://github.com/efaruk/yakari/blob/master/docs/Yakari%20Distributed%20InMemory%20Cache.pdf) 
 
 ## Yakari is Very Easy
 ---

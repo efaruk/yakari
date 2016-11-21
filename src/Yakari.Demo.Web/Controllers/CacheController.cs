@@ -31,7 +31,7 @@ namespace Yakari.Demo.Web.Controllers
         {
             var list = _demoHelper.GenerateDemoObjects(1000);
             var key = string.Format(KeyFormat, _demoHelper.MemberName, Guid.NewGuid());
-            _littleThunder.Set(key, list, CacheTime.OneDay);
+            _littleThunder.Set(key, list, CacheTime.OneDay, false);
             return list;
         }
 
@@ -39,7 +39,7 @@ namespace Yakari.Demo.Web.Controllers
         [HttpGet("{id}")]
         public object Get(string id)
         {
-            var item = _littleThunder.Get<List<DemoObject>>(id, TimeSpan.FromSeconds(3));
+            var item = _littleThunder.Get<List<DemoObject>>(id, TimeSpan.FromSeconds(3), false);
             return item;
         }
         
@@ -49,7 +49,7 @@ namespace Yakari.Demo.Web.Controllers
         {
             var list = _demoHelper.GenerateDemoObjects(1000);
             var key = string.Format(KeyFormat, _demoHelper.MemberName, Guid.NewGuid());
-            _littleThunder.Set(key, list, CacheTime.OneDay);
+            _littleThunder.Set(key, list, CacheTime.OneDay, false);
         }
 
         // PUT api/cache/5
@@ -57,14 +57,14 @@ namespace Yakari.Demo.Web.Controllers
         public void Put(string id)
         {
             var list = _demoHelper.GenerateDemoObjects(1000);
-            _littleThunder.Set(id, list, CacheTime.OneDay);
+            _littleThunder.Set(id, list, CacheTime.OneDay, false);
         }
 
         // DELETE api/cache/5
         [HttpDelete("{id}")]
         public void Delete(string id)
         {
-            _littleThunder.Delete(id);
+            _littleThunder.Delete(id, false);
         }
     }
 }

@@ -56,5 +56,8 @@ namespace Yakari
         ///     Return all cache keys
         /// </summary>
         List<string> AllKeys();
+
+        
     }
+
 }

@@ -4,6 +4,7 @@ using System.Threading;
 using NUnit.Framework;
 using Yakari.Demo;
 using Yakari;
+using Autofac;
 
 namespace Yakari.Tests
 {
@@ -46,33 +47,33 @@ namespace Yakari.Tests
         readonly ILocalCacheProvider _localCache;
         readonly IRemoteCacheProvider _remoteCache;
 
-        public HappyPather(DemoDependencyContainer demoDependencyContainer, string key)
+        public HappyPather(IDependencyContainer<IContainer> demoDependencyContainer, string key)
         {
             var container = demoDependencyContainer;
             _demoHelper = container.Resolve<IDemoHelper>();
             _localCache = container.Resolve<ILocalCacheProvider>();
             _remoteCache = container.Resolve<IRemoteCacheProvider>();
-            _localCache.Delete(key);
-            _remoteCache.Delete(key);
+            _localCache.Delete(key, false);
+            _remoteCache.Delete(key, false);
         }
 
         public List<DemoObject> FillSomeDemoObjectToLocalCache(string key)
         {
             var list = _demoHelper.GenerateDemoObjects(1000);
-            _localCache.Set(key, list, CacheTime.FifteenMinutes);
+            _localCache.Set(key, list, CacheTime.FifteenMinutes, false);
             return list;
         }
 
         public List<DemoObject> GetSomeDemoObjectFromLocal(string key)
         {
-            var list = _localCache.Get<List<DemoObject>>(key, TimeSpan.FromSeconds(3));
+            var list = _localCache.Get<List<DemoObject>>(key, TimeSpan.FromSeconds(3), false);
             Assert.NotNull(list);
             return list;
         }
 
         public InMemoryCacheItem GetSomeDemoObjectFromRemote(string key)
         {
-            var item = _remoteCache.Get<InMemoryCacheItem>(key, TimeSpan.FromSeconds(3));
+            var item = _remoteCache.Get<InMemoryCacheItem>(key, TimeSpan.FromSeconds(3), false);
             Assert.NotNull(item);
             return item;
         }

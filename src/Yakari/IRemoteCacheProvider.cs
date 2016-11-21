@@ -1,7 +1,6 @@
-﻿namespace Yakari
+namespace Yakari
 {
     public interface IRemoteCacheProvider : ICacheProvider
     {
-        
     }
 }

@@ -128,10 +128,10 @@ namespace Yakari
             OnBeforeGet?.Invoke(key, getTimeout);
         }
 
-        public override void Set(string key, object value, TimeSpan expiresIn, bool isManagerCall = false)
+        public override void Set(string key, object data, TimeSpan expiresIn, bool isManagerCall = false)
         {
             _logger.Log(LogLevel.Debug, "LittleThunder Set");
-            var item = new InMemoryCacheItem(value, expiresIn);
+            var item = new InMemoryCacheItem(data, expiresIn);
             OnBeforeSetWrapper(key, item, isManagerCall);
             var func = new Func<string, InMemoryCacheItem, InMemoryCacheItem>((s, cacheItem) => item);
             _concurrentStore.AddOrUpdate(key, item, func);

@@ -1,19 +1,19 @@
 {
-    "version": "1.0.0-*",
+    "version": "1.0.0",
 
     "userSecretsId": "yakari.demo.settings",
     // redis = <IP Address>:6379,abortConnect=false,defaultDatabase=0,keepAlive=300,resolveDns=false,synctimeout=5000
 
   "dependencies": {
-    "LightInject": "4.1.2",
     "Bogus": "7.1.7",
+    "Autofac": "4.2.0",
     "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
     "Microsoft.Extensions.Configuration.Json": "1.0.0",
     "Microsoft.Extensions.Configuration.UserSecrets": "1.0.0",
     "NETStandard.Library": "1.6.0",
-    "Yakari": "1.0.*",
-    "Yakari.RedisClient": "1.0.*",
-    "Yakari.Serializer.Newtonsoft": "1.0.*"
+    "Yakari": "1.0.2",
+    "Yakari.RedisClient": "1.0.2",
+    "Yakari.Serializer.Newtonsoft": "1.0.2"
   },
 
     "tools": {

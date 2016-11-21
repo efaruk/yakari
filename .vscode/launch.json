@@ -9,7 +9,7 @@
             "program": "${workspaceRoot}/src/Yakari.Demo.Konsole/bin/Debug/netcoreapp1.0/Yakari.Demo.Konsole.dll",
             "args": [],
             "cwd": "${workspaceRoot}",
-            "externalConsole": false,
+            "externalConsole": true,
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart"
         },

@@ -3,13 +3,13 @@
 
   "dependencies": {
     "Microsoft.NETCore.App": {
-      "version": "1.0.1",
+      "version": "1.0.0",
       "type": "platform"
     },
-    "Microsoft.AspNetCore.Mvc": "1.0.1",
-    "Microsoft.AspNetCore.Routing": "1.0.1",
-    "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
-    "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",
+    "Microsoft.AspNetCore.Mvc": "1.0.0",
+    "Microsoft.AspNetCore.Routing": "1.0.0",
+    // "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
+    "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
     "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
     "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0",
     "Microsoft.Extensions.Configuration.Json": "1.0.0",
@@ -34,10 +34,10 @@
       "type": "build"
     },
     "Autofac.Extensions.DependencyInjection": "4.0.0",
-    "Yakari": "1.0.*",
-    "Yakari.RedisClient": "1.0.*",
-    "Yakari.Serializer.Newtonsoft": "1.0.*",
-    "Yakari.Demo": "1.0.*"
+    "Yakari": "1.0.2",
+    "Yakari.RedisClient": "1.0.2",
+    "Yakari.Serializer.Newtonsoft": "1.0.2",
+    "Yakari.Demo": "1.0.0"
   },
 
   "tools": {

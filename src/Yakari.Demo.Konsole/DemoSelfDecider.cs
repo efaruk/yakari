@@ -53,7 +53,7 @@ namespace Yakari.Demo.Konsole
             {
                 var result = new List<DemoObject>(_demoHelper.GenerateDemoObjects(1000));
                 return result;
-            }, TimeSpan.FromMinutes(15));
+            }, TimeSpan.FromMinutes(15), false);
             // ReSharper disable once ReturnValueOfPureMethodIsNotUsed : Sake of Demo
             list.OrderBy(o => o.CreatedAt);
         }

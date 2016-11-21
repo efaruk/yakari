@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using LightInject;
+using Autofac;
 using NSubstitute;
 using NUnit.Framework;
 using Yakari.Demo;
@@ -13,7 +13,7 @@ namespace Yakari.Tests
     [TestFixture]
     public class LittleThunderTests
     {
-        ServiceContainer _container;
+        IContainer _container;
         ILogger _logger;
         ILocalCacheProvider _cache;
         IDemoHelper _demoHelper;
@@ -25,16 +25,17 @@ namespace Yakari.Tests
         [OneTimeSetUp]
         public void FixtureSetup()
         {
-            _container = new ServiceContainer();
-            _container.SetDefaultLifetime<PerContainerLifetime>();
-            //_container.Register<ILogger>(factory => new ConsoleLogger(LogLevel.Trace));
-            _container.Register<ILogger, NullLogger>();
-            _logger = _container.GetInstance<ILogger>();
-            _container.Register<IDemoHelper, DemoHelper>();
-            _container.Register<ILocalCacheProviderOptions,LocalCacheProviderOptions>();
-            _container.Register<ILocalCacheProvider>(factory => new LittleThunder(factory.GetInstance<ILocalCacheProviderOptions>(),factory.GetInstance<ILogger>()));
-            _demoHelper = _container.GetInstance<IDemoHelper>();
-            _cache = _container.GetInstance<ILocalCacheProvider>();
+            var builder = new ContainerBuilder();
+            
+            _logger = new NullLogger();
+            builder.RegisterInstance(_logger).As<ILogger>().SingleInstance();
+            builder.RegisterType<DemoHelper>().As<IDemoHelper>().SingleInstance();
+            builder.RegisterType<LocalCacheProviderOptions>().As<ILocalCacheProviderOptions>().SingleInstance();
+            builder.Register<ILocalCacheProvider>(c => new LittleThunder(c.Resolve<ILocalCacheProviderOptions>(), c.Resolve<ILogger>()));
+            _container = builder.Build();
+
+            _demoHelper = _container.Resolve<IDemoHelper>();
+            _cache = _container.Resolve<ILocalCacheProvider>();
             _cache.OnBeforeGet += _cache_OnBeforeGet;
             _cache.OnAfterGet += _cache_OnAfterGet;
             _cache.OnBeforeSet += _cache_OnBeforeSet;
@@ -107,9 +108,9 @@ namespace Yakari.Tests
         public void SetupTests()
         {
             _logger.Log("LittleThunderTests");
-            var options = _container.GetInstance<ILocalCacheProviderOptions>();
+            var options = _container.Resolve<ILocalCacheProviderOptions>();
             Assert.NotNull(options);
-            var cacherovider = _container.GetInstance<ILocalCacheProvider>();
+            var cacherovider = _container.Resolve<ILocalCacheProvider>();
             Assert.NotNull(cacherovider);
             Assert.AreSame(cacherovider, _cache);
             Assert.IsAssignableFrom<LittleThunder>(cacherovider);
@@ -119,7 +120,7 @@ namespace Yakari.Tests
         public void When_set_som_objects_it_should_call_CacheManager_and_when_get_it_back_it_should_be_same_instance()
         {
             var list = _demoHelper.GenerateDemoObjects(1000);
-            _cache.Set(DemoObjectListKey, list, CacheTime.FifteenMinutes);
+            _cache.Set(DemoObjectListKey, list, CacheTime.FifteenMinutes, false);
             Thread.Sleep(500);
             var item = new InMemoryCacheItem(list, CacheTime.FifteenMinutes);
             Assert.AreEqual(item, _onBeforeSetItem);
@@ -127,7 +128,7 @@ namespace Yakari.Tests
             Assert.AreEqual(DemoObjectListKey, _onAfterSetKey);
             //_mockCacheManager.Received().OnBeforeSet(Arg.Is(DemoObjectListKey), Arg.Any<InMemoryCacheItem>());
             //_mockCacheManager.Received().OnAfterSet(Arg.Is(DemoObjectListKey));
-            var cachedList = _cache.Get<List<DemoObject>>(DemoObjectListKey, TimeSpan.FromSeconds(3));
+            var cachedList = _cache.Get<List<DemoObject>>(DemoObjectListKey, TimeSpan.FromSeconds(3), false);
             Thread.Sleep(500);
             Assert.AreEqual(DemoObjectListKey, _onBeforeGetKey);
             Assert.AreEqual(DemoObjectListKey, _onAfterGetKey);
@@ -143,11 +144,11 @@ namespace Yakari.Tests
             Parallel.For(0, 100000, i =>
             {
                 var key = string.Format("item{0}", i);
-                _cache.Set(key, item, TimeSpan.FromSeconds(5));
+                _cache.Set(key, item, TimeSpan.FromSeconds(5), false);
             });
             Thread.Sleep(TimeSpan.FromSeconds(6));
             var k = "item99999";
-            var cachedItem = _cache.Get<DemoObject>(k, TimeSpan.FromSeconds(0));
+            var cachedItem = _cache.Get<DemoObject>(k, TimeSpan.FromSeconds(0), false);
             Assert.Null(cachedItem);
         }
 
@@ -156,12 +157,12 @@ namespace Yakari.Tests
         {
             var item = _demoHelper.GenerateDemoObjects(1)[0];
             var key = "very_popular_item";
-            _cache.Set(key, item, TimeSpan.FromSeconds(3));
+            _cache.Set(key, item, TimeSpan.FromSeconds(3), false);
             Parallel.For(0, 100000, i =>
             {
-                _cache.Get<DemoObject>(key, TimeSpan.FromSeconds(0));
+                _cache.Get<DemoObject>(key, TimeSpan.FromSeconds(0), false);
             });
-            var cachedItem = _cache.Get<DemoObject>(key, TimeSpan.FromSeconds(0));
+            var cachedItem = _cache.Get<DemoObject>(key, TimeSpan.FromSeconds(0), false);
             Assert.NotNull(cachedItem);
         }
 

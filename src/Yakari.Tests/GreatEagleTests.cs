@@ -1,5 +1,5 @@
 ﻿using System;
-using LightInject;
+using Autofac;
 using NSubstitute;
 using NUnit.Framework;
 using Yakari.Demo;
@@ -12,38 +12,40 @@ namespace Yakari.Tests
     public class GreatEagleTests
     {
         ILogger _logger;
-        ServiceContainer _container;
+        IContainer _container;
         ICacheObserver _observer;
 
 
         [OneTimeSetUp]
         public void FixtureSetup()
         {
-            _container = new ServiceContainer();
-            _container.SetDefaultLifetime<PerContainerLifetime>();
-            _container.Register<ILogger>(factory => new ConsoleLogger(LogLevel.Debug));
-            _logger = _container.GetInstance<ILogger>();
+            var memberName = "DefaultMember";
+            var builder = new ContainerBuilder();
+            _logger = new ConsoleLogger(LogLevel.Debug);
+            builder.RegisterInstance(_logger).As<ILogger>();
             _logger.Log("Registering Dependencies...");
-            _container.Register<IDemoHelper, DemoHelper>();
-            _container.Register<ISerializer, JsonNetSerializer>();
+            builder.RegisterType<DemoHelper>().As<IDemoHelper>().SingleInstance();
+            builder.RegisterType<JsonNetSerializer>().As<ISerializer>().SingleInstance();
             var remoteCacheProvider = Substitute.For<IRemoteCacheProvider>();
             var subscriptionManager = Substitute.For<ISubscriptionManager>();
-            _container.Register(factory => subscriptionManager);
+            builder.RegisterInstance(remoteCacheProvider).As<IRemoteCacheProvider>().SingleInstance();
+            builder.RegisterInstance(subscriptionManager).As<ISubscriptionManager>().SingleInstance();
             var localCacheProvider = Substitute.For<ILocalCacheProvider>();
-            _container.Register(factory => localCacheProvider);
-            _container.Register<ICacheObserver>(factory
-                => new GreatEagle(Guid.NewGuid().ToString(), factory.GetInstance<ISubscriptionManager>(), 
-                    factory.GetInstance<ISerializer>(), localCacheProvider, remoteCacheProvider, factory.GetInstance<ILogger>())
-                    , TestConstants.CacheObserverName);
-            _observer = _container.GetInstance<ICacheObserver>(TestConstants.CacheObserverName);
-            //container.Register<ILocalCacheProviderOptions>(factory => new LocalCacheProviderOptions(factory.GetInstance<ILogger>(), factory.GetInstance<ICacheObserver>()));
-            //container.Register<ICacheProvider, LittleThunder>(LocalCacheProviderName);
+            builder.RegisterInstance(localCacheProvider).As<ILocalCacheProvider>().SingleInstance();
+            builder.Register(
+                        c =>
+                            new GreatEagle(memberName, c.Resolve<ISubscriptionManager>(), c.Resolve<ISerializer>(),
+                                c.Resolve<ILocalCacheProvider>(), c.Resolve<IRemoteCacheProvider>(),
+                                c.Resolve<ILogger>())).As<ICacheObserver>().SingleInstance();
+            _container = builder.Build();
+
+            _observer = _container.Resolve<ICacheObserver>();
         }
 
         [Test]
         public void SetupTest()
         {
-            var helper = _container.GetInstance<IDemoHelper>();
+            var helper = _container.Resolve<IDemoHelper>();
             var list = helper.GenerateDemoObjects(1000);
             var key = Guid.NewGuid().ToString();
             var item = new InMemoryCacheItem(list, TimeSpan.FromMinutes(15));
