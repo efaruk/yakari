@@ -36,7 +36,7 @@ namespace Yakari
                 MaxRetryForLocalOperations = DefaultMaxRetryForLocalOperations;
         }
 
-        public ILogger Logger { get; set; }
+        //public ILogger Logger { get; set; }
         public int MaxRetryForLocalOperations { get; set; }
         public int ConcurrencyLevel { get; set; }
         public int InitialCapacity { get; set; }

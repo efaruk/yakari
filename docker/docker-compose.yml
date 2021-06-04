@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+  beaver01:
+    image: efaruk/yakariweb
+    container_name: beaver01
+    network_mode: bridge
+    ports:
+      - 5081:80
+  beaver02:
+    image: efaruk/yakariweb
+    container_name: beaver02
+    network_mode: bridge
+    ports:
+      - 5082:80
+  beaver03:
+    image: efaruk/yakariweb
+    container_name: beaver03
+    network_mode: bridge
+    ports:
+      - 5083:80
+  beaver04:
+    image: efaruk/yakariweb
+    container_name: beaver04
+    network_mode: bridge
+    ports:
+      - 5084:80
+  beaver05:
+    image: efaruk/yakariweb
+    container_name: beaver05
+    network_mode: bridge
+    ports:
+      - 5085:80

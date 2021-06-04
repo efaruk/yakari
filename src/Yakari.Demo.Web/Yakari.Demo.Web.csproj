@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Yakari.Demo\Yakari.Demo.csproj" />
+    <ProjectReference Include="..\Yakari.Pack\Yakari.Pack.csproj" />
+    <ProjectReference Include="..\Yakari.RedisClient\Yakari.RedisClient.csproj" />
+    <ProjectReference Include="..\Yakari.Serializer.Newtonsoft\Yakari.Serializer.Newtonsoft.csproj" />
+    <ProjectReference Include="..\Yakari\Yakari.csproj" />
+  </ItemGroup>
+
+</Project>

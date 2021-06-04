@@ -5,20 +5,18 @@ namespace Yakari.Demo.Helper
 {
     public class SettingsHelper
     {
-        static string _env;
-        static string Env => _env ?? (_env = Environment.GetEnvironmentVariable("env"));
+        static string _env = "Development";
+        
+        // => _env ?? (_env = Environment.GetEnvironmentVariable("env"));
+        static string Env => _env;
 
-        static bool IsDevelopment => Env == "Dev";
-
-        public static IConfigurationRoot Configuration
+        public static IConfiguration Configuration
         {
             get
             {
                 var builder = new ConfigurationBuilder()
                     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                     .AddJsonFile($"appsettings.{Env}.json", optional: true);
-
-                if (IsDevelopment) builder.AddUserSecrets();
 
                 builder.AddEnvironmentVariables();
                 return builder.Build();

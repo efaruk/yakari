@@ -1,28 +1,31 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-
 namespace Yakari.Demo.Web.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
+
     public class HomeController : Controller
     {
         private readonly ILocalCacheProvider _littleThunder;
         private readonly IDemoHelper _demoHelper;
+        private readonly ILogger<HomeController> _logger;
 
-        public HomeController (ILocalCacheProvider littleThunder, IDemoHelper demoHelper)
+        public HomeController (
+            ILogger<HomeController> logger
+            , ILocalCacheProvider littleThunder
+            , IDemoHelper demoHelper
+            )
         {
+            _logger = logger;
             _littleThunder = littleThunder;
             _demoHelper = demoHelper;
         }
         
-        public IActionResult Index()
+        public ActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Dashboard()
+        public ActionResult Dashboard()
         {
             ViewData["TribeName"] = _demoHelper.TribeName;
             ViewData["MemberName"] = _demoHelper.MemberName;
@@ -34,7 +37,7 @@ namespace Yakari.Demo.Web.Controllers
             return View();
         }
 
-        public IActionResult Error()
+        public ActionResult Error()
         {
             return View();
         }

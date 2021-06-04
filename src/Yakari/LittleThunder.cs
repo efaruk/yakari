@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Microsoft.Extensions.Logging;
 
 namespace Yakari
 {
@@ -13,7 +14,7 @@ namespace Yakari
     {
         const int Thousand = 1000;
         ILocalCacheProviderOptions _options;
-        ILogger _logger;
+        ILogger<LittleThunder> _logger;
         ConcurrentDictionary<string, InMemoryCacheItem> _concurrentStore;
         readonly Timer _timer;
 
@@ -22,7 +23,7 @@ namespace Yakari
         /// </summary>
         /// <param name="options"></param>
         /// <param name="logger"></param>
-        public LittleThunder(ILocalCacheProviderOptions options, ILogger logger)
+        public LittleThunder(ILocalCacheProviderOptions options, ILogger<LittleThunder> logger)
         {
             _logger = logger;
             _options = options;
@@ -49,7 +50,7 @@ namespace Yakari
             // ReSharper disable once EmptyGeneralCatchClause
             catch(Exception ex)
             {
-                _logger.Log("LittleThunder In Period Exception", ex);
+                _logger.LogError(ex, "LittleThunder In Period Exception");
             }
             finally
             {
