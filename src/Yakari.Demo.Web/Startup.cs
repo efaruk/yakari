@@ -1,6 +1,7 @@
 namespace Yakari.Demo.Web
 {
     using System;
+    using System.Diagnostics;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -24,8 +25,8 @@ namespace Yakari.Demo.Web
         {
             // TODO: Take from settings
             var tribeName = "sioux";
-            var memberName = string.Format("beaver-{0}-{1}", Environment.MachineName, Guid.NewGuid().ToString("N"));
-            var redisConnectionString = "docker-host:6379,abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,synctimeout=5000,allowAdmin=true";
+            var memberName = $"beaver-{Environment.MachineName}-{Process.GetCurrentProcess().Id}";
+            var redisConnectionString = "redis:6379,abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=true,synctimeout=5000,allowAdmin=true";
 
             services.AddSingleton<IDemoHelper, DemoHelper>(p => new DemoHelper(tribeName, memberName));
             services.AddSingleton<ISerializer,JsonNetSerializer>();

@@ -4,30 +4,47 @@ services:
   beaver01:
     image: efaruk/yakariweb
     container_name: beaver01
-    network_mode: bridge
+    depends_on: 
+      - redis
     ports:
       - 5081:80
   beaver02:
     image: efaruk/yakariweb
     container_name: beaver02
-    network_mode: bridge
+    depends_on: 
+      - redis
     ports:
       - 5082:80
   beaver03:
     image: efaruk/yakariweb
     container_name: beaver03
-    network_mode: bridge
+    depends_on: 
+      - redis
     ports:
       - 5083:80
   beaver04:
     image: efaruk/yakariweb
     container_name: beaver04
-    network_mode: bridge
+    depends_on: 
+      - redis
     ports:
       - 5084:80
   beaver05:
     image: efaruk/yakariweb
     container_name: beaver05
-    network_mode: bridge
+    depends_on: 
+      - redis
     ports:
       - 5085:80
+  redis:
+    image: redis:latest
+    container_name: redis
+    #volumes:
+      #- ./redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - 6379:6379
+      - 16379:16379
+      - 26379:26379
+networks:
+  yakari-tribe:
+    driver: bridge
