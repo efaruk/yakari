@@ -40,3 +40,16 @@
         </div>
     }
 </div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $.toast('Refreshing page..')
+                setTimeout(function () {
+                    location.reload(true);
+                }, 1000);
+            }, 1000);
+        });
+    </script>
+}

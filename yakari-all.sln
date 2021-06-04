@@ -21,8 +21,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yakari.Demo.Konsole", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yakari.Demo.Web", "src\Yakari.Demo.Web\Yakari.Demo.Web.csproj", "{35327EEE-CD03-4E57-8FA8-FAACBCC122FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yakari.Test", "src\Yakari.Test\Yakari.Test.csproj", "{FB2C6167-9ADD-4CE9-87F9-A5C65305F372}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,10 +55,6 @@ Global
 		{35327EEE-CD03-4E57-8FA8-FAACBCC122FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35327EEE-CD03-4E57-8FA8-FAACBCC122FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35327EEE-CD03-4E57-8FA8-FAACBCC122FB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FB2C6167-9ADD-4CE9-87F9-A5C65305F372}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB2C6167-9ADD-4CE9-87F9-A5C65305F372}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB2C6167-9ADD-4CE9-87F9-A5C65305F372}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB2C6167-9ADD-4CE9-87F9-A5C65305F372}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,7 +63,6 @@ Global
 		{95BB1283-7AF1-4810-B328-9C113A5F41B3} = {92D5D0CE-1ABD-4F20-9D10-41E977E19E3D}
 		{71F18743-4A91-4927-9A8B-FC26A913F62E} = {92D5D0CE-1ABD-4F20-9D10-41E977E19E3D}
 		{35327EEE-CD03-4E57-8FA8-FAACBCC122FB} = {92D5D0CE-1ABD-4F20-9D10-41E977E19E3D}
-		{FB2C6167-9ADD-4CE9-87F9-A5C65305F372} = {CE8CED72-9305-4306-A09D-E1C065CF9883}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F99FB72-61F6-4B13-8312-79FCE28FEDB0}

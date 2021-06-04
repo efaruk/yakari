@@ -23,8 +23,8 @@ namespace Yakari.Demo.Web
         public void ConfigureServices(IServiceCollection services)
         {
             // TODO: Take from settings
-            var tribeName = "TitaniumSoft";
-            var memberName = string.Format("Beaver-{0}-{1}", tribeName, Guid.NewGuid().ToString("N"));
+            var tribeName = "sioux";
+            var memberName = string.Format("beaver-{0}-{1}", Environment.MachineName, Guid.NewGuid().ToString("N"));
             var redisConnectionString = "docker-host:6379,abortConnect=false,defaultDatabase=1,keepAlive=300,resolveDns=false,synctimeout=5000,allowAdmin=true";
 
             services.AddSingleton<IDemoHelper, DemoHelper>(p => new DemoHelper(tribeName, memberName));

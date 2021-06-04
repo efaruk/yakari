@@ -21,6 +21,10 @@
         {
             "library": "font-awesome@5.15.3",
             "destination": "wwwroot/lib/font-awesome/"
+        },
+        {
+            "library": "jquery-toast-plugin@1.3.2",
+            "destination": "wwwroot/lib/jquery-toast-plugin/"
         }
     ]
 }
