@@ -62,6 +62,9 @@ namespace Yakari.Demo.Web
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            // Construct and start ICacheObserver and load cache
+            _ = app.ApplicationServices.GetRequiredService<ICacheObserver>();
         }
     }
 }
