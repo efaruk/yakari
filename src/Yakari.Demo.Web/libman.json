@@ -15,8 +15,8 @@
             "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
         },
         {
-            "library": "twitter-bootstrap@5.0.1",
-            "destination": "wwwroot/lib/twitter-bootstrap/"
+            "library": "twitter-bootstrap@4.6.0",
+            "destination": "wwwroot/lib/bootstrap/"
         },
         {
             "library": "font-awesome@5.15.3",

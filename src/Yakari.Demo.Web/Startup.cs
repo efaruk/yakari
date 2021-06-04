@@ -29,6 +29,7 @@ namespace Yakari.Demo.Web
 
             services.AddSingleton<IDemoHelper, DemoHelper>(p => new DemoHelper(tribeName, memberName));
             services.AddSingleton<ISerializer,JsonNetSerializer>();
+            services.AddSingleton<ISubscriptionManager, RedisSubscriptionManager>(p => new RedisSubscriptionManager(redisConnectionString, tribeName, p.GetRequiredService<ILogger<RedisSubscriptionManager>>()));
             services.AddSingleton<IRemoteCacheProvider, RedisCacheProvider>(p => new RedisCacheProvider(redisConnectionString, p.GetRequiredService<ISerializer>(), p.GetRequiredService<ILogger<RedisCacheProvider>>()));
             services.AddSingleton<ILocalCacheProviderOptions, LocalCacheProviderOptions>();
             services.AddSingleton<ILocalCacheProvider, LittleThunder>();
