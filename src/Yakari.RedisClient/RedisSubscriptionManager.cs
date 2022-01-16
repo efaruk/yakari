@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using Yakari;
 
@@ -7,10 +8,10 @@ namespace Yakari.RedisClient
     public class RedisSubscriptionManager : ISubscriptionManager
     {
         string _channelName;
-        readonly ILogger _logger;
+        readonly ILogger<RedisSubscriptionManager> _logger;
         static IConnectionMultiplexer _redisConnectionMultiplexer;
 
-        public RedisSubscriptionManager(string connectionString, string channelName, ILogger logger)
+        public RedisSubscriptionManager(string connectionString, string channelName, ILogger<RedisSubscriptionManager> logger)
         {
             _logger = logger;
             _logger.Log(LogLevel.Trace, $"RedisSubscriptionManager : connectionString={connectionString}, channelName={channelName}");
@@ -18,7 +19,7 @@ namespace Yakari.RedisClient
             _redisConnectionMultiplexer = ConnectionMultiplexer.Connect(connectionString);
         }
 
-        public RedisSubscriptionManager(ConfigurationOptions redisConfigurationOptions, string channelName, ILogger logger)
+        public RedisSubscriptionManager(ConfigurationOptions redisConfigurationOptions, string channelName, ILogger<RedisSubscriptionManager> logger)
         {
             _logger = logger;
             _logger.Log(LogLevel.Trace, $"RedisSubscriptionManager : redisConfigurationOptions={redisConfigurationOptions}, channelName={channelName}");
@@ -26,7 +27,7 @@ namespace Yakari.RedisClient
             _redisConnectionMultiplexer = ConnectionMultiplexer.Connect(redisConfigurationOptions);
         }
 
-        public RedisSubscriptionManager(IConnectionMultiplexer redisConnectionMultiplexer, string channelName, ILogger logger)
+        public RedisSubscriptionManager(IConnectionMultiplexer redisConnectionMultiplexer, string channelName, ILogger<RedisSubscriptionManager> logger)
         {
             _logger = logger;
             _channelName = channelName;

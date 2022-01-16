@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Yakari.Demo\Yakari.Demo.csproj" />
+    <ProjectReference Include="..\Yakari.Pack\Yakari.Pack.csproj" />
+    <ProjectReference Include="..\Yakari.RedisClient\Yakari.RedisClient.csproj" />
+    <ProjectReference Include="..\Yakari.Serializer.Newtonsoft\Yakari.Serializer.Newtonsoft.csproj" />
+    <ProjectReference Include="..\Yakari\Yakari.csproj" />
+  </ItemGroup>
+
+</Project>

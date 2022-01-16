@@ -2,17 +2,16 @@
 
 namespace Yakari.Demo
 {
-    public interface IDependencyContainer<TContainer>: IDisposable
+    public interface IDependencyContainer
     {
-        void Replace(TContainer container);
+
+        void Setup(IServiceProvider serviceProvider);
 
         T Resolve<T>();
 
-        T Resolve<T>(string name);
-
         object Resolve(Type type);
 
-        IDisposable BeginScope();
+        //IDisposable BeginScope();
 
     }
 }
