@@ -1,22 +1,25 @@
 ﻿using System;
+using System.Collections;
 using Microsoft.Extensions.Configuration;
 
-namespace Yakari.Demo.Helper
+namespace Yakari.Tests.Helper
 {
-    public class SettingsHelper
+    public static class SettingsHelper
     {
-        static string _env = "Development";
-        
-        // => _env ?? (_env = Environment.GetEnvironmentVariable("env"));
-        static string Env => _env;
+        static string _env;
+        static string Env => _env ?? (_env = Environment.GetEnvironmentVariable("env"));
 
-        public static IConfiguration Configuration
+        static bool IsDevelopment => Env == "Dev";
+
+        public static IConfigurationRoot Configuration
         {
             get
             {
                 var builder = new ConfigurationBuilder()
                     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                     .AddJsonFile($"appsettings.{Env}.json", optional: true);
+
+                if (IsDevelopment) builder.AddUserSecrets();
 
                 builder.AddEnvironmentVariables();
                 return builder.Build();

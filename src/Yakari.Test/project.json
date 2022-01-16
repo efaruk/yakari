@@ -1,0 +1,42 @@
+{
+  "version": "1.0.0-*",
+
+  "userSecretsId": "yakari.test.settings",
+
+  "dependencies": {
+    "Autofac": "4.2.0",
+    "NSubstitute": "2.0.0-rc",
+    "System.Threading.Tasks.Parallel": "4.0.1",
+    "dotnet-test-nunit": "3.4.0-beta-3",
+    "xunit": "2.1.0",
+    "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
+    "NUnit": "3.5.0",
+    "Yakari": "1.0.2",
+    "Yakari.RedisClient": "1.0.2",
+    "Yakari.Serializer.Newtonsoft": "1.0.2",
+    "Yakari.Demo": "1.0.0",
+    "Yakari.Pack": "1.0.2"
+  },
+
+  "testRunner": "nunit",
+
+  "buildOptions": {
+    "copyToOutput": { "includeFiles": [ "appsettings.json" ] }
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.0",
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.0"
+        }
+      },
+      "imports": [
+        "netcoreapp1.0",
+        "portable-net45+win8"
+      ]
+    }
+  }
+}

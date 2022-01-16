@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Yakari
 {
@@ -9,7 +10,7 @@ namespace Yakari
 
         readonly string _memberName;
         readonly ISubscriptionManager _subscriptionManager;
-        readonly ILogger _logger;
+        readonly ILogger<GreatEagle> _logger;
         readonly ISerializer _serializer;
         readonly ILocalCacheProvider _localCacheProvider;
         readonly IRemoteCacheProvider _remoteCacheProvider;
@@ -24,7 +25,7 @@ namespace Yakari
         /// <param name="remoteCacheProvider"></param>
         /// <param name="logger"></param>
         public GreatEagle(string memberName, ISubscriptionManager subscriptionManager, ISerializer serializer,
-            ILocalCacheProvider localCacheProvider, IRemoteCacheProvider remoteCacheProvider, ILogger logger)
+            ILocalCacheProvider localCacheProvider, IRemoteCacheProvider remoteCacheProvider, ILogger<GreatEagle> logger)
         {
             _memberName = memberName;
             _subscriptionManager = subscriptionManager;

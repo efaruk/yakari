@@ -1,26 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using StackExchange.Redis;
-using Yakari;
-
-namespace Yakari.RedisClient
+﻿namespace Yakari.RedisClient
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Microsoft.Extensions.Logging;
+    using StackExchange.Redis;
+    using Yakari;
+
     public class RedisCacheProvider: BaseCacheProvider, IRemoteCacheProvider
     {
         readonly ISerializer _serializer;
-        readonly ILogger _logger;
+        readonly ILogger<RedisCacheProvider> _logger;
         ConnectionMultiplexer _redisConnectionMultiplexer;
         IDatabase _database;
 
-        public RedisCacheProvider(string connectionString, ISerializer serializer, ILogger logger)
+        public RedisCacheProvider(string connectionString, ISerializer serializer, ILogger<RedisCacheProvider> logger)
         {
             _serializer = serializer;
             _logger = logger;
             SetupConfiguration(connectionString);
         }
 
-        public RedisCacheProvider(ConfigurationOptions redisConfigurationOptions, ISerializer serializer, ILogger logger)
+        public RedisCacheProvider(ConfigurationOptions redisConfigurationOptions, ISerializer serializer, ILogger<RedisCacheProvider> logger)
         {
             _serializer = serializer;
             _logger = logger;
