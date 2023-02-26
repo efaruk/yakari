@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 namespace Yakari
@@ -10,210 +11,182 @@ namespace Yakari
     /// <summary>
     ///     LittleThunder
     /// </summary>
-    public class LittleThunder : BaseCacheProvider, ILocalCacheProvider
+    public class LittleThunder : ILocalCacheProvider
     {
-        const int Thousand = 1000;
-        ILocalCacheProviderOptions _options;
-        ILogger<LittleThunder> _logger;
-        ConcurrentDictionary<string, InMemoryCacheItem> _concurrentStore;
-        readonly Timer _timer;
+        private readonly ILogger _logger;
+        private readonly LocalCacheProviderOptions _localCacheProviderOptions;
+        private bool disposedValue;
+        private readonly TaskCompletionSource<object> _completionSource = new TaskCompletionSource<object>();
+        private readonly CancellationTokenSource _shutdownCancellationTokenSource = new CancellationTokenSource();
+        private readonly SemaphoreSlim _lock = new SemaphoreSlim(1, 1);
+        private Dictionary<string, InMemoryCacheItem> _cache;
 
-        /// <summary>
-        ///     Constructor with options as <see cref="ILocalCacheProviderOptions">ICacheProviderOptions</see>
-        /// </summary>
-        /// <param name="options"></param>
-        /// <param name="logger"></param>
-        public LittleThunder(ILocalCacheProviderOptions options, ILogger<LittleThunder> logger)
+        public LittleThunder(ILogger<LittleThunder> logger, LocalCacheProviderOptions localCacheProviderOptions)
         {
-            _logger = logger;
-            _options = options;
-            _logger.Log(LogLevel.Trace, "LittleThunder Constructor Begin");
-            //_options.Observer.SetupMember(this);
-            _concurrentStore = new ConcurrentDictionary<string, InMemoryCacheItem>(_options.ConcurrencyLevel, _options.InitialCapacity);
-            _timer = new Timer(timer_Elapsed, null, Thousand, Thousand);
-            _logger.Log(LogLevel.Trace, "LittleThunder Constructor End");
+            _logger = logger.NotNull(nameof(logger));
+            _localCacheProviderOptions = localCacheProviderOptions.NotNull(nameof(localCacheProviderOptions));
+            _cache = new Dictionary<string, InMemoryCacheItem>(_localCacheProviderOptions.InitialCapacity);
         }
 
-        bool _inPeriod;
+        public bool HasSlidingSupport => true;
 
-        void timer_Elapsed(object sender)
+        public event BeforeGetAsync OnBeforeGetAsync;
+
+        public event AfterGetAsync OnAfterGetAsync;
+
+        public event BeforeSetAsync OnBeforeSetAsync;
+
+        public event AfterSetAsync OnAfterSetAsync;
+
+        public event BeforeDeleteAsync OnBeforeDeleteAsync;
+
+        public event AfterDelete OnAfterDeleteAsync;
+
+        public async Task<IEnumerable<string>> AllKeysAsync(CancellationToken cancellationToken = default)
         {
-            _logger.Log(LogLevel.Trace, "LittleThunder Timer Elapsed");
-            if (_disposing) return;
-            if (_inPeriod) return;
-            _logger.Log(LogLevel.Trace, "LittleThunder In Period Begin");
+            string[] keys;
+            await _lock.WaitAsync();
             try
             {
-                _inPeriod = true;
-                RemoveExpiredItems();
+                keys = _cache.Keys.ToArray();
             }
-            // ReSharper disable once EmptyGeneralCatchClause
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                _logger.LogError(ex, "LittleThunder In Period Exception");
+                _logger.LogError(nameof(AllKeysAsync), ex);
+                throw;
             }
             finally
             {
-                _inPeriod = false;
+                _lock.Release();
             }
-            _logger.Log(LogLevel.Trace, "LittleThunder In Period End");
+            return keys;
         }
 
-        /// <summary>
-        ///     Clean expired cache items
-        /// </summary>
-        void RemoveExpiredItems()
+        public async Task DeleteAsync(string key, bool isManagerCall = false, CancellationToken cancellationToken = default)
         {
-            _logger.Log(LogLevel.Trace, "LittleThunder RemoveExpiredItems Begin");
-            var expiredItems = _concurrentStore.Where(o => o.Value.IsExpired).ToArray();
-            _logger.Log(LogLevel.Trace, string.Format("LittleThunder Removing {0} Item(s)", expiredItems.Length));
-            foreach (var pair in expiredItems)
+            await _lock.WaitAsync();
+            try
             {
-                var c = 0;
-                InMemoryCacheItem outItem;
-                while (!_concurrentStore.TryRemove(pair.Key, out outItem))
+                _cache.Remove(key);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(nameof(AllKeysAsync), ex);
+                throw;
+            }
+            finally
+            {
+                _lock.Release();
+            }
+        }
+
+        public async Task<bool> ExistsAsync(string key, CancellationToken cancellationToken = default)
+        {
+            bool exists;
+            await _lock.WaitAsync();
+            try
+            {
+                exists = _cache.ContainsKey(key);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(nameof(AllKeysAsync), ex);
+                throw;
+            }
+            finally
+            {
+                _lock.Release();
+            }
+            return exists;
+        }
+
+        public async Task<T> GetAsync<T>(string key, CancellationToken cancellationToken = default) where T : class
+        {
+            T item = default;
+            await _lock.WaitAsync();
+            try
+            {
+                var kvp = _cache[key];
+                if (kvp != null)
                 {
-                    c++;
-                    if (!_concurrentStore.ContainsKey(pair.Key)) break;
-                    if (c >= _options.MaxRetryForLocalOperations) break;
+                    kvp.Hit();
+                    item = kvp.ValueObject as T;
                 }
             }
-            _logger.Log(LogLevel.Trace, "LittleThunder RemoveExpiredItems End");
-        }
-
-        public override T Get<T>(string key, TimeSpan getTimeout, bool isManagerCall = false)
-        {
-            return GetInternal<T>(key, getTimeout, isManagerCall);
-        }
-
-        T GetInternal<T>(string key, TimeSpan getTimeout, bool isManagerCall, bool secondCall = false)
-        {
-            T t = default(T);
-            _logger.Log(LogLevel.Trace, "LittleThunder Get");
-            OnBeforeGetWrapper(key, getTimeout, isManagerCall);
-            if (_concurrentStore.ContainsKey(key))
+            catch (Exception ex)
             {
-                InMemoryCacheItem outItem;
-                var c = 0;
-                while (!_concurrentStore.TryGetValue(key, out outItem))
-                {
-                    c++;
-                    if (!_concurrentStore.ContainsKey(key)) break;
-                    if (c >= _options.MaxRetryForLocalOperations) break;
-                }
-                OnAfterGetWrapper(key, isManagerCall);
-                if (outItem == null) return default(T);
-                outItem.Hit();
-                t = (T)outItem.ValueObject;
+                _logger.LogError(nameof(AllKeysAsync), ex);
+                throw;
             }
-            else
+            finally
             {
-                if (!secondCall)
+                _lock.Release();
+            }
+            return item;
+        }
+
+        public async Task<T> GetAsync<T>(string key, Func<CancellationToken, Task<T>> acquireFunction, TimeSpan expiresIn, CancellationToken cancellationToken = default) where T : class
+        {
+            T item = default;
+            await _lock.WaitAsync();
+            try
+            {
+                var kvp = _cache[key];
+                if (kvp != null)
                 {
-                    t = ThreadHelper.WaitForResult(() => GetInternal<T>(key, getTimeout, false, true), getTimeout);
+                    kvp.Hit();
+                    item = kvp.ValueObject as T;
+                }
+                else
+                {
+                    item = await acquireFunction(cancellationToken);
+                    var cacheItem = new InMemoryCacheItem(item, )
                 }
             }
-            ThreadHelper.RunOnDifferentThread(() => OnAfterGetWrapper(key, isManagerCall), true);
-            return t;
-        }
-
-        void OnAfterGetWrapper(string key, bool isManagerCall)
-        {
-            if (isManagerCall) return;
-            OnAfterGet?.Invoke(key);
-        }
-
-        void OnBeforeGetWrapper(string key, TimeSpan getTimeout, bool isManagerCall)
-        {
-            if (isManagerCall) return;
-            OnBeforeGet?.Invoke(key, getTimeout);
-        }
-
-        public override void Set(string key, object data, TimeSpan expiresIn, bool isManagerCall = false)
-        {
-            _logger.Log(LogLevel.Debug, "LittleThunder Set");
-            var item = new InMemoryCacheItem(data, expiresIn);
-            OnBeforeSetWrapper(key, item, isManagerCall);
-            var func = new Func<string, InMemoryCacheItem, InMemoryCacheItem>((s, cacheItem) => item);
-            _concurrentStore.AddOrUpdate(key, item, func);
-            OnAfterSetWrapper(key, isManagerCall);
-        }
-
-        void OnAfterSetWrapper(string key, bool isManagerCall)
-        {
-            if (isManagerCall) return;
-            ThreadHelper.RunOnDifferentThread(() => { OnAfterSet?.Invoke(key); }, true);
-        }
-
-        void OnBeforeSetWrapper(string key, InMemoryCacheItem item, bool isManagerCall)
-        {
-            if (isManagerCall) return;
-            //ThreadHelper.RunOnDifferentThread(() => { if (OnBeforeSet != null) OnBeforeSet(key, item); }, true);
-            OnBeforeSet?.Invoke(key, item);
-        }
-
-        public override void Delete(string key, bool isManagerCall = false)
-        {
-            _logger.Log(LogLevel.Trace, "LittleThunder Delete");
-            OnBeforeDeleteWrapper(key, isManagerCall);
-            if (!_concurrentStore.ContainsKey(key)) return;
-            InMemoryCacheItem outItem;
-            var c = 0;
-            while (_concurrentStore.TryRemove(key, out outItem))
+            catch (Exception ex)
             {
-                c++;
-                if (!_concurrentStore.ContainsKey(key)) break;
-                if (c >= _options.MaxRetryForLocalOperations) break;
+                _logger.LogError(nameof(AllKeysAsync), ex);
+                throw;
             }
-            OnAfterDeleteWrapper(key, isManagerCall);
-        }
-
-        void OnAfterDeleteWrapper(string key, bool isManagerCall)
-        {
-            if (isManagerCall) return;
-            ThreadHelper.RunOnDifferentThread(() => { OnAfterDelete?.Invoke(key); }, true);
-        }
-
-        void OnBeforeDeleteWrapper(string key, bool isManagerCall)
-        {
-            if (isManagerCall) return;
-            ThreadHelper.RunOnDifferentThread(() =>
+            finally
             {
-                OnBeforeDelete?.Invoke(key);
-            }, true);
+                _lock.Release();
+            }
+            return item;
         }
 
-        public override bool Exists(string key)
+        public async Task SetAsync(string key, object value, TimeSpan expiresIn, bool isManagerCall = false, CancellationToken cancellationToken = default)
         {
-            _logger.Log(LogLevel.Trace, "LittleThunder Exists");
-            if (_concurrentStore.ContainsKey(key)) return true;
-            return false;
+            throw new NotImplementedException();
         }
 
-        public override List<string> AllKeys()
+        protected virtual void Dispose(bool disposing)
         {
-            return _concurrentStore.Keys.ToList();
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
         }
 
-        public event BeforeGet OnBeforeGet;
-        public event AfterGet OnAfterGet;
-        public event BeforeSet OnBeforeSet;
-        public event AfterSet OnAfterSet;
-        public event BeforeDelete OnBeforeDelete;
-        public event AfterDelete OnAfterDelete;
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~LittleThunder()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
 
-        bool _disposing;
-
-        public override void Dispose()
+        public void Dispose()
         {
-            if (_disposing) return;
-            _logger.Log(LogLevel.Trace, "LittleThunder Disposing");
-            _disposing = true;
-            //_timer.Stop();
-            _timer.Dispose();
-            _concurrentStore = null;
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
-
-        public override bool HasSlidingSupport => true;
     }
 }

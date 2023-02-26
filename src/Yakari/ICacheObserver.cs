@@ -1,25 +1,26 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 
 namespace Yakari
 {
-    public interface ICacheObserver: IDisposable
+    public interface ICacheObserver : IHostedService, IDisposable
     {
-        void OnBeforeSet(string key, InMemoryCacheItem item);
+        Task OnBeforeSetAsync(string key, InMemoryCacheItem item, CancellationToken cancellationToken);
 
-        void OnAfterSet(string key);
+        Task OnAfterSetAsync(string key, CancellationToken cancellationToken);
 
-        void OnBeforeDelete(string key);
+        Task OnBeforeDeleteAsync(string key, CancellationToken cancellationToken);
 
-        void OnAfterDelete(string key);
+        Task OnAfterDeleteAsync(string key, CancellationToken cancellationToken);
 
-        void OnBeforeGet(string key, TimeSpan timeout);
+        Task OnBeforeGetAsync(string key, TimeSpan timeout, CancellationToken cancellationToken);
 
-        void OnAfterGet(string key);
+        Task OnAfterGetAsync(string key, CancellationToken cancellationToken);
 
-        void OnRemoteSet(string key, string memberName);
+        Task OnRemoteSetAsync(string key, string memberName, CancellationToken cancellationToken);
 
-        //void OnRemoteGet(string key, string memberName);
-
-        void OnRemoteDelete(string key, string memberName);
+        Task OnRemoteDeleteAsync(string key, string memberName, CancellationToken cancellationToken);
     }
 }

@@ -1,15 +1,18 @@
-﻿namespace Yakari
+﻿using System.Threading;
+using System.Threading.Tasks;
+
+namespace Yakari
 {
     public interface IMessageSubscriber
     {
-        void StartSubscription();
+        Task StartSubscriptionAsync(CancellationToken cancellationToken = default);
 
-        void StopSubscription();
+        Task StopSubscriptionAsync(CancellationToken cancellationToken = default);
 
-        void MessageReceived(string message);
+        Task MessageReceivedAsync(string message, CancellationToken cancellationToken = default);
 
         event MessageReceived OnMessageReceived;
     }
 
-    public delegate void MessageReceived(string message);
+    public delegate Task MessageReceived(string message, CancellationToken cancellationToken = default);
 }

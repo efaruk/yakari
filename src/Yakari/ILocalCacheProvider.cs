@@ -1,4 +1,7 @@
 using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 
 namespace Yakari
 {
@@ -6,26 +9,30 @@ namespace Yakari
     {
         #region Events
 
-        event BeforeGet OnBeforeGet;
-        event AfterGet OnAfterGet;
-        event BeforeSet OnBeforeSet;
-        event AfterSet OnAfterSet;
-        event BeforeDelete OnBeforeDelete;
-        event AfterDelete OnAfterDelete;
+        event BeforeGetAsync OnBeforeGetAsync;
 
-        #endregion
+        event AfterGetAsync OnAfterGetAsync;
+
+        event BeforeSetAsync OnBeforeSetAsync;
+
+        event AfterSetAsync OnAfterSetAsync;
+
+        event BeforeDeleteAsync OnBeforeDeleteAsync;
+
+        event AfterDelete OnAfterDeleteAsync;
+
+        #endregion Events
     }
 
+    public delegate Task BeforeSetAsync(string key, InMemoryCacheItem item, CancellationToken cancellationToken = default);
 
-    public delegate void BeforeSet(string key, InMemoryCacheItem item);
+    public delegate Task AfterSetAsync(string key, CancellationToken cancellationToken = default);
 
-    public delegate void AfterSet(string key);
+    public delegate Task BeforeDeleteAsync(string key, CancellationToken cancellationToken = default);
 
-    public delegate void BeforeDelete(string key);
+    public delegate Task AfterDelete(string key, CancellationToken cancellationToken = default);
 
-    public delegate void AfterDelete(string key);
+    public delegate Task BeforeGetAsync(string key, TimeSpan timeout, CancellationToken cancellationToken = default);
 
-    public delegate void BeforeGet(string key, TimeSpan timeout);
-
-    public delegate void AfterGet(string key);
+    public delegate Task AfterGetAsync(string key, CancellationToken cancellationToken = default);
 }

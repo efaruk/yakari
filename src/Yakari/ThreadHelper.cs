@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Yakari
 {
@@ -21,7 +22,6 @@ namespace Yakari
                         throw;
                 }
             });
-
         }
 
         public static void RunOnDifferentThread(Action action, Action<Exception> catchAction)
@@ -75,6 +75,23 @@ namespace Yakari
             } while (sw.ElapsedMilliseconds < waitFor);
             sw.Stop();
             return t;
+        }
+
+        public static async Task<T> LockedFunction<T>(SemaphoreSlim _lock, Func<Task<T>> func)
+        {
+            await _lock.WaitAsync();
+            try
+            {
+                return await func();
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                _lock.Release();
+            }
         }
     }
 }

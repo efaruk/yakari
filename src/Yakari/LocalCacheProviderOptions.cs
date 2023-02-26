@@ -2,14 +2,14 @@
 
 namespace Yakari
 {
-    public class LocalCacheProviderOptions : ILocalCacheProviderOptions
+    public class LocalCacheProviderOptions
     {
-        const int MinimumMaxRetryForLocalOperations = 1;
-        const int DefaultMaxRetryForLocalOperations = 1000;
-        const int MinimumConcurrencyLevel = 2;
-        const int DefaultConcurrencyLevel = 10;
-        const int MinimumInitialCapacity = 10;
-        const int DefaultInitialCapacity = 100;
+        private const int MinimumMaxRetryForLocalOperations = 1;
+        private const int DefaultMaxRetryForLocalOperations = 1000;
+        private const int MinimumConcurrencyLevel = 2;
+        private const int DefaultConcurrencyLevel = 10;
+        private const int MinimumInitialCapacity = 10;
+        private const int DefaultInitialCapacity = 100;
 
         public LocalCacheProviderOptions()
         {
@@ -21,7 +21,7 @@ namespace Yakari
             InitialCapacity = DefaultInitialCapacity;
         }
 
-        public LocalCacheProviderOptions(int maxRetryForLocalOperations = DefaultMaxRetryForLocalOperations, int concurrencyLevel = DefaultConcurrencyLevel, int initialCapacity = DefaultInitialCapacity): this()
+        public LocalCacheProviderOptions(int maxRetryForLocalOperations = DefaultMaxRetryForLocalOperations, int concurrencyLevel = DefaultConcurrencyLevel, int initialCapacity = DefaultInitialCapacity) : this()
         {
             // Check
             if (maxRetryForLocalOperations < MinimumMaxRetryForLocalOperations) throw new ArgumentOutOfRangeException("maxRetryForLocalOperations");
@@ -38,6 +38,7 @@ namespace Yakari
 
         //public ILogger Logger { get; set; }
         public int MaxRetryForLocalOperations { get; set; }
+
         public int ConcurrencyLevel { get; set; }
         public int InitialCapacity { get; set; }
     }

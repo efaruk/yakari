@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Yakari
 {
@@ -11,23 +14,21 @@ namespace Yakari
         ///     Get cache item from cache store
         /// </summary>
         /// <param name="key"></param>
-        /// <param name="getTimeout"></param>
-        /// <param name="isManagerCall">Whether or not is manager calling</param>
+        /// <param name="cancellationToken"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        T Get<T>(string key, TimeSpan getTimeout, bool isManagerCall = false) where T : class;
+        Task<T> GetAsync<T>(string key, CancellationToken cancellationToken = default) where T : class;
 
         /// <summary>
         ///     Get cache item from cache store
         /// </summary>
         /// <param name="key"></param>
-        /// <param name="getTimeout"></param>
         /// <param name="acquireFunction">Action to get data from store</param>
         /// <param name="expiresIn"></param>
-        /// <param name="isManagerCall">Whether or not is manager calling</param>
+        /// <param name="cancellationToken"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        T Get<T>(string key, TimeSpan getTimeout, Func<T> acquireFunction, TimeSpan expiresIn, bool isManagerCall = false) where T : class;
+        Task<T> GetAsync<T>(string key, Func<CancellationToken, Task<T>> acquireFunction, TimeSpan expiresIn, CancellationToken cancellationToken = default) where T : class;
 
         /// <summary>
         ///     Set generic cache item with expiration
@@ -36,28 +37,25 @@ namespace Yakari
         /// <param name="value"></param>
         /// <param name="expiresIn"></param>
         /// <param name="isManagerCall">Whether or not is manager calling</param>
-        void Set(string key, object value, TimeSpan expiresIn, bool isManagerCall = false);
+        Task SetAsync(string key, object value, TimeSpan expiresIn, bool isManagerCall = false, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Delete cache item
         /// </summary>
         /// <param name="key"></param>
         /// <param name="isManagerCall">Whether or not is manager calling</param>
-        void Delete(string key, bool isManagerCall = false);
+        Task DeleteAsync(string key, bool isManagerCall = false, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Check key exists
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        bool Exists(string key);
+        Task<bool> ExistsAsync(string key, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Return all cache keys
         /// </summary>
-        List<string> AllKeys();
-
-        
+        Task<IEnumerable<string>> AllKeysAsync(CancellationToken cancellationToken = default);
     }
-
 }

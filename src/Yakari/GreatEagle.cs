@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
@@ -6,242 +7,157 @@ namespace Yakari
 {
     public class GreatEagle : ICacheObserver
     {
-        const string TempItemFormat = "yakari:{0}";
+        private bool disposedValue;
+        private readonly ILogger<GreatEagle> _logger;
+        private readonly TaskCompletionSource<object> _completionSource = new TaskCompletionSource<object>();
+        private readonly CancellationTokenSource _shutdownCancellationTokenSource = new CancellationTokenSource();
 
-        readonly string _memberName;
-        readonly ISubscriptionManager _subscriptionManager;
-        readonly ILogger<GreatEagle> _logger;
-        readonly ISerializer _serializer;
-        readonly ILocalCacheProvider _localCacheProvider;
-        readonly IRemoteCacheProvider _remoteCacheProvider;
-
-        /// <summary>
-        ///     Default constructor for GreatEagle
-        /// </summary>
-        /// <param name="memberName">Observing tribe member name </param>
-        /// <param name="subscriptionManager"></param>
-        /// <param name="serializer"></param>
-        /// <param name="localCacheProvider"></param>
-        /// <param name="remoteCacheProvider"></param>
-        /// <param name="logger"></param>
-        public GreatEagle(string memberName, ISubscriptionManager subscriptionManager, ISerializer serializer,
-            ILocalCacheProvider localCacheProvider, IRemoteCacheProvider remoteCacheProvider, ILogger<GreatEagle> logger)
+        public GreatEagle(ILogger<GreatEagle> logger, string memberName, ISubscriptionManager subscriptionManager, ISerializer serializer,
+            ILocalCacheProvider localCacheProvider, IRemoteCacheProvider remoteCacheProvider)
         {
-            _memberName = memberName;
-            _subscriptionManager = subscriptionManager;
-            _logger = logger;
-            _serializer = serializer;
-            _localCacheProvider = localCacheProvider;
-            _remoteCacheProvider = remoteCacheProvider;
-            _subscriptionManager.OnMessageReceived += MessageSubscriberMessageReceived;
-            StartObserving();
-            LoadFromRemote();
+            _logger = logger.NotNull(nameof(logger));
         }
 
-        private void LoadFromRemote()
+        public Task OnAfterDeleteAsync(string key, CancellationToken cancellationToken)
         {
-            ThreadHelper.RunOnDifferentThread(LoadFromRemoteInternal,
-               ex => _logger.Log(LogLevel.Error, "Remote Cache Loading Error", ex));
-            // try
-            // {
-            //     LoadFromRemoteInternal();
-            // }
-            // catch (Exception ex)
-            // {
-            //     _logger.Log(LogLevel.Error, "Remote Cache Loading Error", ex);
-            // }
+            throw new NotImplementedException();
         }
 
-        internal void LoadFromRemoteInternal()
+        public Task OnAfterGetAsync(string key, CancellationToken cancellationToken)
         {
-            var keys = _remoteCacheProvider.AllKeys();
-            if (keys != null)
+            throw new NotImplementedException();
+        }
+
+        public Task OnAfterSetAsync(string key, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task OnBeforeDeleteAsync(string key, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task OnBeforeGetAsync(string key, TimeSpan timeout, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task OnBeforeSetAsync(string key, InMemoryCacheItem item, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task OnRemoteDeleteAsync(string key, string memberName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task OnRemoteSetAsync(string key, string memberName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task StartAsync(CancellationToken cancellationToken)
+        {
+            using var ctReg = cancellationToken.Register(() => _shutdownCancellationTokenSource.Cancel());
+            _logger.LogInformation($"{nameof(LittleThunder)}: Starting");
+            _ = ServeAsync(_shutdownCancellationTokenSource.Token); // Long running cancellation cancellationToken source
+            _logger.LogInformation($"{nameof(LittleThunder)}: Started");
+        }
+
+        private async Task ServeAsync(CancellationToken cancellationToken)
+        {
+            _logger.LogInformation($"{nameof(LittleThunder)} starting serve loop");
+
+            while (!cancellationToken.IsCancellationRequested)
             {
-                foreach (var key in keys)
+                try
                 {
-                    // TODO: Timeout should be configuration parameter
-                    var item = _remoteCacheProvider.Get<InMemoryCacheItem>(key, TimeSpan.Zero, true);
-                    _localCacheProvider.Set(key, item.ValueObject, item.ExpiresAtTimeSpan, true);
+                    await Task.Delay(1000, cancellationToken);
+
+                    if (_cache.Count == 0)
+                    {
+                        continue;
+                    }
+
+                    // Manage Expired Items
+                    await MonitorItemsAsync(cancellationToken);
+                }
+                catch (OperationCanceledException)
+                {
+                    _logger.LogInformation($"{nameof(LittleThunder)} loop cancelled");
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, $"Error in {nameof(LittleThunder)} loop");
                 }
             }
-            _subscriptionManager.StartSubscription();
+
+            _logger.LogInformation($"{nameof(LittleThunder)} serve loop end");
+            _completionSource.TrySetResult(this);
         }
 
-
-
-        void StartObserving()
+        private async Task MonitorItemsAsync(CancellationToken cancellationToken)
         {
-            _localCacheProvider.OnBeforeGet += _localCacheProvider_OnBeforeGet;
-            _localCacheProvider.OnAfterGet += _localCacheProvider_OnAfterGet;
-            _localCacheProvider.OnBeforeSet += _localCacheProvider_OnBeforeSet;
-            _localCacheProvider.OnAfterSet += _localCacheProvider_OnAfterSet;
-            _localCacheProvider.OnBeforeDelete += _localCacheProvider_OnBeforeDelete;
-            _localCacheProvider.OnAfterDelete += _localCacheProvider_OnAfterDelete;
-        }
-
-        void _localCacheProvider_OnAfterDelete(string key)
-        {
-            OnAfterDelete(key);
-        }
-
-        void _localCacheProvider_OnBeforeDelete(string key)
-        {
-            OnBeforeDelete(key);
-        }
-
-        void _localCacheProvider_OnAfterSet(string key)
-        {
-            OnAfterSet(key);
-        }
-
-        void _localCacheProvider_OnBeforeSet(string key, InMemoryCacheItem item)
-        {
-            OnBeforeSet(key, item);
-        }
-
-        void _localCacheProvider_OnAfterGet(string key)
-        {
-            OnAfterGet(key);
-        }
-
-        void _localCacheProvider_OnBeforeGet(string key, TimeSpan timeout)
-        {
-            OnBeforeGet(key, timeout);
-        }
-
-        void MessageSubscriberMessageReceived(string message)
-        {
-            _logger.Log(LogLevel.Trace, string.Format("GreatEagle Message Received: {0}", message));
-            var cacheEvent = Deserialize(message);
-            ThreadHelper.RunOnDifferentThread(() => Redirect(cacheEvent), true);
-        }
-
-        void Redirect(ICacheEventMessage message)
-        {
-            if (_memberName == message.MemberName) return;
-            switch (message.CacheEventType)
+            await _lock.WaitAsync();
+            try
             {
-                case CacheEventType.Set:
-                    OnRemoteSet(message.Key, message.MemberName);
-                    break;
-                case CacheEventType.Get:
-                    break;
-                case CacheEventType.Delete:
-                    OnRemoteDelete(message.Key, message.MemberName);
-                    break;
+                foreach (var kvp in _cache)
+                {
+                    if (kvp.Value.IsExpired)
+                    {
+                        _cache.Remove(kvp.Key);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(nameof(AllKeysAsync), ex);
+                throw;
+            }
+            finally
+            {
+                _lock.Release();
             }
         }
 
-        // TODO: This method or some method should be triggered by developer(user) indirectly...
-        public void OnBeforeSet(string key, InMemoryCacheItem item)
+        public async Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnBeforeSet {0}", key));
-            _remoteCacheProvider.Set(key, item, item.ExpiresAtTimeSpan, true);
-            //TODO: Create temp remote cache item to make wait tribe for current member
+            _logger.LogInformation($"{nameof(LittleThunder)}: Stopping");
+            _shutdownCancellationTokenSource.Cancel();
+            await _completionSource.Task;
+            _logger.LogInformation($"{nameof(LittleThunder)}: Stopped");
         }
 
-        public void OnAfterSet(string key)
+        protected virtual void Dispose(bool disposing)
         {
-            _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnAfterSet {0}", key));
-            var data = new CacheEventMessage(key, _memberName, CacheEventType.Set);
-            var message = Serialize(data);
-            _subscriptionManager.Publish(message.ToString());
-        }
-
-        public void OnBeforeDelete(string key)
-        {
-            _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnBeforeDelete {0}", key));
-            //throw new NotImplementedException();
-        }
-
-        public void OnAfterDelete(string key)
-        {
-            _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnAfterDelete {0}", key));
-            _remoteCacheProvider.Delete(key, true);
-            var data = new CacheEventMessage(key, _memberName, CacheEventType.Delete);
-            var message = Serialize(data);
-            _subscriptionManager.Publish(message.ToString());
-        }
-
-        public void OnBeforeGet(string key, TimeSpan timeout)
-        {
-            _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnBeforeGet {0}", key));
-            if (_localCacheProvider == null) return;
-            if (_localCacheProvider.Exists(key)) return;
-            var tempKey = string.Format(TempItemFormat, key);
-            // Check key exists on master
-            if (!_remoteCacheProvider.Exists(key))
+            if (!disposedValue)
             {
-                // Key not exits
-                // Check temp key exists on master
-                if (!_remoteCacheProvider.Exists(tempKey)) return; // Temp key not exits
-                // Temp key exists, so wait for tribe member to finish his job
-                ThreadHelper.WaitFor(timeout);
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
             }
-            //else
-            //{
-            //    // TODO: Investigate
-            //    // Key exists
-            //    // Check also temp key exists to be sure is ongoing update operation exists
-            //    if (_remoteCacheProvider.Exists(tempKey))
-            //    {
-            //        // If so wait for update
-            //        ThreadHelper.WaitFor(timeout);
-            //    }
-            //}
-            var task = new Task<InMemoryCacheItem>(() =>
-            {
-                var it = _remoteCacheProvider.Get<InMemoryCacheItem>(key, timeout, true);
-                return it;
-            });
-            task.Start();
-            task.Wait(timeout);
-            if (!task.IsCompleted) return;
-            var item = task.Result;
-            if (item == null) return;
-            _localCacheProvider.Set(key, item.ValueObject, item.ExpiresAtTimeSpan, true);
         }
 
-        public void OnAfterGet(string key)
-        {
-            _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnAfterGet {0}", key));
-            var cacheEventMessage = new CacheEventMessage(key, _memberName, CacheEventType.Get);
-            var message = Serialize(cacheEventMessage);
-            _subscriptionManager.Publish(message.ToString());
-        }
-
-        public void OnRemoteSet(string key, string memberName)
-        {
-            _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnRemoteSet {0}", key));
-            if (_memberName == memberName) return;
-            if (_localCacheProvider == null) return;
-            var item = _remoteCacheProvider.Get<InMemoryCacheItem>(key, TimeSpan.Zero, true);
-            if (item == null) return;
-            _localCacheProvider.Set(key, item.ValueObject, item.ExpiresAtTimeSpan, true);
-        }
-
-        public void OnRemoteDelete(string key, string memberName)
-        {
-            _logger.Log(LogLevel.Trace, string.Format("GreatEagle OnRemoteDelete {0}", key));
-            if (_memberName == memberName) return;
-            _localCacheProvider?.Delete(key, true);
-        }
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~GreatEagle()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
 
         public void Dispose()
         {
-            _logger.Log(LogLevel.Trace, "GreatEagle Disposing");
-            _subscriptionManager.StopSubscription();
-            _subscriptionManager.OnMessageReceived -= MessageSubscriberMessageReceived;
-        }
-
-        object Serialize(CacheEventMessage cacheEvent)
-        {
-            return _serializer.Serialize(cacheEvent);
-        }
-
-        CacheEventMessage Deserialize(object message)
-        {
-            return _serializer.Deserialize<CacheEventMessage>(message);
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

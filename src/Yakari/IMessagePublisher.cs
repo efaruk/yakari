@@ -1,7 +1,10 @@
-﻿namespace Yakari
+﻿using System.Threading;
+using System.Threading.Tasks;
+
+namespace Yakari
 {
     public interface IMessagePublisher
     {
-        void Publish(string message);
+        Task PublishAsync(string message, CancellationToken cancellationToken = default);
     }
 }

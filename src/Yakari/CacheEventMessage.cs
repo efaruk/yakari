@@ -1,8 +1,7 @@
 namespace Yakari
 {
-    public class CacheEventMessage : ICacheEventMessage
+    public class CacheEventMessage
     {
-
         public CacheEventMessage(string key, string memberName, CacheEventType cacheEventType)
         {
             Key = key;
@@ -12,6 +11,7 @@ namespace Yakari
 
         public string Key { get; }
         public string MemberName { get; }
+
         //public InMemoryCacheItem Data { get; }
         public CacheEventType CacheEventType { get; }
 

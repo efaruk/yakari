@@ -1,34 +1,34 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 
 namespace Yakari
 {
     public class InMemoryCacheItem
     {
-        public InMemoryCacheItem()
+        private InMemoryCacheItem()
         {
-            
         }
 
-        InMemoryCacheItem(bool slidable)
+        private InMemoryCacheItem([AllowNull] TimeSpan? slideFor)
         {
             CreatedDateUtc = DateTime.UtcNow;
-            Slidable = slidable;
+            SlideFor = slideFor;
         }
 
-        public InMemoryCacheItem(object valueObject, DateTime expiresAt, bool slidable = false): this(slidable)
+        public InMemoryCacheItem(object valueObject, DateTime expiresAt, [AllowNull] TimeSpan? slideFor = null) : this(slideFor)
         {
             ValueObject = valueObject;
             ExpireDateUtc = expiresAt;
         }
 
-        public InMemoryCacheItem(object valueObject, TimeSpan expiresAfter, bool slidable = false) : this(slidable)
+        public InMemoryCacheItem(object valueObject, TimeSpan expiresAfter, [AllowNull] TimeSpan? slideFor = null) : this(slideFor)
         {
             ValueObject = valueObject;
             ExpireDateUtc = CreatedDateUtc.Add(expiresAfter);
         }
 
-        public bool Slidable { get; set; }
+        public TimeSpan? SlideFor { get; set; }
 
         /// <summary>
         ///     It has to be serializable with chosen serialization method.
@@ -39,7 +39,7 @@ namespace Yakari
 
         public DateTime CreatedDateUtc { get; set; }
 
-        long _hitCount;
+        private long _hitCount;
 
         public long HitCount
         {
@@ -47,7 +47,7 @@ namespace Yakari
             {
                 return Interlocked.Read(ref _hitCount);
             }
-        } 
+        }
 
         public override bool Equals(object obj)
         {
@@ -65,11 +65,15 @@ namespace Yakari
         public void Hit()
         {
             Interlocked.Increment(ref _hitCount);
+            Slide();
         }
 
-        public void Slide(TimeSpan slideFor)
+        private void Slide()
         {
-            ExpireDateUtc = DateTime.UtcNow.Add(slideFor);
+            if (SlideFor.HasValue)
+            {
+                ExpireDateUtc = DateTime.UtcNow.Add(SlideFor.Value);
+            }
         }
 
         public bool IsExpired
@@ -77,7 +81,7 @@ namespace Yakari
             get
             {
                 return DateTime.UtcNow > ExpireDateUtc;
-            }  
+            }
         }
 
         public bool WillBeExpired(TimeSpan after)
@@ -96,6 +100,6 @@ namespace Yakari
             {
                 return ExpireDateUtc.Subtract(DateTime.UtcNow);
             }
-        } 
+        }
     }
 }
