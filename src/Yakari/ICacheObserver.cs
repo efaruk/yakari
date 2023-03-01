@@ -7,20 +7,20 @@ namespace Yakari
 {
     public interface ICacheObserver : IHostedService, IDisposable
     {
-        Task OnBeforeSetAsync(string key, InMemoryCacheItem item, CancellationToken cancellationToken);
+        Task OnBeforeSetAsync(Key key, InMemoryCacheItem item, CancellationToken cancellationToken);
 
-        Task OnAfterSetAsync(string key, CancellationToken cancellationToken);
+        Task OnAfterSetAsync(Key key, CancellationToken cancellationToken);
 
-        Task OnBeforeDeleteAsync(string key, CancellationToken cancellationToken);
+        Task OnBeforeDeleteAsync(Key key, CancellationToken cancellationToken);
 
-        Task OnAfterDeleteAsync(string key, CancellationToken cancellationToken);
+        Task OnAfterDeleteAsync(Key key, CancellationToken cancellationToken);
 
-        Task OnBeforeGetAsync(string key, TimeSpan timeout, CancellationToken cancellationToken);
+        Task OnBeforeGetAsync(Key key, TimeSpan timeout, CancellationToken cancellationToken);
 
-        Task OnAfterGetAsync(string key, CancellationToken cancellationToken);
+        Task OnAfterGetAsync(Key key, CancellationToken cancellationToken);
 
-        Task OnRemoteSetAsync(string key, string memberName, CancellationToken cancellationToken);
+        Task OnRemoteSetAsync(Key key, string memberName, CancellationToken cancellationToken);
 
-        Task OnRemoteDeleteAsync(string key, string memberName, CancellationToken cancellationToken);
+        Task OnRemoteDeleteAsync(Key key, string memberName, CancellationToken cancellationToken);
     }
 }
